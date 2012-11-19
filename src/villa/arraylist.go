@@ -9,6 +9,11 @@ import(
 // Using ArrayList, the sort/heap algorithm can be easily performed by calling the NewLessAdapter method, which
 // returns a new adapter struct that implements an extra Less() method and thus satisfied sort.Interface and 
 // heap.Interface.
+//    lst := villa.NewArrayList()
+//    sort.Sort(lst.NewLessAdapter(
+//        func (a, b interface{}) bool {
+//            return a.(int32) < b.(int32)
+//        }))
 type ArrayList struct {
     data []interface{}
 }
@@ -85,6 +90,7 @@ func (lst *ArrayList) Clear() {
 }
 
 // Len returns the number of elements in this list.
+//
 // The Len method in sort.Interface.
 func (lst *ArrayList) Len() int {
     return len(lst.data)
