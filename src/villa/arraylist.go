@@ -70,8 +70,10 @@ func (lst *ArrayList) Push(e interface{}) {
 }
 
 // The Pop method in heap.Interface.
-func (lst *ArrayList) Pop() {
+func (lst *ArrayList) Pop() (e interface{}) {
+    e = lst.data[len(lst.data) - 1]
     lst.data = lst.data[0:len(lst.data) - 1]
+    return
 }
 
 // Remove removes the element at the specified position in this list.
