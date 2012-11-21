@@ -46,7 +46,7 @@ func (lst *ArrayList) Get(index int) interface{} {
 func (lst *ArrayList) Set(index int, e interface{}) {
     lst.data[index] = e
 }
-// Data returns the internal interface{} slice. If the array list performs structural modification, the return
+// Data returns the internal interface{} slice. If the array list performs structural modification, the returned
 // slice could be no longer the one inside the array list.
 func (lst *ArrayList) Data() []interface{} {
     return lst.data
@@ -115,6 +115,7 @@ func (lst *ArrayList) NewLessAdapter(less LessFunc) *LessAdapter {
     return &LessAdapter{lst, less}
 }
 
+// String returns the internal data's string format as a result
 func (lst *ArrayList) String() string {
     return fmt.Sprintf("%v", lst.data)
 }
