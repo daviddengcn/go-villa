@@ -17,7 +17,9 @@ func TestPriorityQueue(t *testing.T) {
     
     AssertEquals(t, "pq.Len()", pq.Len(), 1000)
 
+    peek := pq.Peek().(int32)
     last := pq.Pop().(int32)
+    AssertEquals(t, "pg.Peek()", peek, last)
     for i := 1; i < 1000; i ++ {
         cur := pq.Pop().(int32)
         if cur < last {
@@ -27,4 +29,3 @@ func TestPriorityQueue(t *testing.T) {
     } // for i
     fmt.Println(pq)
 }
-
