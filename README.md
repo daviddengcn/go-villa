@@ -22,6 +22,7 @@ Usage:
 
 PriorityQueue
 -------------
+A ready-to-use priority queue struct given a less function(comparator). It encapsulates the heap package using the ArrayList struct.
 
 Usage:
 ```go
