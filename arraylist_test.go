@@ -80,15 +80,43 @@ func TestArrayListSort(t *testing.T) {
     } //  if
 }
 
-func BenchmarkArrayList(b *testing.B) {
+func BenchmarkArrayList1(b *testing.B) {
+    b.StopTimer()
     lst := NewArrayList()
+    for i := 0; i < 100000; i ++ {
+        lst.Push(i)
+    } // for i
+    b.StartTimer()
+    
     for i := 0; i < b.N; i ++ {
-        for i := 0; i < 10000; i ++ {
-            lst.Insert(0, i)
-        } // for i
-        
-        for lst.Len() > 0 {
-            lst.Remove(0)
-        } // for
+        lst.Insert(1, i)
+    } // for i
+}
+
+func BenchmarkArrayList2(b *testing.B) {
+    b.StopTimer()
+    lst := []int{}
+    for i := 0; i < 100000; i ++ {
+        lst = append(lst, i)
+    } // for i
+    b.StartTimer()
+    
+    for i := 0; i < b.N; i ++ {
+        lst = append(lst[:1], append([]int{i}, lst[1:]...)...)
+    } // for i
+}
+
+func BenchmarkArrayList3(b *testing.B) {
+    b.StopTimer()
+    lst := []int{}
+    for i := 0; i < 100000; i ++ {
+        lst = append(lst, i)
+    } // for i
+    b.StartTimer()
+    
+    for i := 0; i < b.N; i ++ {
+        lst = append(lst, 0)
+        copy(lst[2:], lst[1:])
+        lst[1] = i
     } // for i
 }
