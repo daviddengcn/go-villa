@@ -7,24 +7,11 @@ import(
     "fmt"
 )
 
-func AssertEquals(t *testing.T, name string, a, b interface{}) {
-    if a != b {
-        t.Errorf("%s is expected to be %v, but got %v", name, a, b)
-    } // if
-}
-
-func AssertStringEquals(t *testing.T, name string, a, b interface{}) {
-    if fmt.Sprintf("%v", a) != fmt.Sprintf("%v", b) {
-        t.Errorf("%s is expected to be %v, but got %v", name, a, b)
-    } // if
-}
-
-
-func TestArrayList(t *testing.T) {
-    fmt.Println("== Begin TestArrayList...");
-    defer fmt.Println("== End TestArrayList.");
+func TestIntArrayList(t *testing.T) {
+    fmt.Println("== Begin TestIntArrayList...");
+    defer fmt.Println("== End TestIntArrayList.");
     
-    lst := NewArrayList()
+    lst := NewIntArrayList()
     for i := 0; i < 1000; i ++ {
         lst.Add(i)
     } // for i
@@ -34,20 +21,21 @@ func TestArrayList(t *testing.T) {
     lst.Clear()
     AssertEquals(t, "lst.Len()", lst.Len(), 0)
     
-    lst = NewArrayList()
+    lst = NewIntArrayList()
     lst.Add(1)
     lst.Insert(0, 2)
     lst.Insert(1, 3)
+    fmt.Println(lst)
     AssertEquals(t, "lst.Len()", lst.Len(), 3)
     AssertStringEquals(t, "lst", lst, "[2 3 1]")
     
-    sort.Sort(lst.NewLessAdapter(func(e1, e2 interface{}) bool {
-        return e1.(int) < e2.(int)
+    sort.Sort(lst.NewLessAdapter(func(e1, e2 int) bool {
+        return e1 < e2
     }))
     AssertStringEquals(t, "lst", lst, "[1 2 3]")
 }
 
-func TestArrayListRemove(t *testing.T) {
+func TestIntArrayListRemove(t *testing.T) {
     lst := NewArrayList()
     lst.AddSlice([]interface{}{1, 2, 3, 4, 5, 6, 7})
     AssertEquals(t, "lst.Len()", lst.Len(), 7)
@@ -62,30 +50,30 @@ func TestArrayListRemove(t *testing.T) {
     AssertStringEquals(t, "lst", lst, "[1 2 7]")
 }
 
-func TestArrayListSort(t *testing.T) {
-    lst := NewArrayList()
+func TestIntArrayListSort(t *testing.T) {
+    lst := NewIntArrayList()
     for i := 0; i < 100; i ++ {
-        lst.Add(rand.Int31())
+        lst.Add(rand.Int())
     } // for i
     
     //fmt.Println(lst)
     
     sort.Sort(lst.NewLessAdapter(
-        func (a, b interface{}) bool {
-            return a.(int32) < b.(int32)
+        func (a, b int) bool {
+            return a < b
         }))
     
     //fmt.Println(lst)
     for i := 1; i < lst.Len(); i ++ {
-        if lst.Get(i - 1).(int32) > lst.Get(i).(int32) {
+        if lst.Get(i - 1) > lst.Get(i) {
             t.Errorf("lst[%d](%v) is supposed to be less or equal than lst[%d](%v)", i - 1, lst.Get(i - 1), i, lst.Get(i))
         } //  if
     } //  if
 }
 
-func BenchmarkArrayList1(b *testing.B) {
+func BenchmarkIntArrayListInsert(b *testing.B) {
     b.StopTimer()
-    lst := NewArrayList()
+    lst := NewIntArrayList()
     for i := 0; i < 100000; i ++ {
         lst.Push(i)
     } // for i
@@ -96,7 +84,7 @@ func BenchmarkArrayList1(b *testing.B) {
     } // for i
 }
 
-func BenchmarkArrayList2(b *testing.B) {
+func BenchmarkIntSliceInsertByAppend(b *testing.B) {
     b.StopTimer()
     lst := []int{}
     for i := 0; i < 100000; i ++ {
@@ -109,7 +97,7 @@ func BenchmarkArrayList2(b *testing.B) {
     } // for i
 }
 
-func BenchmarkArrayList3(b *testing.B) {
+func BenchmarkIntSliceInsertByCopy(b *testing.B) {
     b.StopTimer()
     lst := []int{}
     for i := 0; i < 100000; i ++ {
@@ -123,3 +111,4 @@ func BenchmarkArrayList3(b *testing.B) {
         lst[1] = i
     } // for i
 }
+ 

@@ -9,6 +9,14 @@ import(
 //
 // A less function, typed LessFunc, needs to be specified. This struct is a better
 // encapsulation of the "container/heap" package provided by go standard library.
+// Usage:
+//     pq := villa.NewPriorityQueue(func(e1, e2 interface{}) bool {
+//         return e1.(int32) < e2.(int32)
+//     })
+//     pq.Push(10)
+//     pq.Push(20)
+//     
+//     vl := pq.Pop()
 type PriorityQueue struct {
     list *LessAdapter
 }
