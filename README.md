@@ -26,7 +26,7 @@ Usage:
 
 ### IntPriorityQueue
 
-It rewrites the algorithm in heap package. Integers are internally stored in a int slice.
+It rewrites the algorithm in heap package. Integers are internally stored in an int slice.
 Usage:
 ```go
     pq := villa.NewIntPriorityQueue(func(e1, e2 int) bool {
