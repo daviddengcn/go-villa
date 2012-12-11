@@ -83,7 +83,7 @@ func TestArrayListSort(t *testing.T) {
     } //  if
 }
 
-func BenchmarkArrayList1(b *testing.B) {
+func BenchmarkArrayListInsert(b *testing.B) {
     b.StopTimer()
     lst := NewArrayList()
     for i := 0; i < 100000; i ++ {
@@ -96,7 +96,7 @@ func BenchmarkArrayList1(b *testing.B) {
     } // for i
 }
 
-func BenchmarkArrayList2(b *testing.B) {
+func BenchmarkSliceInsertByAppend(b *testing.B) {
     b.StopTimer()
     lst := []int{}
     for i := 0; i < 100000; i ++ {
@@ -109,7 +109,7 @@ func BenchmarkArrayList2(b *testing.B) {
     } // for i
 }
 
-func BenchmarkArrayList3(b *testing.B) {
+func BenchmarkSliceInsertByCopy(b *testing.B) {
     b.StopTimer()
     lst := []int{}
     for i := 0; i < 100000; i ++ {

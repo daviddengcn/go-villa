@@ -63,12 +63,12 @@ func (lst *IntArrayList) Insert(index int, e int) {
     lst.data[index] = e
 }
 
-// The Push method in heap.Interface.
+// The Push method
 func (lst *IntArrayList) Push(e int) {
     lst.data = append(lst.data, e)
 }
 
-// The Pop method in heap.Interface.
+// The Pop method
 func (lst *IntArrayList) Pop() (e int) {
     e = lst.data[len(lst.data) - 1]
     lst.data = lst.data[0:len(lst.data) - 1]

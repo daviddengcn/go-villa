@@ -36,8 +36,10 @@ func TestIntArrayList(t *testing.T) {
 }
 
 func TestIntArrayListRemove(t *testing.T) {
-    lst := NewArrayList()
-    lst.AddSlice([]interface{}{1, 2, 3, 4, 5, 6, 7})
+    fmt.Println("== Begin TestIntArrayListRemove...");
+    defer fmt.Println("== End TestIntArrayListRemove.");
+    lst := NewIntArrayList()
+    lst.AddSlice([]int{1, 2, 3, 4, 5, 6, 7})
     AssertEquals(t, "lst.Len()", lst.Len(), 7)
     AssertStringEquals(t, "lst", lst, "[1 2 3 4 5 6 7]")
     
