@@ -58,7 +58,8 @@ Usage:
     }))
 ```
 
-### IntArrayList
+### IntArrayList/FloatArrayList/ComplexArrayList
+The following int can be replace with float or complex types.
 ```go
     lst := villa.NewIntArrayList()
     lst.Add(10)
