@@ -37,15 +37,7 @@ vl := pq.Pop()
 It rewrites the algorithm in heap package. Integers are internally stored in an int slice.
 Usage:
 ```go
-pq := villa.NewIntPriorityQueue(func(e1, e2 int) bool {
-    func (a, b int) int {
-        if a < b {
-            return -1
-        } else if a < b {
-            return 1
-        } // else if
-        return 0
-    })
+pq := villa.NewIntPriorityQueue(IntValueCompare)
 pq.Push(10)
 pq.Push(20)
 
