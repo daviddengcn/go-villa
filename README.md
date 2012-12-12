@@ -3,6 +3,8 @@ go-villa
 
 Some helper structs for go-lang. Current supporint: priority queue, array list.
 
+go.pkgdoc Link: http://go.pkgdoc.org/github.com/daviddengcn/go-villa
+
 Priority queues
 ---------------
 A generic struct, named PriorityQueue, whose element is an interface{} and some structs whose element is a specific number type.
