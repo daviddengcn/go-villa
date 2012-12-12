@@ -18,7 +18,7 @@ import(
 //            } // else if
 //            return 0
 //        })
-//    sort.Sort(adp)
+//    sort.Sort(adp) // lst(and adp) is sorted
 //    p, found := adp.BinarySearch(el)
 type IntArrayList struct {
     data []int
