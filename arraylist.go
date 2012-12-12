@@ -6,13 +6,18 @@ import(
 
 // ArrayList is a list of values(in the form of interface{}).
 //
-// Using ArrayList, the sort/heap algorithm can be easily performed by calling the NewLessAdapter method, which
+// Using ArrayList, the sort/heap algorithm can be easily performed by calling the NewCmpAdapter method, which
 // returns a new adapter struct that implements an extra Less() method and thus satisfied sort.Interface and 
 // heap.Interface.
 //    lst := villa.NewArrayList()
-//    sort.Sort(lst.NewLessAdapter(
-//        func (a, b interface{}) bool {
-//            return a.(int32) < b.(int32)
+//    sort.Sort(lst.NewCmpAdapter(
+//        func (a, b interface{}) int {
+//            if a.(int) < b.(int) {
+//                return -1
+//            } else if a.(int) < b.(int) {
+//                return 1
+//            } // else if
+//            return 0
 //        }))
 type ArrayList struct {
     data []interface{}
@@ -98,23 +103,20 @@ func (lst *ArrayList) Len() int {
     return len(lst.data)
 }
 
-// LessFunc is the function compares two elements.
-type LessFunc func(interface{}, interface{}) bool
-
-// LessAdapter is an adapter struct for an ArrayList with a less function.
-type LessAdapter struct {
+// CmpAdapter is an adapter struct for an ArrayList with a less function.
+type CmpAdapter struct {
     *ArrayList
-    less LessFunc
+    cmp CmpFunc
 }
 
 // The Less method in sort.Interface
-func (adp *LessAdapter) Less(i, j int) bool {
-    return adp.less(adp.ArrayList.data[i], adp.ArrayList.data[j])
+func (adp *CmpAdapter) Less(i, j int) bool {
+    return adp.cmp(adp.ArrayList.data[i], adp.ArrayList.data[j]) < 0
 }
 
-// NewLessAdapter returns an adapter instance that implenents sort.Interface.Less function.
-func (lst *ArrayList) NewLessAdapter(less LessFunc) *LessAdapter {
-    return &LessAdapter{lst, less}
+// NewCmpAdapter returns an adapter instance that implenents sort.Interface.Less function.
+func (lst *ArrayList) NewCmpAdapter(cmp CmpFunc) *CmpAdapter {
+    return &CmpAdapter{lst, cmp}
 }
 
 // String returns the internal data's string format as a result

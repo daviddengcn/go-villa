@@ -29,9 +29,7 @@ func TestIntArrayList(t *testing.T) {
     AssertEquals(t, "lst.Len()", lst.Len(), 3)
     AssertStringEquals(t, "lst", lst, "[2 3 1]")
     
-    sort.Sort(lst.NewLessAdapter(func(e1, e2 int) bool {
-        return e1 < e2
-    }))
+    sort.Sort(lst.NewCmpAdapter(IntValueCompare))
     AssertStringEquals(t, "lst", lst, "[1 2 3]")
 }
 
@@ -60,10 +58,7 @@ func TestIntArrayListSort(t *testing.T) {
     
     //fmt.Println(lst)
     
-    sort.Sort(lst.NewLessAdapter(
-        func (a, b int) bool {
-            return a < b
-        }))
+    sort.Sort(lst.NewCmpAdapter(IntValueCompare))
     
     //fmt.Println(lst)
     for i := 1; i < lst.Len(); i ++ {

@@ -6,12 +6,17 @@ import(
 
 // ComplexArrayList is a list of complex128 values.
 //
-// Using ComplexArrayList, the sort algorithm can be easily performed by calling the NewLessAdapter method, which
+// Using ComplexArrayList, the sort algorithm can be easily performed by calling the NewCmpAdapter method, which
 // returns a new adapter struct that implements an extra Less() method and thus satisfied sort.Interface.
 //    lst := villa.ComplexArrayList()
-//    sort.Sort(lst.NewLessAdapter(
+//    sort.Sort(lst.NewCmpAdapter(
 //        func (a, b complex128) bool {
-//            return a < b
+//            if cmplx.Abs(a) < cmplx.Abs(b) {
+//                return -1
+//            } else if cmplx.Abs(a) > cmplx.Abs(b) {
+//                return 1
+//            } // else if
+//            return 0
 //        }))
 type ComplexArrayList struct {
     data []complex128
@@ -97,23 +102,20 @@ func (lst *ComplexArrayList) Len() int {
     return len(lst.data)
 }
 
-// ComplexLessFunc is the function compares two elements.
-type ComplexLessFunc func(complex128, complex128) bool
-
-// LessAdapter is an adapter struct for an ArrayList with a less function.
-type ComplexLessAdapter struct {
+// ComplexCmpAdapter is an adapter struct for an ArrayList with a cmp function.
+type ComplexCmpAdapter struct {
     *ComplexArrayList
-    less ComplexLessFunc
+    cmp ComplexCmpFunc
 }
 
 // The Less method in sort.Interface
-func (adp *ComplexLessAdapter) Less(i, j int) bool {
-    return adp.less(adp.data[i], adp.data[j])
+func (adp *ComplexCmpAdapter) Less(i, j int) bool {
+    return adp.cmp(adp.data[i], adp.data[j]) < 0
 }
 
-// NewLessAdapter returns an adapter instance that implenents sort.Interface.Less function.
-func (lst *ComplexArrayList) NewLessAdapter(less ComplexLessFunc) *ComplexLessAdapter {
-    return &ComplexLessAdapter{lst, less}
+// NewCmpAdapter returns an adapter instance that implenents sort.Interface.Less function.
+func (lst *ComplexArrayList) NewCmpAdapter(cmp ComplexCmpFunc) *ComplexCmpAdapter {
+    return &ComplexCmpAdapter{lst, cmp}
 }
 
 // String returns the internal data's string format as a result

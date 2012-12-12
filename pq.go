@@ -7,23 +7,29 @@ import(
 
 // PriorityQueue is an unbounded priority queue based on a priority heap.
 //
-// A less function, typed LessFunc, needs to be specified. This struct is a better
+// A compare function, typed CmpFunc, needs to be specified. This struct is a better
 // encapsulation of the "container/heap" package provided by go standard library.
 // Usage:
-//     pq := villa.NewPriorityQueue(func(e1, e2 interface{}) bool {
-//         return e1.(int32) < e2.(int32)
-//     })
+//     pq := villa.NewPriorityQueue(
+//        func (a, b interface{}) int {
+//            if a.(int) < b.(int) {
+//                return -1
+//            } else if a.(int) < b.(int) {
+//                return 1
+//            } // else if
+//            return 0
+//        })
 //     pq.Push(10)
 //     pq.Push(20)
 //     
 //     vl := pq.Pop()
 type PriorityQueue struct {
-    list *LessAdapter
+    list *CmpAdapter
 }
 
-// NewPriorityQueue creates a PriorityQueue instance with a specified less function.
-func NewPriorityQueue(less LessFunc) *PriorityQueue {
-    return &PriorityQueue{NewArrayList().NewLessAdapter(less)}
+// NewPriorityQueue creates a PriorityQueue instance with a specified compare function.
+func NewPriorityQueue(cmp CmpFunc) *PriorityQueue {
+    return &PriorityQueue{NewArrayList().NewCmpAdapter(cmp)}
 }
 
 // Push inserts the specified element into this priority queue.

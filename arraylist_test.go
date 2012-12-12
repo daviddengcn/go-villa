@@ -19,6 +19,14 @@ func AssertStringEquals(t *testing.T, name string, a, b interface{}) {
     } // if
 }
 
+func intInterfaceCmpFunc(e1, e2 interface{}) int {
+    if e1.(int) < e2.(int) {
+        return -1
+    } else if e1.(int) > e2.(int) {
+        return 1
+    } // else if
+    return 0
+}
 
 func TestArrayList(t *testing.T) {
     fmt.Println("== Begin TestArrayList...");
@@ -41,9 +49,7 @@ func TestArrayList(t *testing.T) {
     AssertEquals(t, "lst.Len()", lst.Len(), 3)
     AssertStringEquals(t, "lst", lst, "[2 3 1]")
     
-    sort.Sort(lst.NewLessAdapter(func(e1, e2 interface{}) bool {
-        return e1.(int) < e2.(int)
-    }))
+    sort.Sort(lst.NewCmpAdapter(intInterfaceCmpFunc))
     AssertStringEquals(t, "lst", lst, "[1 2 3]")
 }
 
@@ -65,19 +71,16 @@ func TestArrayListRemove(t *testing.T) {
 func TestArrayListSort(t *testing.T) {
     lst := NewArrayList()
     for i := 0; i < 100; i ++ {
-        lst.Add(rand.Int31())
+        lst.Add(int(rand.Int31()))
     } // for i
     
     //fmt.Println(lst)
     
-    sort.Sort(lst.NewLessAdapter(
-        func (a, b interface{}) bool {
-            return a.(int32) < b.(int32)
-        }))
+    sort.Sort(lst.NewCmpAdapter(intInterfaceCmpFunc))
     
     //fmt.Println(lst)
     for i := 1; i < lst.Len(); i ++ {
-        if lst.Get(i - 1).(int32) > lst.Get(i).(int32) {
+        if lst.Get(i - 1).(int) > lst.Get(i).(int) {
             t.Errorf("lst[%d](%v) is supposed to be less or equal than lst[%d](%v)", i - 1, lst.Get(i - 1), i, lst.Get(i))
         } //  if
     } //  if

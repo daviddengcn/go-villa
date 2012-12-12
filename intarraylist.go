@@ -6,12 +6,17 @@ import(
 
 // IntArrayList is a list of int values.
 //
-// Using IntArrayList, the sort algorithm can be easily performed by calling the NewLessAdapter method, which
+// Using IntArrayList, the sort algorithm can be easily performed by calling the NewCmpAdapter method, which
 // returns a new adapter struct that implements an extra Less() method and thus satisfied sort.Interface.
 //    lst := villa.IntArrayList()
-//    sort.Sort(lst.NewLessAdapter(
-//        func (a, b int) bool {
-//            return a < b
+//    sort.Sort(lst.NewCmpAdapter(
+//        func (a, b int) int {
+//            if a < b {
+//                return -1
+//            } else if a < b {
+//                return 1
+//            } // else if
+//            return 0
 //        }))
 type IntArrayList struct {
     data []int
@@ -97,23 +102,20 @@ func (lst *IntArrayList) Len() int {
     return len(lst.data)
 }
 
-// LessFunc is the function compares two elements.
-type IntLessFunc func(int, int) bool
-
-// LessAdapter is an adapter struct for an ArrayList with a less function.
-type IntLessAdapter struct {
+// IntCmpAdapter is an adapter struct for an ArrayList with a cmp function.
+type IntCmpAdapter struct {
     *IntArrayList
-    less IntLessFunc
+    cmp IntCmpFunc
 }
 
 // The Less method in sort.Interface
-func (adp *IntLessAdapter) Less(i, j int) bool {
-    return adp.less(adp.data[i], adp.data[j])
+func (adp *IntCmpAdapter) Less(i, j int) bool {
+    return adp.cmp(adp.data[i], adp.data[j]) < 0
 }
 
-// NewLessAdapter returns an adapter instance that implenents sort.Interface.Less function.
-func (lst *IntArrayList) NewLessAdapter(less IntLessFunc) *IntLessAdapter {
-    return &IntLessAdapter{lst, less}
+// NewCmpAdapter returns an adapter instance that implenents sort.Interface.Less function.
+func (lst *IntArrayList) NewCmpAdapter(cmp IntCmpFunc) *IntCmpAdapter {
+    return &IntCmpAdapter{lst, cmp}
 }
 
 // String returns the internal data's string format as a result

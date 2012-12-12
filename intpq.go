@@ -6,29 +6,35 @@ import(
 
 // IntPriorityQueue is an unbounded priority queue based on a priority heap.
 //
-// A less function, typed IntLessFunc, needs to be specified.
+// A compare function, typed IntCmpFunc, needs to be specified.
 // Usage:
-//     pq := villa.NewIntPriorityQueue(func(e1, e2 int) bool {
-//         return e1 < e2
-//     })
+//     pq := villa.NewIntPriorityQueue(
+//         func (a, b int) int {
+//             if a < b {
+//                 return -1
+//             } else if a < b {
+//                 return 1
+//             } // else if
+//             return 0
+//         })
 //     pq.Push(10)
 //     pq.Push(20)
 //     
 //     vl := pq.Pop()
 type IntPriorityQueue struct {
     list []int
-    less IntLessFunc
+    cmp IntCmpFunc
 }
 
 // NewIntPriorityQueue creates a IntPriorityQueue instance with a specified less function.
-func NewIntPriorityQueue(less IntLessFunc) *IntPriorityQueue {
-    return &IntPriorityQueue{nil, less}
+func NewIntPriorityQueue(cmp IntCmpFunc) *IntPriorityQueue {
+    return &IntPriorityQueue{nil, cmp}
 }
 
 func (pq *IntPriorityQueue)intUp(j int) {
     for {
         i := (j - 1) / 2 // parent
-        if i == j || pq.less(pq.list[i], pq.list[j]) {
+        if i == j || pq.cmp(pq.list[i], pq.list[j]) < 0 {
             break
         } // if
         pq.list[i], pq.list[j] = pq.list[j], pq.list[i]
@@ -43,10 +49,10 @@ func (pq *IntPriorityQueue)intDown(i, n int) {
             break
         } // if
         j := j1 // left child
-        if j2 := j1 + 1; j2 < n && !pq.less(pq.list[j1], pq.list[j2]) {
+        if j2 := j1 + 1; j2 < n && pq.cmp(pq.list[j1], pq.list[j2]) >= 0 {
             j = j2 // = 2*i + 2  // right child
         } // if
-        if pq.less(pq.list[i], pq.list[j]) {
+        if pq.cmp(pq.list[i], pq.list[j]) < 0 {
             break
         } // if
         pq.list[i], pq.list[j] = pq.list[j], pq.list[i]

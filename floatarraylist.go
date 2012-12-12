@@ -6,12 +6,17 @@ import(
 
 // FloatArrayList is a list of float64 values.
 //
-// Using FloatArrayList, the sort algorithm can be easily performed by calling the NewLessAdapter method, which
+// Using FloatArrayList, the sort algorithm can be easily performed by calling the NewCmpAdapter method, which
 // returns a new adapter struct that implements an extra Less() method and thus satisfied sort.Interface.
 //    lst := villa.FloatArrayList()
-//    sort.Sort(lst.NewLessAdapter(
+//    sort.Sort(lst.NewCmpAdapter(
 //        func (a, b float64) bool {
-//            return a < b
+//            if a < b {
+//                return -1
+//            } else if a < b {
+//                return 1
+//            } // else if
+//            return 0
 //        }))
 type FloatArrayList struct {
     data []float64
@@ -97,23 +102,20 @@ func (lst *FloatArrayList) Len() int {
     return len(lst.data)
 }
 
-// FloatLessFunc is the function compares two elements.
-type FloatLessFunc func(float64, float64) bool
-
-// LessAdapter is an adapter struct for an ArrayList with a less function.
-type FloatLessAdapter struct {
+// FloatCmpAdapter is an adapter struct for an ArrayList with a cmp function.
+type FloatCmpAdapter struct {
     *FloatArrayList
-    less FloatLessFunc
+    cmp FloatCmpFunc
 }
 
 // The Less method in sort.Interface
-func (adp *FloatLessAdapter) Less(i, j int) bool {
-    return adp.less(adp.data[i], adp.data[j])
+func (adp *FloatCmpAdapter) Less(i, j int) bool {
+    return adp.cmp(adp.data[i], adp.data[j]) < 0
 }
 
-// NewLessAdapter returns an adapter instance that implenents sort.Interface.Less function.
-func (lst *FloatArrayList) NewLessAdapter(less FloatLessFunc) *FloatLessAdapter {
-    return &FloatLessAdapter{lst, less}
+// NewCmpAdapter returns an adapter instance that implenents sort.Interface.Less function.
+func (lst *FloatArrayList) NewCmpAdapter(cmp FloatCmpFunc) *FloatCmpAdapter {
+    return &FloatCmpAdapter{lst, cmp}
 }
 
 // String returns the internal data's string format as a result

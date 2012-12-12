@@ -29,9 +29,7 @@ func TestFloatArrayList(t *testing.T) {
     AssertEquals(t, "lst.Len()", lst.Len(), 3)
     AssertStringEquals(t, "lst", lst, "[2 3 1]")
     
-    sort.Sort(lst.NewLessAdapter(func(e1, e2 float64) bool {
-        return e1 < e2
-    }))
+    sort.Sort(lst.NewCmpAdapter(FloatValueCompare))
     AssertStringEquals(t, "lst", lst, "[1 2 3]")
 }
 
@@ -61,10 +59,7 @@ func TestFloatArrayListSort(t *testing.T) {
     
     //fmt.Println(lst)
     
-    sort.Sort(lst.NewLessAdapter(
-        func (a, b float64) bool {
-            return a < b
-        }))
+    sort.Sort(lst.NewCmpAdapter(FloatValueCompare))
     
     //fmt.Println(lst)
     for i := 1; i < lst.Len(); i ++ {

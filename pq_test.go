@@ -11,20 +11,18 @@ func TestPriorityQueue(t *testing.T) {
     fmt.Println("== Begin TestPriorityQueue...");
     defer fmt.Println("== End TestPriorityQueue.");
     
-    pq := NewPriorityQueue(func(e1, e2 interface{}) bool {
-        return e1.(int32) < e2.(int32)
-    })
+    pq := NewPriorityQueue(intInterfaceCmpFunc)
     for i := 0; i < 1000; i ++ {
-        pq.Push(rand.Int31())
+        pq.Push(int(rand.Int31()))
     } // for i
     
     AssertEquals(t, "pq.Len()", pq.Len(), 1000)
 
-    peek := pq.Peek().(int32)
-    last := pq.Pop().(int32)
+    peek := pq.Peek().(int)
+    last := pq.Pop().(int)
     AssertEquals(t, "pg.Peek()", peek, last)
     for i := 1; i < 1000; i ++ {
-        cur := pq.Pop().(int32)
+        cur := pq.Pop().(int)
         if cur < last {
             t.Errorf("%d should be larger than %d", cur, last)
         } // if

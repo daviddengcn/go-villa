@@ -11,9 +11,7 @@ func TestIntPriorityQueue(t *testing.T) {
     fmt.Println("== Begin TestIntPriorityQueue...");
     defer fmt.Println("== End TestIntPriorityQueue.");
     
-    pq := NewIntPriorityQueue(func(e1, e2 int) bool {
-        return e1 < e2
-    })
+    pq := NewIntPriorityQueue(IntValueCompare)
     for i := 0; i < 1000; i ++ {
         pq.Push(rand.Int())
     } // for i

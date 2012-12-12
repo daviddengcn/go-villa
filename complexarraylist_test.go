@@ -8,6 +8,32 @@ import(
     "fmt"
 )
 
+func cmplexAbsCmpFunc(a, b complex128) int {
+    absA, absB := cmplx.Abs(a), cmplx.Abs(b)
+    if absA < absB {
+        return -1
+    } else if absA > absB {
+        return 1
+    } // else if
+    
+    // The following implementation defines a total order comparator which returns 0 iff. a == b.
+    // A simpler alternative could simply return 0 when there modulus' equals.
+    
+    if real(a) < real(b) {
+        return -1
+    } else if real(a) > real(b) {
+        return 1
+    } // else if
+    
+    if imag(a) < imag(b) {
+        return -1
+    } else if imag(a) > imag(b) {
+        return 1
+    } // else if
+    
+    return 0
+}
+
 func TestComplexArrayList(t *testing.T) {
     fmt.Println("== Begin TestComplexArrayList...");
     defer fmt.Println("== End TestComplexArrayList.");
@@ -31,9 +57,7 @@ func TestComplexArrayList(t *testing.T) {
     // FIXME: when go compiler fixes its bug of []complex64/128.String(), uncommet the following line
     // AssertStringEquals(t, "lst", "[(2-2i) (3-3i) (1-1i)]", lst)
     
-    sort.Sort(lst.NewLessAdapter(func(e1, e2 complex128) bool {
-        return cmplx.Abs(e1) < cmplx.Abs(e2)
-    }))
+    sort.Sort(lst.NewCmpAdapter(cmplexAbsCmpFunc))
     // FIXME: when go compiler fixes its bug of []complex64/128.String(), uncommet the following line
     // AssertStringEquals(t, "lst", lst, "[(1-i) (2-2i) (3-3i)]")
 }
@@ -67,10 +91,7 @@ func TestComplexArrayListSort(t *testing.T) {
     
     //fmt.Println(lst)
     
-    sort.Sort(lst.NewLessAdapter(
-        func (a, b complex128) bool {
-            return cmplx.Abs(a) < cmplx.Abs(b)
-        }))
+    sort.Sort(lst.NewCmpAdapter(cmplexAbsCmpFunc))
     
     //fmt.Println(lst)
     for i := 1; i < lst.Len(); i ++ {
