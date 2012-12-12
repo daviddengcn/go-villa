@@ -3,6 +3,8 @@ go-villa
 
 Some helper structs for go-lang. Current supporint: priority queue, array list.
 
+go.pkgdoc Link: http://go.pkgdoc.org/github.com/daviddengcn/go-villa
+
 Priority queues
 ---------------
 A generic struct, named PriorityQueue, whose element is an interface{} and some structs whose element is a specific number type.
@@ -15,9 +17,15 @@ It encapsulates the heap package using the ArrayList struct.
 
 Usage:
 ```go
-    pq := villa.NewPriorityQueue(func(e1, e2 interface{}) bool {
-        return e1.(int32) < e2.(int32)
-    })
+    pq := villa.NewPriorityQueue(
+        func (a, b interface{}) int {
+            if a.(int) < b.(int) {
+                return -1
+            } else if a.(int) < b.(int) {
+                return 1
+            } // else if
+            return 0
+        })
     pq.Push(10)
     pq.Push(20)
 
@@ -30,8 +38,14 @@ It rewrites the algorithm in heap package. Integers are internally stored in an 
 Usage:
 ```go
     pq := villa.NewIntPriorityQueue(func(e1, e2 int) bool {
-        return e1 < e2
-    })
+        func (a, b int) int {
+            if a < b {
+                return -1
+            } else if a < b {
+                return 1
+            } // else if
+            return 0
+        })
     pq.Push(10)
     pq.Push(20)
 
@@ -53,13 +67,19 @@ Usage:
     lst.Insert(1, 30)
     l := lst.Len()
 
-    sort.Sort(lst.NewLessAdapter(func(e1, e2 interface{}) bool {
-        return e1.(int) < e2.(int)
-    }))
+    sort.Sort(lst.NewCmpAdapter(
+        func (a, b interface{}) int {
+            if a.(int) < b.(int) {
+                return -1
+            } else if a.(int) < b.(int) {
+                return 1
+            } // else if
+            return 0
+        }))
 ```
 
 ### IntArrayList/FloatArrayList/ComplexArrayList
-The following int can be replace with float or complex types.
+The following int can be replace with float or complex types(complex compare function needs rewriting).
 ```go
     lst := villa.NewIntArrayList()
     lst.Add(10)
@@ -67,7 +87,13 @@ The following int can be replace with float or complex types.
     lst.Insert(1, 30)
     l := lst.Len()
 
-    sort.Sort(lst.NewLessAdapter(func(e1, e2 int) bool {
-        return e1 < e2
-    }))
+    sort.Sort(lst.NewCmpAdapter(
+        func (a, b int) int {
+            if a < b {
+                return -1
+            } else if a < b {
+                return 1
+            } // else if
+            return 0
+        }))
 ```
