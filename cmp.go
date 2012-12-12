@@ -14,7 +14,7 @@ type ComplexCmpFunc func(complex128, complex128) int
 
 
 // IntValueCompare compares the input int values a and b, returns -1 if a < b, 1 if a > b, and 0 otherwise.
-// This is a natual IntCmpFunc.
+// This is a natural IntCmpFunc.
 func IntValueCompare(a, b int) int {
     if a < b {
         return -1
@@ -27,7 +27,7 @@ func IntValueCompare(a, b int) int {
 
 
 // FloatValueCompare compares the input float64 values a and b, returns -1 if a < b, 1 if a > b, and 0 otherwise.
-// This is a natual FloatCmpFunc.
+// This is a natural FloatCmpFunc.
 func FloatValueCompare(a, b float64) int {
     if a < b {
         return -1
