@@ -9,7 +9,7 @@ import(
 // Using IntArrayList, the sort algorithm can be easily performed by calling the NewCmpAdapter method, which
 // returns a new adapter struct that implements an extra Less() method and thus satisfied sort.Interface.
 //    lst := villa.IntArrayList()
-//    sort.Sort(lst.NewCmpAdapter(
+//    adp := lst.NewCmpAdapter(
 //        func (a, b int) int {
 //            if a < b {
 //                return -1
@@ -17,7 +17,9 @@ import(
 //                return 1
 //            } // else if
 //            return 0
-//        }))
+//        })
+//    sort.Sort(adp)
+//    p, found := adp.BinarySearch(el)
 type IntArrayList struct {
     data []int
 }

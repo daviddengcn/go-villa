@@ -10,7 +10,7 @@ import(
 // returns a new adapter struct that implements an extra Less() method and thus satisfied sort.Interface and 
 // heap.Interface.
 //    lst := villa.NewArrayList()
-//    sort.Sort(lst.NewCmpAdapter(
+//    adp := lst.NewCmpAdapter(
 //        func (a, b interface{}) int {
 //            if a.(int) < b.(int) {
 //                return -1
@@ -18,7 +18,9 @@ import(
 //                return 1
 //            } // else if
 //            return 0
-//        }))
+//        })
+//    adp.Sort(adp) // lst(and adp) is sorted.
+//    p, found := adp.BinarySearch(el)
 type ArrayList struct {
     data []interface{}
 }
