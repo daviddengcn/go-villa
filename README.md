@@ -67,7 +67,7 @@ lst.Add(20)
 lst.Insert(1, 30)
 l := lst.Len()
 
-sort.Sort(lst.NewCmpAdapter(
+adp := lst.NewCmpAdapter(
     func (a, b interface{}) int {
         if a.(int) < b.(int) {
             return -1
@@ -75,7 +75,9 @@ sort.Sort(lst.NewCmpAdapter(
             return 1
         } // else if
         return 0
-    }))
+    })
+sort.Sort(adp)
+p, found := adp.BinarySearch(20)
 ```
 
 ### IntArrayList/FloatArrayList/ComplexArrayList
@@ -87,15 +89,9 @@ lst.Add(20)
 lst.Insert(1, 30)
 l := lst.Len()
 
-sort.Sort(lst.NewCmpAdapter(
-    func (a, b int) int {
-        if a < b {
-            return -1
-        } else if a < b {
-            return 1
-        } // else if
-        return 0
-    }))
+adp := lst.NewCmpAdapter(villa.IntValueCompare)
+sort.Sort(adp)
+p, found := adp.BinarySearch(20)
 ```
 
 Comparator functions
