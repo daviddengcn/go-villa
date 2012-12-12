@@ -27,6 +27,11 @@ func NewIntArrayList() *IntArrayList {
     return &IntArrayList{}
 }
 
+// NewIntArrayListCap creates a new IntArrayList instance with an initialized length and capacity
+func NewIntArrayListCap(len, cap int) *IntArrayList {
+    return &IntArrayList{data: make([]int, len, cap)}
+}
+
 // Add appends the specified element to the end of this list.
 func (lst *IntArrayList) Add(e int) {
     lst.data = append(lst.data, e)

@@ -27,6 +27,11 @@ func NewComplexArrayList() *ComplexArrayList {
     return &ComplexArrayList{}
 }
 
+// NewComplexArrayListCap creates a new ComplexArrayList instance with an initialized length and capacity
+func NewComplexArrayListCap(len, cap int) *ComplexArrayList {
+    return &ComplexArrayList{data: make([]complex128, len, cap)}
+}
+
 // Add appends the specified element to the end of this list.
 func (lst *ComplexArrayList) Add(e complex128) {
     lst.data = append(lst.data, e)

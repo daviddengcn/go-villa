@@ -27,6 +27,10 @@ type ArrayList struct {
 func NewArrayList() *ArrayList {
     return &ArrayList{}
 }
+// NewArrayListCap creates a new ArrayList instance with an initialized length and capacity
+func NewArrayListCap(len, cap int) *ArrayList {
+    return &ArrayList{data: make([]interface{}, len, cap)}
+}
 
 // Add appends the specified element to the end of this list.
 func (lst *ArrayList) Add(e interface{}) {

@@ -62,6 +62,12 @@ func TestComplexArrayList(t *testing.T) {
     // AssertStringEquals(t, "lst", lst, "[(1-i) (2-2i) (3-3i)]")
 }
 
+func TestComplexArrayListCap(t *testing.T) {
+    lst := NewComplexArrayListCap(10, 20)
+    AssertEquals(t, "lst.Len()", lst.Len(), 10)
+    AssertEquals(t, "cap(lst.Data())", cap(lst.Data()), 20)
+}
+
 func TestComplexArrayListRemove(t *testing.T) {
     fmt.Println("== Begin TestComplexArrayListRemove...");
     defer fmt.Println("== End TestComplexArrayListRemove.");

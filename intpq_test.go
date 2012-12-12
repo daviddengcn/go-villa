@@ -31,3 +31,7 @@ func TestIntPriorityQueue(t *testing.T) {
     fmt.Println(pq)
 }
  
+func TestIntPriorityQueueCap(t *testing.T) {
+    pq := NewIntPriorityQueueCap(IntValueCompare, 10)
+    AssertEquals(t, "pq.Len()", pq.Len(), 0)
+}

@@ -13,7 +13,7 @@ func TestPriorityQueue(t *testing.T) {
     
     pq := NewPriorityQueue(intInterfaceCmpFunc)
     for i := 0; i < 1000; i ++ {
-        pq.Push(int(rand.Int31()))
+        pq.Push(rand.Int())
     } // for i
     
     AssertEquals(t, "pq.Len()", pq.Len(), 1000)
@@ -29,4 +29,9 @@ func TestPriorityQueue(t *testing.T) {
         last = cur
     } // for i
     fmt.Println(pq)
+}
+
+func TestPriorityQueueCap(t *testing.T) {
+    pq := NewPriorityQueueCap(intInterfaceCmpFunc, 10)
+    AssertEquals(t, "pq.Len()", pq.Len(), 0)
 }

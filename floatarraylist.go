@@ -27,6 +27,11 @@ func NewFloatArrayList() *FloatArrayList {
     return &FloatArrayList{}
 }
 
+// NewFloatArrayListCap creates a new FloatArrayList instance with an initialized length and capacity
+func NewFloatArrayListCap(len, cap int) *FloatArrayList {
+    return &FloatArrayList{data: make([]float64, len, cap)}
+}
+
 // Add appends the specified element to the end of this list.
 func (lst *FloatArrayList) Add(e float64) {
     lst.data = append(lst.data, e)

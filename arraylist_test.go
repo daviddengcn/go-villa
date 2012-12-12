@@ -7,9 +7,9 @@ import(
     "fmt"
 )
 
-func AssertEquals(t *testing.T, name string, a, b interface{}) {
-    if a != b {
-        t.Errorf("%s is expected to be %v, but got %v", name, a, b)
+func AssertEquals(t *testing.T, name string, act, exp interface{}) {
+    if act != exp {
+        t.Errorf("%s is expected to be %v, but got %v", name, exp, act)
     } // if
 }
 
@@ -51,6 +51,12 @@ func TestArrayList(t *testing.T) {
     
     sort.Sort(lst.NewCmpAdapter(intInterfaceCmpFunc))
     AssertStringEquals(t, "lst", lst, "[1 2 3]")
+}
+
+func TestArrayListCap(t *testing.T) {
+    lst := NewArrayListCap(10, 20)
+    AssertEquals(t, "lst.Len()", lst.Len(), 10)
+    AssertEquals(t, "cap(lst.Data())", cap(lst.Data()), 20)
 }
 
 func TestArrayListRemove(t *testing.T) {

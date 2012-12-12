@@ -26,9 +26,14 @@ type IntPriorityQueue struct {
     cmp IntCmpFunc
 }
 
-// NewIntPriorityQueue creates a IntPriorityQueue instance with a specified less function.
+// NewIntPriorityQueue creates a IntPriorityQueue instance with a specified campare function.
 func NewIntPriorityQueue(cmp IntCmpFunc) *IntPriorityQueue {
     return &IntPriorityQueue{nil, cmp}
+}
+
+// NewIntPriorityQueueCap creates a IntPriorityQueue instance with a specified compare function and a capacity
+func NewIntPriorityQueueCap(cmp IntCmpFunc, cap int) *IntPriorityQueue {
+    return &IntPriorityQueue{make([] int, 0, cap), cmp}
 }
 
 func (pq *IntPriorityQueue)intUp(j int) {

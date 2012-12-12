@@ -33,6 +33,12 @@ func TestIntArrayList(t *testing.T) {
     AssertStringEquals(t, "lst", lst, "[1 2 3]")
 }
 
+func TestIntArrayListCap(t *testing.T) {
+    lst := NewIntArrayListCap(10, 20)
+    AssertEquals(t, "lst.Len()", lst.Len(), 10)
+    AssertEquals(t, "cap(lst.Data())", cap(lst.Data()), 20)
+}
+
 func TestIntArrayListRemove(t *testing.T) {
     fmt.Println("== Begin TestIntArrayListRemove...");
     defer fmt.Println("== End TestIntArrayListRemove.");

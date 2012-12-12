@@ -32,6 +32,11 @@ func NewPriorityQueue(cmp CmpFunc) *PriorityQueue {
     return &PriorityQueue{NewArrayList().NewCmpAdapter(cmp)}
 }
 
+// NewPriorityQueue creates a PriorityQueue instance with a specified compare function and a capacity
+func NewPriorityQueueCap(cmp CmpFunc, cap int) *PriorityQueue {
+    return &PriorityQueue{NewArrayListCap(0, cap).NewCmpAdapter(cmp)}
+}
+
 // Push inserts the specified element into this priority queue.
 func (pq *PriorityQueue) Push(x interface{}) {
     heap.Push(pq.list, x)

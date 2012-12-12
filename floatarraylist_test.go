@@ -33,6 +33,12 @@ func TestFloatArrayList(t *testing.T) {
     AssertStringEquals(t, "lst", lst, "[1 2 3]")
 }
 
+func TestFloatArrayListCap(t *testing.T) {
+    lst := NewFloatArrayListCap(10, 20)
+    AssertEquals(t, "lst.Len()", lst.Len(), 10)
+    AssertEquals(t, "cap(lst.Data())", cap(lst.Data()), 20)
+}
+
 func TestFloatArrayListRemove(t *testing.T) {
     fmt.Println("== Begin TestFloatArrayListRemove...");
     defer fmt.Println("== End TestFloatArrayListRemove.");
