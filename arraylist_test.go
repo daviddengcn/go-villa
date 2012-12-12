@@ -75,14 +75,15 @@ func TestArrayListRemove(t *testing.T) {
 }
 
 func TestArrayListSort(t *testing.T) {
-    lst := NewArrayList()
+    lst := NewArrayListCap(0, 100)
     for i := 0; i < 100; i ++ {
-        lst.Add(int(rand.Int31()))
+        lst.Add(rand.Int())
     } // for i
     
     //fmt.Println(lst)
     
-    sort.Sort(lst.NewCmpAdapter(intInterfaceCmpFunc))
+    adp := lst.NewCmpAdapter(intInterfaceCmpFunc)
+    sort.Sort(adp)
     
     //fmt.Println(lst)
     for i := 1; i < lst.Len(); i ++ {
@@ -90,14 +91,34 @@ func TestArrayListSort(t *testing.T) {
             t.Errorf("lst[%d](%v) is supposed to be less or equal than lst[%d](%v)", i - 1, lst.Get(i - 1), i, lst.Get(i))
         } //  if
     } //  if
+    
+    for i := 0; i < lst.Len(); i ++ {
+        p, found := adp.BinarySearch(lst.Get(i))
+        AssertEquals(t, fmt.Sprintf("%d found", i), found, true)
+        if found {
+            AssertEquals(t, fmt.Sprintf("%d found element", i), lst.Get(p), lst.Get(i))
+        } // if
+    } // for i
+    
+    for i := 0; i < lst.Len(); i ++ {
+        e := rand.Int()
+        p, found := adp.BinarySearch(e)
+        if found {
+            AssertEquals(t, fmt.Sprintf("found element", i), lst.Get(p), e)
+        } else {
+            beforeOk := p == 0 || lst.Get(p - 1).(int) <= e;
+            afterOk := p == lst.Len() || lst.Get(p).(int) >= e;
+            
+            if !beforeOk || !afterOk {
+                t.Errorf("Wrong position %d for %v", p, e)
+            } // if
+        } // else
+    } // for i
 }
 
 func BenchmarkArrayListInsert(b *testing.B) {
     b.StopTimer()
-    lst := NewArrayList()
-    for i := 0; i < 100000; i ++ {
-        lst.Push(i)
-    } // for i
+    lst := NewArrayListCap(100000, 100000)
     b.StartTimer()
     
     for i := 0; i < b.N; i ++ {
@@ -107,10 +128,7 @@ func BenchmarkArrayListInsert(b *testing.B) {
 
 func BenchmarkSliceInsertByAppend(b *testing.B) {
     b.StopTimer()
-    lst := []int{}
-    for i := 0; i < 100000; i ++ {
-        lst = append(lst, i)
-    } // for i
+    lst := make([]int, 100000, 100000)
     b.StartTimer()
     
     for i := 0; i < b.N; i ++ {
@@ -120,10 +138,7 @@ func BenchmarkSliceInsertByAppend(b *testing.B) {
 
 func BenchmarkSliceInsertByCopy(b *testing.B) {
     b.StopTimer()
-    lst := []int{}
-    for i := 0; i < 100000; i ++ {
-        lst = append(lst, i)
-    } // for i
+    lst := make([]int, 100000, 100000)
     b.StartTimer()
     
     for i := 0; i < b.N; i ++ {

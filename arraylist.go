@@ -115,7 +115,28 @@ type CmpAdapter struct {
 
 // The Less method in sort.Interface
 func (adp *CmpAdapter) Less(i, j int) bool {
-    return adp.cmp(adp.ArrayList.data[i], adp.ArrayList.data[j]) < 0
+    return adp.cmp(adp.data[i], adp.data[j]) < 0
+}
+
+// BinarySearch searchs a specified element e in a *sorted* list with binary search algorithm. If the list values are not sorted, the return values are undefined.
+// If the element is found in the list, found equals true and pos is the index of the found element in the list.
+// Otherwise found returns false and pos is the position where e is going to be inserted(and the resulting list is still in order)
+func (adp *CmpAdapter) BinarySearch(e interface{}) (pos int, found bool) {
+    l, r := 0, len(adp.data) - 1
+    for l <= r {
+        m := (l + r) / 2
+        c := adp.cmp(e, adp.data[m])
+        if c == 0 {
+            return m, true
+        } // if
+        
+        if c < 0 {
+            r = m - 1
+        } else {
+            l = m + 1
+        } // else
+    } // for
+    return l, false
 }
 
 // NewCmpAdapter returns an adapter instance that implenents sort.Interface.Less function.

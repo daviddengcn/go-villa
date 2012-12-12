@@ -118,6 +118,27 @@ func (adp *FloatCmpAdapter) Less(i, j int) bool {
     return adp.cmp(adp.data[i], adp.data[j]) < 0
 }
 
+// BinarySearch searchs a specified element e in a *sorted* list with binary search algorithm. If the list values are not sorted, the return values are undefined.
+// If the element is found in the list, found equals true and pos is the index of the found element in the list.
+// Otherwise found returns false and pos is the position where e is going to be inserted(and the resulting list is still in order)
+func (adp *FloatCmpAdapter) BinarySearch(e float64) (pos int, found bool) {
+    l, r := 0, len(adp.data) - 1
+    for l <= r {
+        m := (l + r) / 2
+        c := adp.cmp(e, adp.data[m])
+        if c == 0 {
+            return m, true
+        } // if
+        
+        if c < 0 {
+            r = m - 1
+        } else {
+            l = m + 1
+        } // else
+    } // for
+    return l, false
+}
+
 // NewCmpAdapter returns an adapter instance that implenents sort.Interface.Less function.
 func (lst *FloatArrayList) NewCmpAdapter(cmp FloatCmpFunc) *FloatCmpAdapter {
     return &FloatCmpAdapter{lst, cmp}

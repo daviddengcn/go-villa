@@ -1,16 +1,16 @@
 package villa;
 
-// CmpFunc is the function compares two elements.
-type CmpFunc func(interface{}, interface{}) int
+// CmpFunc is a function comparing two elements. The function returns a positive value if a > b, a negative value if a < b, and 0 otherwise.
+type CmpFunc func(a, b interface{}) int
 
-// IntCmpFunc is the function compares two int elements.
-type IntCmpFunc func(int, int) int
+// IntCmpFunc is a function comparing two int elements. The function returns a positive value if a > b, a negative value if a < b, and 0 otherwise.
+type IntCmpFunc func(a, b int) int
 
-// FloatCmpFunc is the function compares two float elements.
-type FloatCmpFunc func(float64, float64) int
+// FloatCmpFunc is a function comparing two float elements. The function returns a positive value if a > b, a negative value if a < b, and 0 otherwise.
+type FloatCmpFunc func(a, b float64) int
 
-// ComplexCmpFunc is the function compares two complex128 elements.
-type ComplexCmpFunc func(complex128, complex128) int
+// ComplexCmpFunc is a function comparing two complex128 elements. The function returns a positive value if a > b, a negative value if a < b, and 0 otherwise.
+type ComplexCmpFunc func(a, b complex128) int
 
 
 // IntValueCompare compares the input int values a and b, returns -1 if a < b, 1 if a > b, and 0 otherwise.

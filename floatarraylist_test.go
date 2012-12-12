@@ -65,7 +65,8 @@ func TestFloatArrayListSort(t *testing.T) {
     
     //fmt.Println(lst)
     
-    sort.Sort(lst.NewCmpAdapter(FloatValueCompare))
+    adp := lst.NewCmpAdapter(FloatValueCompare)
+    sort.Sort(adp)
     
     //fmt.Println(lst)
     for i := 1; i < lst.Len(); i ++ {
@@ -73,6 +74,29 @@ func TestFloatArrayListSort(t *testing.T) {
             t.Errorf("lst[%d](%v) is supposed to be less or equal than lst[%d](%v)", i - 1, lst.Get(i - 1), i, lst.Get(i))
         } //  if
     } //  if
+    
+    for i := 0; i < lst.Len(); i ++ {
+        p, found := adp.BinarySearch(lst.Get(i))
+        AssertEquals(t, fmt.Sprintf("%d found", i), found, true)
+        if found {
+            AssertEquals(t, fmt.Sprintf("%d found element", i), lst.Get(p), lst.Get(i))
+        } // if
+    } // for i
+    
+    for i := 0; i < lst.Len(); i ++ {
+        e := rand.Float64()
+        p, found := adp.BinarySearch(e)
+        if found {
+            AssertEquals(t, fmt.Sprintf("found element", i), lst.Get(p), e)
+        } else {
+            beforeOk := p == 0 || lst.Get(p - 1) <= e;
+            afterOk := p == lst.Len() || lst.Get(p) >= e;
+            
+            if !beforeOk || !afterOk {
+                t.Errorf("Wrong position %d for %v", p, e)
+            } // if
+        } // else
+    } // for i
 }
 
 func BenchmarkFloatArrayListInsert(b *testing.B) {
