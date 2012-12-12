@@ -98,7 +98,7 @@ sort.Sort(lst.NewCmpAdapter(
     }))
 ```
 
-Comparetor functions
+Comparator functions
 --------------------
 ```go
 // IntValueCompare compares the input int values a and b, returns -1 if a < b, 1 if a > b, and 0 otherwise.
