@@ -1,7 +1,7 @@
 go-villa
 ========
 
-Some helper structs for go-lang. Current supporint: priority queue, array list.
+Some helper types for go-lang. Current supporint: priority queue, slice wrapper.
 
 go.pkgdoc Link: http://go.pkgdoc.org/github.com/daviddengcn/go-villa
 
@@ -13,7 +13,7 @@ Using a priority queue requires a less function, with two elements to be compare
 
 ### PriorityQueue
 
-It encapsulates the heap package using the ArrayList struct.
+It encapsulates the heap package using the Slice struct.
 
 Usage:
 ```go
@@ -44,22 +44,19 @@ pq.Push(20)
 vl := pq.Pop()
 ```
 
-Array List
-----------
-Array list is a list of values(in the form of interface{} or some basic number type).
+Slice Wrappers
+--------------
+Slice is a warpper for go slices.
 
-NOTE: these structs are not to replace the languange supported slice, but a higher level data-structures.
-
-### ArrayList
+### Slice
 Usage:
 ```go
-lst := villa.NewArrayList()
-lst.Add(10)
-lst.Add(20)
-lst.Insert(1, 30)
-l := lst.Len()
+var s Slice
+s.Add(10, 20)
+s.Insert(1, 30)
+l := len(s)
 
-adp := lst.NewCmpAdapter(
+sl := s.NewSortList(
     func (a, b interface{}) int {
         if a.(int) < b.(int) {
             return -1
@@ -68,22 +65,21 @@ adp := lst.NewCmpAdapter(
         } // else if
         return 0
     })
-sort.Sort(adp)
-p, found := adp.BinarySearch(20)
+sort.Sort(sl)
+p, found := sl.BinarySearch(20)
 ```
 
-### IntArrayList/FloatArrayList/ComplexArrayList
+### IntSlice/FloatSlice/ComplexSlice
 The following int can be replace with float or complex types(complex compare function needs rewriting).
 ```go
-lst := villa.NewIntArrayList()
-lst.Add(10)
-lst.Add(20)
-lst.Insert(1, 30)
-l := lst.Len()
+var s IntSlice
+s.Add(10, 20)
+s.Insert(1, 30)
+l := len(s)
 
-adp := lst.NewCmpAdapter(villa.IntValueCompare)
-sort.Sort(adp)
-p, found := adp.BinarySearch(20)
+sl := lst.NewSortList(villa.IntValueCompare)
+sort.Sort(sl)
+p, found := sl.BinarySearch(20)
 ```
 
 Comparator functions
