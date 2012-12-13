@@ -120,17 +120,18 @@ func TestComplexSliceSort(t *testing.T) {
 
 func BenchmarkComplexSliceInsert(b *testing.B) {
     b.StopTimer()
-    s := make(ComplexSlice, 100000, 100000)
+    s := make(ComplexSlice, 100000)
     b.StartTimer()
     
     for i := 0; i < b.N; i ++ {
         s.Insert(1, complex(float64(i), float64(-i)))
+        //s.RemoveRange(1, 1+len(a)*2)
     } // for i
 }
 
 func BenchmarkComplexSliceInsertByAppend(b *testing.B) {
     b.StopTimer()
-    s := make([]complex128, 100000, 100000)
+    s := make([]complex128, 100000)
     b.StartTimer()
     
     for i := 0; i < b.N; i ++ {

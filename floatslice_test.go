@@ -94,7 +94,7 @@ func TestFloatSliceSort(t *testing.T) {
 
 func BenchmarkFloatSliceInsert(b *testing.B) {
     b.StopTimer()
-    s := make(FloatSlice, 100000, 100000)
+    s := make(FloatSlice, 100000)
     b.StartTimer()
     
     for i := 0; i < b.N; i ++ {
@@ -104,7 +104,7 @@ func BenchmarkFloatSliceInsert(b *testing.B) {
 
 func BenchmarkFloatSliceInsertByAppend(b *testing.B) {
     b.StopTimer()
-    s := make([]float64, 100000, 100000)
+    s := make([]float64, 100000)
     b.StartTimer()
     
     for i := 0; i < b.N; i ++ {
@@ -114,7 +114,7 @@ func BenchmarkFloatSliceInsertByAppend(b *testing.B) {
 
 func BenchmarkFloatSliceInsertByCopy(b *testing.B) {
     b.StopTimer()
-    s := make([]float64, 100000, 100000)
+    s := make([]float64, 100000)
     b.StartTimer()
     
     for i := 0; i < b.N; i ++ {

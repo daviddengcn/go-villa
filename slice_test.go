@@ -111,7 +111,7 @@ func TestSliceSort(t *testing.T) {
 
 func BenchmarkSliceInsert(b *testing.B) {
     b.StopTimer()
-    s := make(Slice, 100000, 100000)
+    s := make(Slice, 100000)
     b.StartTimer()
     
     for i := 0; i < b.N; i ++ {
@@ -121,7 +121,7 @@ func BenchmarkSliceInsert(b *testing.B) {
 
 func BenchmarkSliceInsertByAppend(b *testing.B) {
     b.StopTimer()
-    s := make([]int, 100000, 100000)
+    s := make([]int, 100000)
     b.StartTimer()
     
     for i := 0; i < b.N; i ++ {
@@ -131,7 +131,7 @@ func BenchmarkSliceInsertByAppend(b *testing.B) {
 
 func BenchmarkSliceInsertByCopy(b *testing.B) {
     b.StopTimer()
-    s := make([]int, 100000, 100000)
+    s := make([]int, 100000)
     b.StartTimer()
     
     for i := 0; i < b.N; i ++ {

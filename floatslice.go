@@ -27,8 +27,13 @@ func (s *FloatSlice) Add(e... float64) {
 }
 
 // Insert inserts the specified element at the specified position in this slice.
+// NOTE: the insertion algorithm is much better than the slice-trick in go community wiki
 func (s *FloatSlice) Insert(index int, e... float64) {
-    *s = append(*s, e...)
+    if cap(*s) >= len(*s) + len(e) {
+        *s = (*s)[:len(*s) + len(e)]
+    } else {
+        *s = append(*s, e...)
+    } // else
     copy((*s)[index + len(e):], (*s)[index:])
     copy((*s)[index:], e[:])
 }

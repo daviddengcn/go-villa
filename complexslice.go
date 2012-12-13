@@ -27,8 +27,13 @@ func (s *ComplexSlice) Add(e... complex128) {
 }
 
 // Insert inserts the specified element at the specified position in this slice.
+// NOTE: the insertion algorithm is much better than the slice-trick in go community wiki
 func (s *ComplexSlice) Insert(index int, e... complex128) {
-    *s = append(*s, e...)
+    if cap(*s) >= len(*s) + len(e) {
+        *s = (*s)[:len(*s) + len(e)]
+    } else {
+        *s = append(*s, e...)
+    } // else
     copy((*s)[index + len(e):], (*s)[index:])
     copy((*s)[index:], e[:])
 }
