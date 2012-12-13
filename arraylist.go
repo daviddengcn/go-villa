@@ -4,10 +4,10 @@ import "fmt"
 
 // ArrayList is a list of values(in the form of interface{}).
 //
-// Using ArrayList, the sort/heap algorithm can be easily performed by calling the NewCmpAdapter method, which
-// returns a new adapter struct that implements an extra Less() method and thus satisfied sort.Interface and 
-// heap.Interface.
-//    lst := villa.NewArrayList()
+// Using ArrayList, the sort/heap algorithm can be easily performed by calling the NewSortAdapter method, which
+// returns a new adapter type instance that implements some sort.Interface and heap.Interface.
+//    var lst ArrayList
+//    lst.Add(...)
 //    sa := lst.NewSortAdapter(
 //        func (a, b interface{}) int {
 //            if a.(int) < b.(int) {
