@@ -13,9 +13,9 @@ func AssertEquals(t *testing.T, name string, act, exp interface{}) {
     } // if
 }
 
-func AssertStringEquals(t *testing.T, name string, a, b interface{}) {
-    if fmt.Sprintf("%v", a) != fmt.Sprintf("%v", b) {
-        t.Errorf("%s is expected to be %v, but got %v", name, a, b)
+func AssertStringEquals(t *testing.T, name string, act, exp interface{}) {
+    if fmt.Sprintf("%v", act) != fmt.Sprintf("%v", exp) {
+        t.Errorf("%s is expected to be %v, but got %v", name, exp, act)
     } // if
 }
 
@@ -37,62 +37,55 @@ func TestArrayList(t *testing.T) {
         lst.Add(i)
     } // for i
     
-    AssertEquals(t, "lst.Len()", lst.Len(), 1000)
+    AssertEquals(t, "len(lst)", len(lst), 1000)
     //fmt.Println(lst)
     lst.Clear()
-    AssertEquals(t, "lst.Len()", lst.Len(), 0)
+    AssertEquals(t, "len(lst)", len(lst), 0)
     
     lst = ArrayList{}
-    lst.Add(1)
-    lst.Insert(0, 2)
-    lst.Insert(1, 3)
-    AssertEquals(t, "lst.Len()", lst.Len(), 3)
-    AssertStringEquals(t, "lst", lst, "[2 3 1]")
+    lst.Add(4, 1)
+    lst.Insert(1, 2, 3)
+    AssertEquals(t, "len(lst)", len(lst), 4)
+    AssertStringEquals(t, "lst", lst, "[4 2 3 1]")
     
-    sort.Sort(lst.NewCmpAdapter(intInterfaceCmpFunc))
-    AssertStringEquals(t, "lst", lst, "[1 2 3]")
-}
-
-func TestArrayListCap(t *testing.T) {
-    lst := *NewArrayListCap(10, 20)
-    AssertEquals(t, "lst.Len()", lst.Len(), 10)
-    AssertEquals(t, "cap(lst)", cap(lst), 20)
+    sort.Sort(lst.NewSortAdapter(intInterfaceCmpFunc))
+    AssertStringEquals(t, "lst", lst, "[1 2 3 4]")
 }
 
 func TestArrayListRemove(t *testing.T) {
     var lst ArrayList
-    lst.AddSlice([]interface{}{1, 2, 3, 4, 5, 6, 7})
-    AssertEquals(t, "lst.Len()", lst.Len(), 7)
+    lst.Add(1, 2, 3, 4, 5, 6, 7)
+    AssertEquals(t, "len(lst)", len(lst), 7)
     AssertStringEquals(t, "lst", lst, "[1 2 3 4 5 6 7]")
     
     lst.RemoveRange(2, 5)
-    AssertEquals(t, "lst.Len()", lst.Len(), 4)
+    AssertEquals(t, "len(lst)", len(lst), 4)
     AssertStringEquals(t, "lst", lst, "[1 2 6 7]")
     
     lst.Remove(2)
-    AssertEquals(t, "lst.Len()", lst.Len(), 3)
+    AssertEquals(t, "len(lst)", len(lst), 3)
     AssertStringEquals(t, "lst", lst, "[1 2 7]")
 }
 
 func TestArrayListSort(t *testing.T) {
-    lst := *NewArrayListCap(0, 100)
+    lst := make(ArrayList, 0, 100)
     for i := 0; i < 100; i ++ {
         lst.Add(rand.Int())
     } // for i
     
     //fmt.Println(lst)
     
-    adp := lst.NewCmpAdapter(intInterfaceCmpFunc)
+    adp := lst.NewSortAdapter(intInterfaceCmpFunc)
     sort.Sort(adp)
     
     //fmt.Println(lst)
-    for i := 1; i < lst.Len(); i ++ {
+    for i := 1; i < len(lst); i ++ {
         if lst[i - 1].(int) > lst[i].(int) {
             t.Errorf("lst[%d](%v) is supposed to be less or equal than lst[%d](%v)", i - 1, lst[i - 1], i, lst[i])
         } //  if
     } //  if
     
-    for i := 0; i < lst.Len(); i ++ {
+    for i := range(lst) {
         p, found := adp.BinarySearch(lst[i])
         AssertEquals(t, fmt.Sprintf("%d found", i), found, true)
         if found {
@@ -100,14 +93,14 @@ func TestArrayListSort(t *testing.T) {
         } // if
     } // for i
     
-    for i := 0; i < lst.Len(); i ++ {
+    for i := range(lst) {
         e := rand.Int()
         p, found := adp.BinarySearch(e)
         if found {
             AssertEquals(t, fmt.Sprintf("found element", i), lst[p], e)
         } else {
             beforeOk := p == 0 || lst[p - 1].(int) <= e;
-            afterOk := p == lst.Len() || lst[p].(int) >= e;
+            afterOk := p == len(lst) || lst[p].(int) >= e;
             
             if !beforeOk || !afterOk {
                 t.Errorf("Wrong position %d for %v", p, e)
@@ -118,7 +111,7 @@ func TestArrayListSort(t *testing.T) {
 
 func BenchmarkArrayListInsert(b *testing.B) {
     b.StopTimer()
-    lst := *NewArrayListCap(100000, 100000)
+    lst := make(ArrayList, 100000, 100000)
     b.StartTimer()
     
     for i := 0; i < b.N; i ++ {

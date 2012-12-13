@@ -8,7 +8,7 @@ import "fmt"
 // returns a new adapter struct that implements an extra Less() method and thus satisfied sort.Interface and 
 // heap.Interface.
 //    lst := villa.NewArrayList()
-//    adp := lst.NewCmpAdapter(
+//    sa := lst.NewSortAdapter(
 //        func (a, b interface{}) int {
 //            if a.(int) < b.(int) {
 //                return -1
@@ -17,33 +17,20 @@ import "fmt"
 //            } // else if
 //            return 0
 //        })
-//    adp.Sort(adp) // lst(and adp) is sorted.
-//    p, found := adp.BinarySearch(el)
+//    sort.Sort(sa) // sa(and lst) is sorted.
+//    p, found := sa.BinarySearch(el)
 type ArrayList []interface{}
 
-// NewArrayList creates a new ArrayList instance
-func NewArrayList() *ArrayList {
-    return &ArrayList{}
-}
-// NewArrayListCap creates a new ArrayList instance with an initialized length and capacity
-func NewArrayListCap(len, cap int) *ArrayList {
-    res := make(ArrayList, len, cap)
-    return &res
-}
-
 // Add appends the specified element to the end of this list.
-func (lst *ArrayList) Add(e interface{}) {
-    *lst = append(*lst, e)
+func (lst *ArrayList) Add(e... interface{}) {
+    *lst = append(*lst, e...)
 }
 
-// AddSlice appends a slice of elements to the end of this list.
-func (lst *ArrayList) AddSlice(s []interface{}) {
-    *lst = append(*lst, s...)
-}
-
-// AddAll appends all elements of another ArrayList to the end of this list.
-func (lst *ArrayList) AddAll(al *ArrayList) {
-    *lst = append(*lst, *al...)
+// Insert inserts the specified element at the specified position in this list.
+func (lst *ArrayList) Insert(index int, e... interface{}) {
+   *lst = append(*lst, e...)
+   copy((*lst)[index + len(e):], (*lst)[index:])
+   copy((*lst)[index:], e[:])
 }
 
 // The Swap method in sort.Interface.
@@ -51,28 +38,11 @@ func (lst *ArrayList) Swap(i, j int) {
     (*lst)[i], (*lst)[j] = (*lst)[j], (*lst)[i]
 }
 
-// Insert inserts the specified element at the specified position in this list.
-func (lst *ArrayList) Insert(index int, e interface{}) {
-    *lst = append(*lst, nil)
-    copy((*lst)[index + 1:], (*lst)[index:])
-    (*lst)[index] = e
-}
-
-// The Push method in heap.Interface.
-func (lst *ArrayList) Push(e interface{}) {
-    *lst = append(*lst, e)
-}
-
-// The Pop method in heap.Interface.
-func (lst *ArrayList) Pop() (e interface{}) {
-    e = (*lst)[len(*lst) - 1]
-    *lst = (*lst)[0:len(*lst) - 1]
-    return
-}
-
 // Remove removes the element at the specified position in this list.
-func (lst *ArrayList) Remove(index int) {
+func (lst *ArrayList) Remove(index int) interface{} {
+    e := (*lst)[index]
     *lst = append((*lst)[0:index], (*lst)[index + 1:]...)
+    return e
 }
 
 // RemoveRange removes from this list all of the elements whose index is between from, inclusive, and to, exclusive.
@@ -82,39 +52,55 @@ func (lst *ArrayList) RemoveRange(from, to int) {
 
 // Clear removes all of the elements from this list.
 func (lst *ArrayList) Clear() {
-    *lst = (*lst)[0:0]
+    *lst = (*lst)[:0]
+}
+
+// String returns the internal data's string format as a result
+func (lst *ArrayList) String() string {
+    return fmt.Sprintf("%v", *lst)
+}
+
+// SortAdapter is an adapter struct for an ArrayList which implements the sort interface and related functions using a comparator.
+type SortAdapter struct {
+    *ArrayList
+    cmp CmpFunc
+}
+
+// The Push method in heap.Interface.
+func (sa *SortAdapter) Push(e interface{}) {
+    *sa.ArrayList = append(*sa.ArrayList, e)
+}
+
+// The Pop method in heap.Interface.
+func (sa *SortAdapter) Pop() interface{} {
+    return sa.Remove(len(*sa.ArrayList) - 1)
 }
 
 // Len returns the number of elements in this list.
 //
 // The Len method in sort.Interface.
-func (lst *ArrayList) Len() int {
-    return len(*lst)
-}
-
-// CmpAdapter is an adapter struct for an ArrayList with a less function.
-type CmpAdapter struct {
-    *ArrayList
-    cmp CmpFunc
+func (sa *SortAdapter) Len() int {
+    return len(*sa.ArrayList)
 }
 
 // The Less method in sort.Interface
-func (adp *CmpAdapter) Less(i, j int) bool {
-    return adp.cmp((*adp.ArrayList)[i], (*adp.ArrayList)[j]) < 0
+func (sa *SortAdapter) Less(i, j int) bool {
+    return sa.cmp((*sa.ArrayList)[i], (*sa.ArrayList)[j]) < 0
 }
 
-func (adp *CmpAdapter) Get(i int) interface{} {
-    return (*adp.ArrayList)[i]
+// Get returns the i-th element in the list. This is implemented since [] operator is not embedded
+func (sa *SortAdapter) Get(i int) interface{} {
+    return (*sa.ArrayList)[i]
 }
 
 // BinarySearch searchs a specified element e in a *sorted* list with binary search algorithm. If the list values are not sorted, the return values are undefined.
 // If the element is found in the list, found equals true and pos is the index of the found element in the list.
 // Otherwise found returns false and pos is the position where e is going to be inserted(and the resulting list is still in order)
-func (adp *CmpAdapter) BinarySearch(e interface{}) (pos int, found bool) {
-    l, r := 0, len(*adp.ArrayList) - 1
+func (sa *SortAdapter) BinarySearch(e interface{}) (pos int, found bool) {
+    l, r := 0, len(*sa.ArrayList) - 1
     for l <= r {
         m := (l + r) / 2
-        c := adp.cmp(e, (*adp.ArrayList)[m])
+        c := sa.cmp(e, (*sa.ArrayList)[m])
         if c == 0 {
             return m, true
         } // if
@@ -128,12 +114,7 @@ func (adp *CmpAdapter) BinarySearch(e interface{}) (pos int, found bool) {
     return l, false
 }
 
-// NewCmpAdapter returns an adapter instance that implenents sort.Interface.Less function.
-func (lst *ArrayList) NewCmpAdapter(cmp CmpFunc) *CmpAdapter {
-    return &CmpAdapter{lst, cmp}
-}
-
-// String returns the internal data's string format as a result
-func (lst *ArrayList) String() string {
-    return fmt.Sprintf("%v", *lst)
+// NewSortAdapter returns an adapter instance that implenents sort.Interface.Less function.
+func (lst *ArrayList) NewSortAdapter(cmp CmpFunc) *SortAdapter {
+    return &SortAdapter{lst, cmp}
 }
