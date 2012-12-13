@@ -29,7 +29,7 @@ type PriorityQueue struct {
 
 // NewPriorityQueue creates a PriorityQueue instance with a specified compare function.
 func NewPriorityQueue(cmp CmpFunc) *PriorityQueue {
-    return &PriorityQueue{(&Slice{}).NewSortList(cmp)}
+    return &PriorityQueue{new(Slice).NewSortList(cmp)}
 }
 
 // NewPriorityQueue creates a PriorityQueue instance with a specified compare function and a capacity
