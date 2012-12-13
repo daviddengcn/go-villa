@@ -32,7 +32,7 @@ func TestArrayList(t *testing.T) {
     fmt.Println("== Begin TestArrayList...");
     defer fmt.Println("== End TestArrayList.");
     
-    lst := NewArrayList()
+    var lst ArrayList
     for i := 0; i < 1000; i ++ {
         lst.Add(i)
     } // for i
@@ -42,7 +42,7 @@ func TestArrayList(t *testing.T) {
     lst.Clear()
     AssertEquals(t, "lst.Len()", lst.Len(), 0)
     
-    lst = NewArrayList()
+    lst = ArrayList{}
     lst.Add(1)
     lst.Insert(0, 2)
     lst.Insert(1, 3)
@@ -54,13 +54,13 @@ func TestArrayList(t *testing.T) {
 }
 
 func TestArrayListCap(t *testing.T) {
-    lst := NewArrayListCap(10, 20)
+    lst := *NewArrayListCap(10, 20)
     AssertEquals(t, "lst.Len()", lst.Len(), 10)
-    AssertEquals(t, "cap(lst.Data())", cap(lst.Data()), 20)
+    AssertEquals(t, "cap(lst)", cap(lst), 20)
 }
 
 func TestArrayListRemove(t *testing.T) {
-    lst := NewArrayList()
+    var lst ArrayList
     lst.AddSlice([]interface{}{1, 2, 3, 4, 5, 6, 7})
     AssertEquals(t, "lst.Len()", lst.Len(), 7)
     AssertStringEquals(t, "lst", lst, "[1 2 3 4 5 6 7]")
@@ -75,7 +75,7 @@ func TestArrayListRemove(t *testing.T) {
 }
 
 func TestArrayListSort(t *testing.T) {
-    lst := NewArrayListCap(0, 100)
+    lst := *NewArrayListCap(0, 100)
     for i := 0; i < 100; i ++ {
         lst.Add(rand.Int())
     } // for i
@@ -87,16 +87,16 @@ func TestArrayListSort(t *testing.T) {
     
     //fmt.Println(lst)
     for i := 1; i < lst.Len(); i ++ {
-        if lst.Get(i - 1).(int) > lst.Get(i).(int) {
-            t.Errorf("lst[%d](%v) is supposed to be less or equal than lst[%d](%v)", i - 1, lst.Get(i - 1), i, lst.Get(i))
+        if lst[i - 1].(int) > lst[i].(int) {
+            t.Errorf("lst[%d](%v) is supposed to be less or equal than lst[%d](%v)", i - 1, lst[i - 1], i, lst[i])
         } //  if
     } //  if
     
     for i := 0; i < lst.Len(); i ++ {
-        p, found := adp.BinarySearch(lst.Get(i))
+        p, found := adp.BinarySearch(lst[i])
         AssertEquals(t, fmt.Sprintf("%d found", i), found, true)
         if found {
-            AssertEquals(t, fmt.Sprintf("%d found element", i), lst.Get(p), lst.Get(i))
+            AssertEquals(t, fmt.Sprintf("%d found element", i), lst[p], lst[i])
         } // if
     } // for i
     
@@ -104,10 +104,10 @@ func TestArrayListSort(t *testing.T) {
         e := rand.Int()
         p, found := adp.BinarySearch(e)
         if found {
-            AssertEquals(t, fmt.Sprintf("found element", i), lst.Get(p), e)
+            AssertEquals(t, fmt.Sprintf("found element", i), lst[p], e)
         } else {
-            beforeOk := p == 0 || lst.Get(p - 1).(int) <= e;
-            afterOk := p == lst.Len() || lst.Get(p).(int) >= e;
+            beforeOk := p == 0 || lst[p - 1].(int) <= e;
+            afterOk := p == lst.Len() || lst[p].(int) >= e;
             
             if !beforeOk || !afterOk {
                 t.Errorf("Wrong position %d for %v", p, e)
@@ -118,7 +118,7 @@ func TestArrayListSort(t *testing.T) {
 
 func BenchmarkArrayListInsert(b *testing.B) {
     b.StopTimer()
-    lst := NewArrayListCap(100000, 100000)
+    lst := *NewArrayListCap(100000, 100000)
     b.StartTimer()
     
     for i := 0; i < b.N; i ++ {

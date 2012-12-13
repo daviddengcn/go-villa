@@ -1,8 +1,6 @@
 package villa
 
-import(
-    "fmt"
-)
+import "fmt"
 
 // ArrayList is a list of values(in the form of interface{}).
 //
@@ -21,9 +19,7 @@ import(
 //        })
 //    adp.Sort(adp) // lst(and adp) is sorted.
 //    p, found := adp.BinarySearch(el)
-type ArrayList struct {
-    data []interface{}
-}
+type ArrayList []interface{}
 
 // NewArrayList creates a new ArrayList instance
 func NewArrayList() *ArrayList {
@@ -31,82 +27,69 @@ func NewArrayList() *ArrayList {
 }
 // NewArrayListCap creates a new ArrayList instance with an initialized length and capacity
 func NewArrayListCap(len, cap int) *ArrayList {
-    return &ArrayList{data: make([]interface{}, len, cap)}
+    res := make(ArrayList, len, cap)
+    return &res
 }
 
 // Add appends the specified element to the end of this list.
 func (lst *ArrayList) Add(e interface{}) {
-    lst.data = append(lst.data, e)
+    *lst = append(*lst, e)
 }
 
 // AddSlice appends a slice of elements to the end of this list.
 func (lst *ArrayList) AddSlice(s []interface{}) {
-    lst.data = append(lst.data, s...)
+    *lst = append(*lst, s...)
 }
 
 // AddAll appends all elements of another ArrayList to the end of this list.
 func (lst *ArrayList) AddAll(al *ArrayList) {
-    lst.data = append(lst.data, al.data...)
-}
-
-// Get returns the element at the specified position in this list.
-func (lst *ArrayList) Get(index int) interface{} {
-    return lst.data[index]
-}
-// Set replaces the element at the specified position in this list with the specified element.
-func (lst *ArrayList) Set(index int, e interface{}) {
-    lst.data[index] = e
-}
-// Data returns the internal interface{} slice. If the array list performs structural modification, the returned
-// slice could be no longer the one inside the array list.
-func (lst *ArrayList) Data() []interface{} {
-    return lst.data
+    *lst = append(*lst, *al...)
 }
 
 // The Swap method in sort.Interface.
 func (lst *ArrayList) Swap(i, j int) {
-    lst.data[i], lst.data[j] = lst.data[j], lst.data[i]
+    (*lst)[i], (*lst)[j] = (*lst)[j], (*lst)[i]
 }
 
 // Insert inserts the specified element at the specified position in this list.
 func (lst *ArrayList) Insert(index int, e interface{}) {
-    lst.data = append(lst.data, nil)
-    copy(lst.data[index + 1:], lst.data[index:])
-    lst.data[index] = e
+    *lst = append(*lst, nil)
+    copy((*lst)[index + 1:], (*lst)[index:])
+    (*lst)[index] = e
 }
 
 // The Push method in heap.Interface.
 func (lst *ArrayList) Push(e interface{}) {
-    lst.data = append(lst.data, e)
+    *lst = append(*lst, e)
 }
 
 // The Pop method in heap.Interface.
 func (lst *ArrayList) Pop() (e interface{}) {
-    e = lst.data[len(lst.data) - 1]
-    lst.data = lst.data[0:len(lst.data) - 1]
+    e = (*lst)[len(*lst) - 1]
+    *lst = (*lst)[0:len(*lst) - 1]
     return
 }
 
 // Remove removes the element at the specified position in this list.
 func (lst *ArrayList) Remove(index int) {
-    lst.data = append(lst.data[0:index], lst.data[index + 1:]...)
+    *lst = append((*lst)[0:index], (*lst)[index + 1:]...)
 }
 
 // RemoveRange removes from this list all of the elements whose index is between from, inclusive, and to, exclusive.
 func (lst *ArrayList) RemoveRange(from, to int) {
-    lst.data = append(lst.data[0:from], lst.data[to:]...)
+    *lst = append((*lst)[0:from], (*lst)[to:]...)
 }
 
 // Clear removes all of the elements from this list.
 func (lst *ArrayList) Clear() {
-    lst.data = lst.data[0:0]
+    *lst = (*lst)[0:0]
 }
 
 // Len returns the number of elements in this list.
 //
 // The Len method in sort.Interface.
 func (lst *ArrayList) Len() int {
-    return len(lst.data)
+    return len(*lst)
 }
 
 // CmpAdapter is an adapter struct for an ArrayList with a less function.
@@ -117,17 +100,21 @@ type CmpAdapter struct {
 
 // The Less method in sort.Interface
 func (adp *CmpAdapter) Less(i, j int) bool {
-    return adp.cmp(adp.data[i], adp.data[j]) < 0
+    return adp.cmp((*adp.ArrayList)[i], (*adp.ArrayList)[j]) < 0
+}
+
+func (adp *CmpAdapter) Get(i int) interface{} {
+    return (*adp.ArrayList)[i]
 }
 
 // BinarySearch searchs a specified element e in a *sorted* list with binary search algorithm. If the list values are not sorted, the return values are undefined.
 // If the element is found in the list, found equals true and pos is the index of the found element in the list.
 // Otherwise found returns false and pos is the position where e is going to be inserted(and the resulting list is still in order)
 func (adp *CmpAdapter) BinarySearch(e interface{}) (pos int, found bool) {
-    l, r := 0, len(adp.data) - 1
+    l, r := 0, len(*adp.ArrayList) - 1
     for l <= r {
         m := (l + r) / 2
-        c := adp.cmp(e, adp.data[m])
+        c := adp.cmp(e, (*adp.ArrayList)[m])
         if c == 0 {
             return m, true
         } // if
@@ -148,5 +135,5 @@ func (lst *ArrayList) NewCmpAdapter(cmp CmpFunc) *CmpAdapter {
 
 // String returns the internal data's string format as a result
 func (lst *ArrayList) String() string {
-    return fmt.Sprintf("%v", lst.data)
+    return fmt.Sprintf("%v", *lst)
 }
