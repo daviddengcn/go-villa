@@ -9,10 +9,10 @@ import "fmt"
 //    var s villa.ComplexSlice
 //    s.Add(...)
 //    sl := s.NewSortList(
-//        func (a, b complex128) int {
-//            if a < b {
+//        func (a, b complex128) bool {
+//            if cmplx.Abs(a) < cmplx.Abs(b) {
 //                return -1
-//            } else if a < b {
+//            } else if cmplx.Abs(a) > cmplx.Abs(b) {
 //                return 1
 //            } // else if
 //            return 0
