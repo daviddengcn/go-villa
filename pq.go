@@ -24,18 +24,18 @@ import(
 //     
 //     vl := pq.Pop()
 type PriorityQueue struct {
-    list *SortAdapter
+    list *SortList
 }
 
 // NewPriorityQueue creates a PriorityQueue instance with a specified compare function.
 func NewPriorityQueue(cmp CmpFunc) *PriorityQueue {
-    return &PriorityQueue{(&ArrayList{}).NewSortAdapter(cmp)}
+    return &PriorityQueue{(&Slice{}).NewSortList(cmp)}
 }
 
 // NewPriorityQueue creates a PriorityQueue instance with a specified compare function and a capacity
 func NewPriorityQueueCap(cmp CmpFunc, cap int) *PriorityQueue {
-    lst := make(ArrayList, 0, cap)
-    return &PriorityQueue{lst.NewSortAdapter(cmp)}
+    lst := make(Slice, 0, cap)
+    return &PriorityQueue{lst.NewSortList(cmp)}
 }
 
 // Push inserts the specified element into this priority queue.
