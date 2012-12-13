@@ -87,7 +87,7 @@ func (s *FloatSortList) Less(i, j int) bool {
 func (s *FloatSortList) BinarySearch(e float64) (pos int, found bool) {
     l, r := 0, len(*s.FloatSlice) - 1
     for l <= r {
-        m := (l + r) / 2
+        m := l +(r - l)/2
         c := s.cmp(e, (*s.FloatSlice)[m])
         if c == 0 {
             return m, true

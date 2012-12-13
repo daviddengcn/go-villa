@@ -87,7 +87,7 @@ func (s *ComplexSortList) Less(i, j int) bool {
 func (s *ComplexSortList) BinarySearch(e complex128) (pos int, found bool) {
     l, r := 0, len(*s.ComplexSlice) - 1
     for l <= r {
-        m := (l + r) / 2
+        m := l +(r - l)/2
         c := s.cmp(e, (*s.ComplexSlice)[m])
         if c == 0 {
             return m, true
