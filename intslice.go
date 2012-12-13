@@ -5,10 +5,10 @@ import "fmt"
 // IntSlice is wrapper to a slice of int.
 //
 // Using IntSlice, the sort/heap algorithm can be easily performed by calling the NewSortList method, which
-// returns a new adapter type instance that implements some sort.Interface and heap.Interface.
+// returns a new adapter type instance that implements some sort.Interface.
 //    var s villa.IntSlice
 //    s.Add(...)
-//    s := s.NewSortAdapter(
+//    sl := s.NewSortList(
 //        func (a, b int) int {
 //            if a < b {
 //                return -1
@@ -17,8 +17,8 @@ import "fmt"
 //            } // else if
 //            return 0
 //        })
-//    sort.Sort(s) // s(and s) is sorted.
-//    p, found := s.BinarySearch(el)
+//    sort.Sort(sl) // sl(and s) is sorted.
+//    p, found := sl.BinarySearch(el)
 type IntSlice []int
 
 // Add appends the specified element to the end of this slice.
@@ -76,11 +76,6 @@ func (s *IntSortList) Less(i, j int) bool {
     return s.cmp((*s.IntSlice)[i], (*s.IntSlice)[j]) < 0
 }
 
-// Get returns the i-th element in the slice. This is implemented since [] operator is not embedded
-func (s *IntSortList) Get(i int) int {
-    return (*s.IntSlice)[i]
-}
-
 // BinarySearch searchs a specified element e in a *sorted* list with binary search algorithm. If the list values are not sorted, the return values are undefined.
 // If the element is found in the list, found equals true and pos is the index of the found element in the list.
 // Otherwise found returns false and pos is the position where e is going to be inserted(and the resulting list is still in order)
@@ -102,7 +97,7 @@ func (s *IntSortList) BinarySearch(e int) (pos int, found bool) {
     return l, false
 }
 
-// NewSortList returns an adapter type instance that implenents sort.Interface and heap.Interface. A compare function (IntCmpFunc) is needed to define the order of elements.
+// NewSortList returns an adapter type instance that implenents sort.Interface. A compare function (IntCmpFunc) is needed to define the order of elements.
 func (s *IntSlice) NewSortList(cmp IntCmpFunc) *IntSortList {
     return &IntSortList{s, cmp}
 }
