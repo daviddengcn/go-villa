@@ -46,17 +46,30 @@ func (s *Slice) Swap(i, j int) {
 // Remove removes the element at the specified position in this slice.
 func (s *Slice) Remove(index int) interface{} {
     e := (*s)[index]
-    *s = append((*s)[0:index], (*s)[index + 1:]...)
+    copy((*s)[index:], (*s)[index + 1:])
+    (*s)[len(*s) - 1] = nil
+    *s = (*s)[:len(*s) - 1]
     return e
 }
 
 // RemoveRange removes all of the elements whose index is between from, inclusive, and to, exclusive, from this slice.
 func (s *Slice) RemoveRange(from, to int) {
-    *s = append((*s)[0:from], (*s)[to:]...)
+    if to <= from {
+        return
+    } // if
+    
+    copy((*s)[from:], (*s)[to:])
+    for i, j := to-from, len(*s) - 1; i > 0; i, j = i - 1, j - 1 {
+        (*s)[j] = nil
+    } // for i
+    *s = (*s)[:len(*s) - (to - from)]
 }
 
 // Clear removes all of the elements from this slice.
 func (s *Slice) Clear() {
+    for i := range(*s) {
+        (*s)[i] = nil
+    } // for i
     *s = (*s)[:0]
 }
 
