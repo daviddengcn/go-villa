@@ -44,6 +44,7 @@ func (s *Slice) Swap(i, j int) {
 }
 
 // Remove removes the element at the specified position in this slice.
+// The hole in the original slice is filled with a nil value.
 func (s *Slice) Remove(index int) interface{} {
     e := (*s)[index]
     copy((*s)[index:], (*s)[index + 1:])
@@ -53,6 +54,7 @@ func (s *Slice) Remove(index int) interface{} {
 }
 
 // RemoveRange removes all of the elements whose index is between from, inclusive, and to, exclusive, from this slice.
+// The holes in the original slice are filled with nil values.
 func (s *Slice) RemoveRange(from, to int) {
     if to <= from {
         return
@@ -66,6 +68,7 @@ func (s *Slice) RemoveRange(from, to int) {
 }
 
 // Clear removes all of the elements from this slice.
+// The elements in the slice are first filled with nil values before the slice is shrinked in length.
 func (s *Slice) Clear() {
     for i := range(*s) {
         (*s)[i] = nil
