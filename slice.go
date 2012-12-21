@@ -61,18 +61,22 @@ func (s *Slice) RemoveRange(from, to int) {
     } // if
     
     copy((*s)[from:], (*s)[to:])
-    for i, j := to-from, len(*s) - 1; i > 0; i, j = i - 1, j - 1 {
-        (*s)[j] = nil
-    } // for i
-    *s = (*s)[:len(*s) - (to - from)]
-}
-
-// Clear removes all of the elements from this slice.
-// The elements in the slice are first filled with nil values before the slice is shrinked in length.
-func (s *Slice) Clear() {
-    for i := range(*s) {
+    n := len(*s);  l := n - to + from
+    for i := l; i < n; i ++ {
         (*s)[i] = nil
     } // for i
+    *s = (*s)[:l]
+}
+
+// Fill sets the elements between from, inclusive, and to, exclusive, to a speicified value.
+func (s *Slice) Fill(from, to int, vl interface{}) {
+    for i := from; i < to; i ++ {
+        (*s)[i] = vl
+    } // for i
+}
+
+// Clear sets the slice to nil.
+func (s *Slice) Clear() {
     *s = (*s)[:0]
 }
 
@@ -81,7 +85,7 @@ func (s *Slice) String() string {
     return fmt.Sprintf("%v", *s)
 }
 
-// SortList is an adapter struct for an Slice which implements the sort interface and related functions using a comparator.
+// SortList is an adapter struct for a Slice which implements the sort interface and related functions with a comparator.
 type SortList struct {
     *Slice
     cmp CmpFunc

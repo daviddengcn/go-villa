@@ -55,6 +55,13 @@ func (s *ComplexSlice) RemoveRange(from, to int) {
     *s = append((*s)[0:from], (*s)[to:]...)
 }
 
+// Fill sets the elements between from, inclusive, and to, exclusive, to a speicified value.
+func (s *ComplexSlice) Fill(from, to int, vl complex128) {
+    for i := from; i < to; i ++ {
+        (*s)[i] = vl
+    } // for i
+}
+
 // Clear removes all of the elements from this slice.
 func (s *ComplexSlice) Clear() {
     *s = (*s)[:0]

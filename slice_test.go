@@ -56,7 +56,12 @@ func ExampleSlice() {
     var s Slice
     s.Add(1, 2, 3, 4, 5)
     fmt.Println(len(s), s)
-    // Output: 5 [1 2 3 4 5]
+    
+    s.Fill(1, 4, 10)
+    fmt.Println(s)
+    // Output: 
+    // 5 [1 2 3 4 5]
+    // [1 10 10 10 5]
 }
 
 func TestSliceRemove(t *testing.T) {

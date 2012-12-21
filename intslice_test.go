@@ -41,6 +41,9 @@ func TestIntSliceRemove(t *testing.T) {
     AssertEquals(t, "len", len(s), 7)
     AssertStringEquals(t, "s", s, "[1 2 3 4 5 6 7]")
     
+    s.Fill(2, 5, 9)
+    AssertStringEquals(t, "s", s, "[1 2 9 9 9 6 7]")
+    
     s.RemoveRange(2, 5)
     AssertEquals(t, "len", len(s), 4)
     AssertStringEquals(t, "s", s, "[1 2 6 7]")

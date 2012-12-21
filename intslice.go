@@ -55,6 +55,13 @@ func (s *IntSlice) RemoveRange(from, to int) {
     *s = append((*s)[0:from], (*s)[to:]...)
 }
 
+// Fill sets the elements between from, inclusive, and to, exclusive, to a speicified value.
+func (s *IntSlice) Fill(from, to int, vl int) {
+    for i := from; i < to; i ++ {
+        (*s)[i] = vl
+    } // for i
+}
+
 // Clear removes all of the elements from this slice.
 func (s *IntSlice) Clear() {
     *s = (*s)[:0]

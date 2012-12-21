@@ -67,6 +67,9 @@ func TestComplexSliceRemove(t *testing.T) {
     AssertEquals(t, "len", len(s), 7)
     AssertStringEquals(t, "s", s, "[(-1+0i) (-2+0i) (-3+0i) (-4+0i) (-5+0i) (-6+0i) (-7+0i)]")
     
+    s.Fill(2, 5, -9-8i)
+    AssertStringEquals(t, "s", s, "[(-1+0i) (-2+0i) (-9-8i) (-9-8i) (-9-8i) (-6+0i) (-7+0i)]")
+    
     s.RemoveRange(2, 5)
     AssertEquals(t, "len", len(s), 4)
     AssertStringEquals(t, "s", s, "[(-1+0i) (-2+0i) (-6+0i) (-7+0i)]")
