@@ -46,7 +46,7 @@ vl := pq.Pop()
 
 Slice Wrappers
 --------------
-Slice is a warpper for go slices.
+Slice is a warpper for go slices. Implemented methods include: Add, Insert, Swap, Remove, RemoveRange, Fill, Clear
 
 ### Slice
 Usage:
