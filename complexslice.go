@@ -39,8 +39,8 @@ func (s *ComplexSlice) Insert(index int, e... complex128) {
 }
 
 // The Swap method in sort.Interface.
-func (s *ComplexSlice) Swap(i, j int) {
-    (*s)[i], (*s)[j] = (*s)[j], (*s)[i]
+func (s ComplexSlice) Swap(i, j int) {
+    s[i], s[j] = s[j], s[i]
 }
 
 // Remove removes the element at the specified position in this slice.
@@ -56,9 +56,9 @@ func (s *ComplexSlice) RemoveRange(from, to int) {
 }
 
 // Fill sets the elements between from, inclusive, and to, exclusive, to a speicified value.
-func (s *ComplexSlice) Fill(from, to int, vl complex128) {
+func (s ComplexSlice) Fill(from, to int, vl complex128) {
     for i := from; i < to; i ++ {
-        (*s)[i] = vl
+        s[i] = vl
     } // for i
 }
 

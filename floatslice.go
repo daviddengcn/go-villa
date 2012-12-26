@@ -39,8 +39,8 @@ func (s *FloatSlice) Insert(index int, e... float64) {
 }
 
 // The Swap method in sort.Interface.
-func (s *FloatSlice) Swap(i, j int) {
-    (*s)[i], (*s)[j] = (*s)[j], (*s)[i]
+func (s FloatSlice) Swap(i, j int) {
+    s[i], s[j] = s[j], s[i]
 }
 
 // Remove removes the element at the specified position in this slice.
@@ -56,9 +56,9 @@ func (s *FloatSlice) RemoveRange(from, to int) {
 }
 
 // Fill sets the elements between from, inclusive, and to, exclusive, to a speicified value.
-func (s *FloatSlice) Fill(from, to int, vl float64) {
+func (s FloatSlice) Fill(from, to int, vl float64) {
     for i := from; i < to; i ++ {
-        (*s)[i] = vl
+        s[i] = vl
     } // for i
 }
 

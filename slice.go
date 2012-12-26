@@ -39,8 +39,8 @@ func (s *Slice) Insert(index int, e... interface{}) {
 }
 
 // The Swap method in sort.Interface.
-func (s *Slice) Swap(i, j int) {
-    (*s)[i], (*s)[j] = (*s)[j], (*s)[i]
+func (s Slice) Swap(i, j int) {
+    s[i], s[j] = s[j], s[i]
 }
 
 // Remove removes the element at the specified position in this slice.
@@ -69,9 +69,9 @@ func (s *Slice) RemoveRange(from, to int) {
 }
 
 // Fill sets the elements between from, inclusive, and to, exclusive, to a speicified value.
-func (s *Slice) Fill(from, to int, vl interface{}) {
+func (s Slice) Fill(from, to int, vl interface{}) {
     for i := from; i < to; i ++ {
-        (*s)[i] = vl
+        s[i] = vl
     } // for i
 }
 
