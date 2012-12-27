@@ -24,18 +24,42 @@ import(
 //     
 //     vl := pq.Pop()
 type PriorityQueue struct {
-    list *SortList
+    list *pqList
+}
+
+type pqList struct {
+    Slice
+    cmp CmpFunc
+}
+
+// The Push method in heap.Interface.
+func (l *pqList) Push(e interface{}) {
+    l.Add(e)
+}
+
+// The Pop method in heap.Interface.
+func (l *pqList) Pop() interface{} {
+    return l.Remove(len(l.Slice) - 1)
+}
+
+// The Len method in sort.Interface.
+func (l *pqList) Len() int {
+    return len(l.Slice)
+}
+
+// The Less method in sort.Interface
+func (l *pqList) Less(i, j int) bool {
+    return l.cmp(l.Slice[i], l.Slice[j]) <= 0
 }
 
 // NewPriorityQueue creates a PriorityQueue instance with a specified compare function.
 func NewPriorityQueue(cmp CmpFunc) *PriorityQueue {
-    return &PriorityQueue{new(Slice).NewSortList(cmp)}
+    return &PriorityQueue{&pqList{cmp: cmp}}
 }
 
 // NewPriorityQueue creates a PriorityQueue instance with a specified compare function and a capacity
 func NewPriorityQueueCap(cmp CmpFunc, cap int) *PriorityQueue {
-    lst := make(Slice, 0, cap)
-    return &PriorityQueue{lst.NewSortList(cmp)}
+    return &PriorityQueue{&pqList{Slice: make(Slice, 0, cap), cmp: cmp}}
 }
 
 // Push inserts the specified element into this priority queue.
@@ -51,7 +75,7 @@ func (pq *PriorityQueue) Pop() interface{} {
 // Peek retrieves the head of this queue, or returns nil if this queue is empty.
 func (pq *PriorityQueue) Peek() interface {} {
     if pq.list.Len() > 0 {
-        return pq.list.Get(0)
+        return pq.list.Slice[0]
     } // if
         
     return nil

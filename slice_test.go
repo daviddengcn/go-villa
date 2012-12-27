@@ -2,10 +2,24 @@ package villa
 
 import(
     "testing"
-    "sort"
-    "math/rand"
     "fmt"
+    "runtime"
+    "strings"
 )
+
+func o_() string {
+    pc, _, _, _ := runtime.Caller(1)
+    name := runtime.FuncForPC(pc).Name()
+    if p := strings.LastIndexAny(name, `./\`); p >= 0 {
+        name = name[p+1:]
+    } // if
+    fmt.Println("== BEGIN", name, "===")
+    return name
+}
+
+func __(name string) {
+    fmt.Println("== END", name, "===")
+}
 
 func AssertEquals(t *testing.T, name string, act, exp interface{}) {
     if act != exp {
@@ -19,18 +33,17 @@ func AssertStringEquals(t *testing.T, name string, act, exp interface{}) {
     } // if
 }
 
-func intInterfaceCmpFunc(e1, e2 interface{}) int {
+var intInterfaceCmpFunc = CmpFunc(func(e1, e2 interface{}) int {
     if e1.(int) < e2.(int) {
         return -1
     } else if e1.(int) > e2.(int) {
         return 1
     } // else if
     return 0
-}
+})
 
 func TestSlice(t *testing.T) {
-    fmt.Println("== Begin TestSlice...");
-    defer fmt.Println("== End TestSlice.");
+    defer __(o_())
     
     var s Slice
     for i := 0; i < 1000; i ++ {
@@ -47,9 +60,6 @@ func TestSlice(t *testing.T) {
     s.Insert(1, 2, 3)
     AssertEquals(t, "len(s)", len(s), 4)
     AssertStringEquals(t, "s", s, "[4 2 3 1]")
-    
-    sort.Sort(s.NewSortList(intInterfaceCmpFunc))
-    AssertStringEquals(t, "s", s, "[1 2 3 4]")
 }
 
 func ExampleSlice() {
@@ -92,6 +102,8 @@ func ExampleSlice() {
 }
 
 func TestSliceRemove(t *testing.T) {
+    defer __(o_())
+    
     var s Slice
     s.Add(1, 2, 3, 4, 5, 6, 7)
     AssertEquals(t, "len(s)", len(s), 7)
@@ -104,48 +116,6 @@ func TestSliceRemove(t *testing.T) {
     s.Remove(2)
     AssertEquals(t, "len(s)", len(s), 3)
     AssertStringEquals(t, "s", s, "[1 2 7]")
-}
-
-func TestSliceSort(t *testing.T) {
-    s := make(Slice, 0, 100)
-    for i := 0; i < 100; i ++ {
-        s.Add(rand.Int())
-    } // for i
-    
-    //fmt.Println(s)
-    
-    adp := s.NewSortList(intInterfaceCmpFunc)
-    sort.Sort(adp)
-    
-    //fmt.Println(s)
-    for i := 1; i < len(s); i ++ {
-        if s[i - 1].(int) > s[i].(int) {
-            t.Errorf("s[%d](%v) is supposed to be less or equal than s[%d](%v)", i - 1, s[i - 1], i, s[i])
-        } //  if
-    } //  if
-    
-    for i := range(s) {
-        p, found := adp.BinarySearch(s[i])
-        AssertEquals(t, fmt.Sprintf("%d found", i), found, true)
-        if found {
-            AssertEquals(t, fmt.Sprintf("%d found element", i), s[p], s[i])
-        } // if
-    } // for i
-    
-    for i := range(s) {
-        e := rand.Int()
-        p, found := adp.BinarySearch(e)
-        if found {
-            AssertEquals(t, fmt.Sprintf("found element", i), s[p], e)
-        } else {
-            beforeOk := p == 0 || s[p - 1].(int) <= e;
-            afterOk := p == len(s) || s[p].(int) >= e;
-            
-            if !beforeOk || !afterOk {
-                t.Errorf("Wrong position %d for %v", p, e)
-            } // if
-        } // else
-    } // for i
 }
 
 func BenchmarkSliceInsert(b *testing.B) {

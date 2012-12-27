@@ -2,13 +2,11 @@ package villa
 
 import(
     "testing"
-    "sort"
-    "math/rand"
     "math/cmplx"
     "fmt"
 )
 
-func cmplexAbsCmpFunc(a, b complex128) int {
+var cmplexAbsCmpFunc = ComplexCmpFunc(func(a, b complex128) int {
     absA, absB := cmplx.Abs(a), cmplx.Abs(b)
     if absA < absB {
         return -1
@@ -32,7 +30,7 @@ func cmplexAbsCmpFunc(a, b complex128) int {
     } // else if
     
     return 0
-}
+})
 
 func TestComplexSlice(t *testing.T) {
     fmt.Println("== Begin TestComplexSlice...");
@@ -54,9 +52,6 @@ func TestComplexSlice(t *testing.T) {
     fmt.Println(s)
     AssertEquals(t, "len", len(s), 4)
     AssertStringEquals(t, "s", s, "[(-4+0i) (-2+0i) (-3+0i) (-1+0i)]")
-    
-    sort.Sort(s.NewSortList(cmplexAbsCmpFunc))
-    AssertStringEquals(t, "s", s, "[(-1+0i) (-2+0i) (-3+0i) (-4+0i)]")
 }
 
 func TestComplexSliceRemove(t *testing.T) {
@@ -77,48 +72,6 @@ func TestComplexSliceRemove(t *testing.T) {
     s.Remove(2)
     AssertEquals(t, "len", len(s), 3)
     AssertStringEquals(t, "s", s, "[(-1+0i) (-2+0i) (-7+0i)]")
-}
-
-func TestComplexSliceSort(t *testing.T) {
-    var s ComplexSlice
-    for i := 0; i < 100; i ++ {
-        s.Add(complex(rand.Float64(), rand.Float64()))
-    } // for i
-    
-    //fmt.Println(s)
-    
-    adp := s.NewSortList(cmplexAbsCmpFunc)
-    sort.Sort(adp)
-    
-    //fmt.Println(s)
-    for i := 1; i < len(s); i ++ {
-        if cmplexAbsCmpFunc(s[i - 1], s[i]) > 0 {
-            t.Errorf("s[%d](%v) is supposed to be less or equal than s[%d](%v)", i - 1, s[i - 1], i, s[i])
-        } //  if
-    } //  if
-    
-    for i := range(s) {
-        p, found := adp.BinarySearch(s[i])
-        AssertEquals(t, fmt.Sprintf("%d found", i), found, true)
-        if found {
-            AssertEquals(t, fmt.Sprintf("%d found element", i), s[p], s[i])
-        } // if
-    } // for i
-    
-    for i := range(s) {
-        e := complex(rand.Float64(), rand.Float64())
-        p, found := adp.BinarySearch(e)
-        if found {
-            AssertEquals(t, fmt.Sprintf("found element", i), s[p], e)
-        } else {
-            beforeOk := p == 0 || cmplexAbsCmpFunc(s[p - 1], e) <= 0;
-            afterOk := p == len(s) || cmplexAbsCmpFunc(s[p], e) >= 0;
-            
-            if !beforeOk || !afterOk {
-                t.Errorf("Wrong position %d for %v", p, e)
-            } // if
-        } // else
-    } // for i
 }
 
 func BenchmarkComplexSliceInsert(b *testing.B) {
