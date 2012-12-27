@@ -1,7 +1,6 @@
 go-villa
 ========
-
-Some helper types for go-lang. Current supporint: priority queue, slice wrapper.
+Some helper types for go-lang. Current supporint: priority queue, slice wrapper, binary-search, merge-sort.
 
 go.pkgdoc Link: http://go.pkgdoc.org/github.com/daviddengcn/go-villa
 
@@ -56,57 +55,41 @@ s.Add(10, 20)
 s.Insert(1, 30)
 l := len(s)
 
-sl := s.NewSortList(
-    func (a, b interface{}) int {
-        if a.(int) < b.(int) {
-            return -1
-        } else if a.(int) < b.(int) {
-            return 1
-        } // else if
-        return 0
-    })
-sort.Sort(sl)
-p, found := sl.BinarySearch(20)
+s.AddSlice([]float64{9, 10, 11})
 ```
 
 ### IntSlice/FloatSlice/ComplexSlice
 The following int can be replace with float or complex types(complex compare function needs rewriting).
+Usage(of IntSlice):
 ```go
 var s IntSlice
 s.Add(10, 20)
 s.Insert(1, 30)
 l := len(s)
-
-sl := lst.NewSortList(villa.IntValueCompare)
-sort.Sort(sl)
-p, found := sl.BinarySearch(20)
 ```
 
 Comparator functions
 --------------------
+The common comparator function which compares elements and return the value <0, =0 or >0, if a < b, a==b, or a > b respectively.
+
+Some algorithms that needs a comparator are defined in their methods, including sort(using build-in sort package algorithm), binary-search, and merge.
+Cast your own comparator function to the corresponding comparator type to use them:
 ```go
-// IntValueCompare compares the input int values a and b, returns -1 if a < b, 1 if a > b, and 0 otherwise.
-// This is a natural IntCmpFunc.
-func IntValueCompare(a, b int) int {
-    if a < b {
-        return -1
-    } else if a > b {
-        return 1
-    } // else if
-    
-    return 0
+func MyCmp(a, b int) int {
+   ...
 }
 
+var s, l []int
+cmp := IntCmpFunc(MyCmp)
+cmp.Sort(s)
+cmp.BinarySearch(s, e)
 
-// FloatValueCompare compares the input float64 values a and b, returns -1 if a < b, 1 if a > b, and 0 otherwise.
-// This is a natural FloatCmpFunc.
-func FloatValueCompare(a, b float64) int {
-    if a < b {
-        return -1
-    } else if a > b {
-        return 1
-    } // else if
-    
-    return 0
-}
+cmp.Sort(l)
+cmp.Merge(s, l)
+```
+
+Two comparators are defined for natual orders of ints and floats.
+```go
+var IntValueCompare IntCmpFunc
+var FloatValueCompare FloatCmpFunc
 ```
