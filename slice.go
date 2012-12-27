@@ -1,6 +1,7 @@
 package villa
 
 import "fmt"
+import "reflect"
 
 // Slice is wrapper to a slice of interface{}.
 //
@@ -24,6 +25,27 @@ type Slice []interface{}
 // Add appends the specified element to the end of this slice.
 func (s *Slice) Add(e... interface{}) {
     *s = append(*s, e...)
+}
+
+// AddSlice appends the elements of a slice to the slice.
+//
+// The type of the elements of the slice could be any type. For instance,
+//    type I interface {
+//        Func()
+//    }
+//    type SI []I
+//    si := make(SI, 2)
+//    s.AddSlice(si)
+func (s *Slice) AddSlice(src interface{}) {
+    v := reflect.ValueOf(src)
+    if v.Kind() != reflect.Slice {
+        panic(fmt.Sprintf("%v is not a slice!", src))
+    } // if
+    
+    n := v.Len()
+    for i := 0; i < n; i ++ {
+        *s = append(*s, v.Index(i).Interface())
+    } // for i
 }
 
 // Insert inserts the specified element at the specified position in this slice.

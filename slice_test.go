@@ -59,9 +59,36 @@ func ExampleSlice() {
     
     s.Fill(1, 4, 10)
     fmt.Println(s)
+    
+    s.AddSlice([]int{20, 21, 22})
+    fmt.Println(s)
+    s.AddSlice([]string{"23", "24"})
+    fmt.Println(s)
+
+    type A struct {
+        X int
+        Y int
+    }
+    
+    type B []A
+    b := B{A{10, 20}, A{30, 40}}
+    s.AddSlice(b)
+    fmt.Println(s)
+    
+    type I interface {
+        Func()
+    }
+    type SI []I
+    si := make(SI, 2)
+    s.AddSlice(si)
+    fmt.Println(s)
     // Output: 
     // 5 [1 2 3 4 5]
     // [1 10 10 10 5]
+    // [1 10 10 10 5 20 21 22]
+    // [1 10 10 10 5 20 21 22 23 24]
+    // [1 10 10 10 5 20 21 22 23 24 {10 20} {30 40}]
+    // [1 10 10 10 5 20 21 22 23 24 {10 20} {30 40} <nil> <nil>]
 }
 
 func TestSliceRemove(t *testing.T) {
