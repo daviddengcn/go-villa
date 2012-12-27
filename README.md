@@ -93,3 +93,7 @@ Two comparators are defined for natual orders of ints and floats.
 var IntValueCompare IntCmpFunc
 var FloatValueCompare FloatCmpFunc
 ```
+
+LICENSE
+---------------
+This library is distributed under BSD license.
