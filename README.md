@@ -2,7 +2,7 @@ go-villa
 ========
 Some helper types for go-lang. Current supporint: priority queue, slice wrapper, binary-search, merge-sort.
 
-go.pkgdoc Link: http://go.pkgdoc.org/github.com/daviddengcn/go-villa
+godoc Link: http://godoc.org/github.com/daviddengcn/go-villa
 
 Priority Queues
 ---------------
@@ -45,7 +45,7 @@ vl := pq.Pop()
 
 Slice Wrappers
 --------------
-Slice is a warpper for go slices. Implemented methods include: Add, Insert, Swap, Remove, RemoveRange, Fill, Clear
+Slice is a warpper for go slices. Implemented methods include: Add, AddSlice, Insert, Swap, Remove, RemoveRange, Fill, Clear
 
 ### Slice
 Usage:
@@ -93,3 +93,7 @@ Two comparators are defined for natual orders of ints and floats.
 var IntValueCompare IntCmpFunc
 var FloatValueCompare FloatCmpFunc
 ```
+
+LICENSE
+---------------
+This library is distributed under BSD license.
