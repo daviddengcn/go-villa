@@ -3,6 +3,8 @@ package villa
 import "fmt"
 
 // ComplexSlice is wrapper to a slice of complex128.
+//
+// See examples of IntSlice for reference.
 type ComplexSlice []complex128
 
 // Add appends the specified element to the end of this slice.

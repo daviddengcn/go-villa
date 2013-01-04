@@ -3,6 +3,8 @@ package villa
 import "fmt"
 
 // FloatSlice is wrapper to a slice of float64.
+//
+// See examples of IntSlice for reference.
 type FloatSlice []float64
 
 // Add appends the specified element to the end of this slice.

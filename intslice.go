@@ -2,7 +2,29 @@ package villa
 
 import "fmt"
 
-// IntSlice is wrapper to a slice of int.
+/*
+IntSlice is a wrapper to a slice of int.
+
+You can either create an IntSlice instance directly, or converting the type when necessary.
+
+Usage 1:
+    var s IntSlice
+    s.Add(10, 20, 30)
+    s.Insert(1, 40, 50)
+    s.Swap(1, len(s) - 1)
+    s.RemoveRange(1, 3)
+    s.Fill(0, len(s), 55)
+    s.Clear()
+    
+Usage 2:
+    var s []int
+    s = append(s, 10, 20, 30)
+    (*IntSlice)(&s).Insert(1, 40, 50)
+    IntSlice(s).Swap(1, len(s) - 1)
+    (*IntSlice)(&s).RemoveRange(1, 3)
+    IntSlice(s).Fill(0, len(s), 55)
+    s = s[:0]
+*/
 type IntSlice []int
 
 // Add appends the specified element to the end of this slice.

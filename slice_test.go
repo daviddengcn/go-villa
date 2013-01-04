@@ -62,43 +62,66 @@ func TestSlice(t *testing.T) {
     AssertStringEquals(t, "s", s, "[4 2 3 1]")
 }
 
-func ExampleSlice() {
-    var s Slice
-    s.Add(1, 2, 3, 4, 5)
-    fmt.Println(len(s), s)
-    
-    s.Fill(1, 4, 10)
-    fmt.Println(s)
-    
-    s.AddSlice([]int{20, 21, 22})
-    fmt.Println(s)
-    s.AddSlice([]string{"23", "24"})
-    fmt.Println(s)
-
+func ExampleSlice_direct() {
     type A struct {
-        X int
-        Y int
+        B, C int
     }
     
-    type B []A
-    b := B{A{10, 20}, A{30, 40}}
-    s.AddSlice(b)
+    var s Slice
+    s.Add(10, "20", 30)
     fmt.Println(s)
-    
-    type I interface {
-        Func()
+    s.InsertSlice(len(s), []A{A{50, 60}, A{70, 80}})
+    fmt.Println(s)
+    s.Insert(1, 40, 50)
+    fmt.Println(s)
+    s.Swap(1, len(s) - 1)
+    fmt.Println(s)
+    s.RemoveRange(1, 3)
+    fmt.Println(s)
+    s.Fill(0, len(s), 55)
+    fmt.Println(s)
+    s.Clear()
+    fmt.Println(s)
+/* Output:
+[10 20 30]
+[10 20 30 {50 60} {70 80}]
+[10 40 50 20 30 {50 60} {70 80}]
+[10 {70 80} 50 20 30 {50 60} 40]
+[10 20 30 {50 60} 40]
+[55 55 55 55 55]
+[]
+*/
+}
+
+func ExampleSlice_typecnv() {
+    type A struct {
+        B, C int
     }
-    type SI []I
-    si := make(SI, 2)
-    s.AddSlice(si)
+    
+    var s []interface{}
+    s = append(s, 10, "20", 30)
     fmt.Println(s)
-    // Output: 
-    // 5 [1 2 3 4 5]
-    // [1 10 10 10 5]
-    // [1 10 10 10 5 20 21 22]
-    // [1 10 10 10 5 20 21 22 23 24]
-    // [1 10 10 10 5 20 21 22 23 24 {10 20} {30 40}]
-    // [1 10 10 10 5 20 21 22 23 24 {10 20} {30 40} <nil> <nil>]
+    (*Slice)(&s).InsertSlice(len(s), []A{A{50, 60}, A{70, 80}})
+    fmt.Println(s)
+    (*Slice)(&s).Insert(1, 40, 50)
+    fmt.Println(s)
+    Slice(s).Swap(1, len(s) - 1)
+    fmt.Println(s)
+    (*Slice)(&s).RemoveRange(1, 3)
+    fmt.Println(s)
+    Slice(s).Fill(0, len(s), 55)
+    fmt.Println(s)
+    s = s[:0]
+    fmt.Println(s)
+/* Output:
+[10 20 30]
+[10 20 30 {50 60} {70 80}]
+[10 40 50 20 30 {50 60} {70 80}]
+[10 {70 80} 50 20 30 {50 60} 40]
+[10 20 30 {50 60} 40]
+[55 55 55 55 55]
+[]
+*/
 }
 
 func TestSliceRemove(t *testing.T) {

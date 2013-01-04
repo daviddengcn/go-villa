@@ -47,6 +47,53 @@ func TestIntSliceRemove(t *testing.T) {
     AssertStringEquals(t, "s", s, "[1 2 7]")
 }
 
+func ExampleIntSlice_direct() {
+    var s IntSlice
+    s.Add(10, 20, 30)
+    fmt.Println(s)
+    s.Insert(1, 40, 50)
+    fmt.Println(s)
+    s.Swap(1, len(s) - 1)
+    fmt.Println(s)
+    s.RemoveRange(1, 3)
+    fmt.Println(s)
+    s.Fill(0, len(s), 55)
+    fmt.Println(s)
+    s.Clear()
+    fmt.Println(s)
+/* Output:
+[10 20 30]
+[10 40 50 20 30]
+[10 30 50 20 40]
+[10 20 40]
+[55 55 55]
+[]
+*/
+}
+func ExampleIntSlice_typecnv() {
+    var s []int
+    s = append(s, 10, 20, 30)
+    fmt.Println(s)
+    (*IntSlice)(&s).Insert(1, 40, 50)
+    fmt.Println(s)
+    IntSlice(s).Swap(1, len(s) - 1)
+    fmt.Println(s)
+    (*IntSlice)(&s).RemoveRange(1, 3)
+    fmt.Println(s)
+    IntSlice(s).Fill(0, len(s), 55)
+    fmt.Println(s)
+    s = s[:0]
+    fmt.Println(s)
+/* Output:
+[10 20 30]
+[10 40 50 20 30]
+[10 30 50 20 40]
+[10 20 40]
+[55 55 55]
+[]
+*/
+}
+
 func BenchmarkIntSliceInsert(b *testing.B) {
     b.StopTimer()
     s := make(IntSlice, 100000)
