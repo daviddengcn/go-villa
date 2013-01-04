@@ -52,8 +52,3 @@ func (s ComplexSlice) Fill(from, to int, vl complex128) {
 func (s *ComplexSlice) Clear() {
     *s = (*s)[:0]
 }
-
-// String returns the internal data's string format as a result
-func (s *ComplexSlice) String() string {
-    return fmt.Sprintf("%v", *s)
-}

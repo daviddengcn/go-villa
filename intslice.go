@@ -72,8 +72,3 @@ func (s IntSlice) Fill(from, to int, vl int) {
 func (s *IntSlice) Clear() {
     *s = (*s)[:0]
 }
-
-// String returns the internal data's string format as a result
-func (s *IntSlice) String() string {
-    return fmt.Sprintf("%v", *s)
-}
