@@ -5,20 +5,16 @@ The trick is using the last element as the in/out place. Push/Pop/Remove are rep
 
     type IntHeap []int
     func (h *IntHeap) Pop() int {
-        return Remove(0)
-    }
-    
-    func (h *IntHeap) Push(x int) {
-        *h = append(*h, x)
-        PushLast(sort.IntSlice(*h))
-    }
-    
-    func (h *IntHeap) Remove(x int) {
-        RemoveToLast(sort.IntSlice(*h))
+        heap.PopToLast(sort.IntSlice(*h))
         res := (*h)[len(*h) - 1]
         *h = (*h)[:len(*h) - 1]
         
         return res
+    }
+    
+    func (h *IntHeap) Push(x int) {
+        *h = append(*h, x)
+        heap.PushLast(sort.IntSlice(*h))
     }
 */
 package heap
