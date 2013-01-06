@@ -1,6 +1,6 @@
 package villa
 
-import "fmt"
+//import "fmt"
 
 // ComplexSlice is wrapper to a slice of complex128.
 //
@@ -12,7 +12,7 @@ func (s *ComplexSlice) Add(e... complex128) {
     *s = append(*s, e...)
 }
 
-// Insert inserts the specified element at the specified position in this slice.
+// Insert inserts the specified element at the specified position.
 // NOTE: the insertion algorithm is much better than the slice-trick in go community wiki
 func (s *ComplexSlice) Insert(index int, e... complex128) {
     if cap(*s) >= len(*s) + len(e) {

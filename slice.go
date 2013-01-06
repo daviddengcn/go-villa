@@ -39,7 +39,7 @@ func (s *Slice) Add(e... interface{}) {
     *s = append(*s, e...)
 }
 
-// Insert inserts specified elements at the specified position in this slice.
+// Insert inserts specified elements at the specified position.
 // NOTE: the insertion algorithm is much better than the slice-trick in go community wiki
 func (s *Slice) Insert(index int, e... interface{}) {
     if cap(*s) >= len(*s) + len(e) {
@@ -51,7 +51,7 @@ func (s *Slice) Insert(index int, e... interface{}) {
     copy((*s)[index:], e)
 }
 
-// InsertSlice inserts the elements of a slice at the specified position in this slice.
+// InsertSlice inserts the elements of a slice at the specified position.
 // This method is useful when some elements in a slice *NOT* of type []interface{} are to be inserted.
 func (s *Slice) InsertSlice(index int, src interface{}) {
     v := reflect.ValueOf(src)
@@ -112,7 +112,8 @@ func (s Slice) Fill(from, to int, vl interface{}) {
     } // for i
 }
 
-// Clear sets the slice to nil.
+// Clear sets the slice to an zero-length slice.
 func (s *Slice) Clear() {
+    s.Fill(0, len(*s), nil)
     *s = (*s)[:0]
 }

@@ -1,6 +1,6 @@
 package villa
 
-import "fmt"
+//import "fmt"
 
 // FloatSlice is wrapper to a slice of float64.
 //
@@ -12,7 +12,7 @@ func (s *FloatSlice) Add(e... float64) {
     *s = append(*s, e...)
 }
 
-// Insert inserts the specified element at the specified position in this slice.
+// Insert inserts the specified element at the specified position.
 // NOTE: the insertion algorithm is much better than the slice-trick in go community wiki
 func (s *FloatSlice) Insert(index int, e... float64) {
     if cap(*s) >= len(*s) + len(e) {

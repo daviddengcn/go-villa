@@ -1,6 +1,6 @@
 package villa
 
-import "fmt"
+//import "fmt"
 
 /*
 IntSlice is a wrapper to a slice of int.
@@ -32,7 +32,7 @@ func (s *IntSlice) Add(e... int) {
     *s = append(*s, e...)
 }
 
-// Insert inserts the specified element at the specified position in this slice.
+// Insert inserts the specified element at the specified position.
 // NOTE: the insertion algorithm is much better than the slice-trick in go community wiki
 func (s *IntSlice) Insert(index int, e... int) {
     if cap(*s) >= len(*s) + len(e) {
