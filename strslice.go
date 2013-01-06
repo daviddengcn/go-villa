@@ -6,31 +6,37 @@ import "reflect"
 /*
 StringSlice is a wrapper to a slice of interface{}.
 
-You can either create an IntSlice instance directly, or converting the type when necessary.
+You can either create an StringSlice instance directly, or converting the type when necessary.
 
 Usage 1:
-    var s Slice
-    s.Add(10, "20", 30)
-    s.InsertSlice(len(s), []A{A{50, 60}, A{70, 80}})
-    s.Insert(1, 40, 50)
+    type A struct {
+        B string
+        C int
+    }
+    
+    var s StringSlice
+    s.Add(10, "B", 30)
+    s.InsertSlice(len(s), []A{A{"E", 60}, A{"G", 80}})
+    s.Insert(1, "D", "E")
     s.Swap(1, len(s) - 1)
     s.RemoveRange(1, 3)
-    s.Fill(0, len(s), 55)
+    s.Fill(0, len(s), "EE")
     s.Clear()
     
 Usage 2:
     type A struct {
-        B, C int
+        B string
+        C int
     }
     
-    var s []interface{}
-    s = append(s, 10, "20", 30)
-    (*Slice)(&s).InsertSlice(len(s), []A{A{50, 60}, A{70, 80}})
-    (*Slice)(&s).Insert(1, 40, 50)
-    Slice(s).Swap(1, len(s) - 1)
-    (*Slice)(&s).RemoveRange(1, 3)
-    Slice(s).Fill(0, len(s), 55)
-    s = s[:0]
+    var s []string
+    (*StringSlice)(&s).Add(10, "B", 30)
+    (*StringSlice)(&s).InsertSlice(len(s), []A{A{"E", 60}, A{"G", 80}})
+    (*StringSlice)(&s).Insert(1, "D", "E")
+    StringSlice(s).Swap(1, len(s) - 1)
+    (*StringSlice)(&s).RemoveRange(1, 3)
+    StringSlice(s).Fill(0, len(s), "EE")
+    (*StringSlice)(&s).Clear()
 */
 type StringSlice []string
 

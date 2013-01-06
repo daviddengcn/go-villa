@@ -6,9 +6,13 @@ import "reflect"
 /*
 Slice is a wrapper to a slice of interface{}.
 
-You can either create an IntSlice instance directly, or converting the type when necessary.
+You can either create an Slice instance directly, or converting the type when necessary.
 
 Usage 1:
+    type A struct {
+        B, C int
+    }
+    
     var s Slice
     s.Add(10, "20", 30)
     s.InsertSlice(len(s), []A{A{50, 60}, A{70, 80}})

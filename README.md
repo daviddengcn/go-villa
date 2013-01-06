@@ -45,17 +45,42 @@ vl := pq.Pop()
 
 Slice Wrappers
 --------------
-Slice is a warpper for go slices. Implemented methods include: Add, AddSlice, Insert, Swap, Remove, RemoveRange, Fill, Clear
+Slice is a wrapper for go slices. Implemented methods include: Add, AddSlice, Insert, Swap, Remove, RemoveRange, Fill, Clear
 
 ### Slice
 Usage:
 ```go
-var s Slice
-s.Add(10, 20)
-s.Insert(1, 30)
-l := len(s)
+type A struct {
+    B, C int
+}
 
-s.AddSlice([]float64{9, 10, 11})
+var s Slice
+s.Add(10, "20", 30)
+s.InsertSlice(len(s), []A{A{50, 60}, A{70, 80}})
+s.Insert(1, 40, 50)
+s.Swap(1, len(s) - 1)
+s.RemoveRange(1, 3)
+s.Fill(0, len(s), 55)
+s.Clear()
+```
+
+### StringSlice
+StringSlice is a wrapper for []string. Using Add/Insert/InsertSlice methods, the values of other type can be converted and added to the string slice.
+Usage:
+```go
+type A struct {
+    B string
+    C int
+}
+
+var s StringSlice
+s.Add(10, "B", 30)
+s.InsertSlice(len(s), []A{A{"E", 60}, A{"G", 80}})
+s.Insert(1, "D", "E")
+s.Swap(1, len(s) - 1)
+s.RemoveRange(1, 3)
+s.Fill(0, len(s), "EE")
+s.Clear()
 ```
 
 ### IntSlice/FloatSlice/ComplexSlice
@@ -63,9 +88,12 @@ The following int can be replace with float or complex types(complex compare fun
 Usage(of IntSlice):
 ```go
 var s IntSlice
-s.Add(10, 20)
-s.Insert(1, 30)
-l := len(s)
+s.Add(10, 20, 30)
+s.Insert(1, 40, 50)
+s.Swap(1, len(s) - 1)
+s.RemoveRange(1, 3)
+s.Fill(0, len(s), 55)
+s.Clear()
 ```
 
 Comparator functions
