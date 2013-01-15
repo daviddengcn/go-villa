@@ -122,6 +122,10 @@ var IntValueCompare IntCmpFunc
 var FloatValueCompare FloatCmpFunc
 ```
 
+### IntMatrix
+IntMatrix is 2D array of integers. Elements are store in a single int slice and slices of each row are created.
+
+
 LICENSE
 ---------------
 This library is distributed under BSD license.
