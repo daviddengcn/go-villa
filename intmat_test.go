@@ -16,4 +16,8 @@ func TestIntMatrix(t *testing.T) {
     mat.Fill(10)
     fmt.Println(mat.PrettyString())
     AssertStringEquals(t, "mat", mat, "[[10 10 10 10] [10 10 10 10] [10 10 10 10] [10 10 10 10] [10 10 10 10]]")
+    
+    // Clone for null matrix, assure no panic
+    mat = IntMatrix(nil)
+    mat.Clone()
 }

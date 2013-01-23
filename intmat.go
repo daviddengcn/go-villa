@@ -25,7 +25,9 @@ func (m IntMatrix) Clone() IntMatrix {
     mat := NewIntMatrix(m.Rows(), m.Cols())
     
     n := m.Rows() * m.Cols()
-    copy(mat[0][:n], m[0][:n])
+    if n > 0 {
+        copy(mat[0][:n], m[0][:n])
+    } // if
     
     return mat
 }
