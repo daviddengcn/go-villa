@@ -1,9 +1,14 @@
 package villa
 
-import "fmt"
+import(
+    "fmt"
+    "bytes"
+)
 
 /*
 IntMatrix is 2D array of integers. Elements are store in a single int slice and slices of each row are created.
+
+NOTE the matrix can be sized of 0x0, but never 0x10 or 10x0.
 */
 type IntMatrix [][]int
 
@@ -46,7 +51,8 @@ func (m IntMatrix) Rows() int {
     return len(m)
 }
 
-// PrettyString returns a pretty string form of the matrix
+// PrettyString returns a pretty text form of the matrix.
+// This function is mainly for debugging.
 func (m IntMatrix) PrettyString() string {
     sa := make([][]string, 0, m.Rows())
     for _, row := range(m) {
@@ -58,40 +64,44 @@ func (m IntMatrix) PrettyString() string {
     } // for row
     
     wds := make([]int, m.Cols())
-    for j := 0; j < m.Cols(); j ++ {
-        for i := 0; i < m.Rows(); i ++ {
+    for i := 0; i < m.Rows(); i ++ {
+        for j := 0; j < m.Cols(); j ++ {
             if len(sa[i][j]) > wds[j] {
                 wds[j] = len(sa[i][j])
             } //  if
-        } // for i
+        } // for j
     } // for i
     
-    res := ""
+    var res bytes.Buffer
     for i, row := range(sa) {
         if i == 0 {
-            res += "["
+            res.WriteString("[")
         } else {
-            res += " "
+            res.WriteString(" ")
         } // else
-        res += "["
+        res.WriteString("[")
         for j, cell := range(row) {
             if j > 0 {
-                res += " "
+                res.WriteString(" ")
             } // if
-            res += fmt.Sprintf(fmt.Sprintf("%%%ds", wds[j]), cell)
+            fmt.Fprintf(&res, fmt.Sprintf("%%%ds", wds[j]), cell)
         } // for j, cell
-        res += "]"
+        res.WriteString("]")
         if i == len(sa) - 1 {
-            res += fmt.Sprintf("](%dx%d)", m.Rows(), m.Cols())
+            fmt.Fprintf(&res, "](%dx%d)", m.Rows(), m.Cols())
         } // else
-        res += "\n"
+        res.WriteString("\n")
     } // for row
     
-    return res
+    return res.String()
 }
 
-
+// Fill sets all elements of the matrix to a specified value
 func (m IntMatrix) Fill(vl int) {
+    if len(m) == 0 {
+        return;
+    } // if
+    
     n := m.Rows() * m.Cols()
     IntSlice(m[0][:n]).Fill(0, n, vl)
 }

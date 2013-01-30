@@ -20,4 +20,7 @@ func TestIntMatrix(t *testing.T) {
     // Clone for null matrix, assure no panic
     mat = IntMatrix(nil)
     mat.Clone()
+    mat.Fill(0)
+    AssertEquals(t, "mat.Rows()", mat.Rows(), 0)
+    AssertEquals(t, "mat.Cols()", mat.Cols(), 0)
 }
