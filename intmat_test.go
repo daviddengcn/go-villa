@@ -14,8 +14,12 @@ func TestIntMatrix(t *testing.T) {
     AssertStringEquals(t, "mat", mat, "[[0 0 0 0] [0 0 0 0] [0 0 0 0] [0 0 0 0] [0 0 0 0]]")
     
     mat.Fill(10)
-    fmt.Println(mat.PrettyString())
     AssertStringEquals(t, "mat", mat, "[[10 10 10 10] [10 10 10 10] [10 10 10 10] [10 10 10 10] [10 10 10 10]]")
+    
+    mat[1][1] = 0
+    mat[3][2] = 12345
+    mat[2][0] = -998
+    fmt.Println(mat.PrettyString())
     
     // Clone for null matrix, assure no panic
     mat = IntMatrix(nil)

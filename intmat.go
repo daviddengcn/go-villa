@@ -84,7 +84,7 @@ func (m IntMatrix) PrettyString() string {
             if j > 0 {
                 res.WriteString(" ")
             } // if
-            fmt.Fprintf(&res, fmt.Sprintf("%%%ds", wds[j]), cell)
+            fmt.Fprintf(&res, "%*s", wds[j], cell)
         } // for j, cell
         res.WriteString("]")
         if i == len(sa) - 1 {
