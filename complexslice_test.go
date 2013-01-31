@@ -74,6 +74,19 @@ func TestComplexSliceRemove(t *testing.T) {
     AssertStringEquals(t, "s", s, "[(-1+0i) (-2+0i) (-7+0i)]")
 }
 
+func TestComplexSliceEquals(t *testing.T) {
+    s := ComplexSlice([]complex128{1, 2, 3, 4})
+    
+    AssertEquals(t, "s.Equals(nil)", s.Equals(nil, 100), false)
+    AssertEquals(t, "s.Equals([1, 2, 3, 4])", s.Equals([]complex128{1, 2, 3, 4}, 1e-5), true)
+    AssertEquals(t, "s.Equals([1, 2, 5, 4])", s.Equals([]complex128{1, 2, 5, 4}, 1e-5), false)
+    AssertEquals(t, "s.Equals([1, 2, 5, 4])", s.Equals([]complex128{1, 2, 5, 4}, 10), true)
+    AssertEquals(t, "s.Equals([1, 2, 3, 4, 5])", s.Equals([]complex128{1, 2, 3, 4, 5}, 1e-5), false)
+    
+    AssertEquals(t, "nil.Equals([]float64{})", ComplexSlice(nil).Equals(s[:0], 100), true)
+    AssertEquals(t, "nil.Equals([]float64{1, 2})", ComplexSlice(nil).Equals([]complex128{1, 2}, 1e-5), false)
+}
+
 func BenchmarkComplexSliceInsert(b *testing.B) {
     b.StopTimer()
     s := make(ComplexSlice, 100000)

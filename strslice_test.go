@@ -106,3 +106,16 @@ func TestStringSliceRemove(t *testing.T) {
     AssertEquals(t, "len(s)", len(s), 3)
     AssertStringEquals(t, "s", s, "[A B G]")
 }
+
+func TestStringSliceEquals(t *testing.T) {
+    s := StringSlice([]string{"1", "2", "3", "4"})
+    
+    AssertEquals(t, "s.Equals(nil)", s.Equals(nil), false)
+    AssertEquals(t, "s.Equals([1, 2, 3, 4])", s.Equals([]string{"1", "2", "3", "4"}), true)
+    AssertEquals(t, "s.Equals([1, 2, 5, 4])", s.Equals([]string{"1", "2", "5", "4"}), false)
+    AssertEquals(t, "s.Equals([1, 2, 3, 4, 5])", s.Equals([]string{"1", "2", "3", "4", "5"}), false)
+    
+    AssertEquals(t, "nil.Equals([]int{})", StringSlice(nil).Equals(s[:0]), true)
+    AssertEquals(t, "nil.Equals([]int{1, 2})", StringSlice(nil).Equals([]string{"1", "2"}), false)
+}
+

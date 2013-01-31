@@ -52,3 +52,21 @@ func (s FloatSlice) Fill(from, to int, vl float64) {
 func (s *FloatSlice) Clear() {
     *s = (*s)[:0]
 }
+
+
+// Equals returns true if a given slice has the same contents (with maximum error of epsilon) with the slice
+func (s FloatSlice) Equals(t []float64, epsilon float64) bool {
+    if len(s) != len(t) {
+        return false
+    } // if
+    
+    for i := range(s) {
+        e := s[i] - t[i]
+        if e > epsilon || e < -epsilon {
+            return false
+        } // if
+    } // for i
+    
+    return true
+}
+

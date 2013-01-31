@@ -52,3 +52,21 @@ func (s ComplexSlice) Fill(from, to int, vl complex128) {
 func (s *ComplexSlice) Clear() {
     *s = (*s)[:0]
 }
+
+
+// Equals returns true if a given slice has the same contents (with maximum error of epsilon) with the slice
+func (s ComplexSlice) Equals(t []complex128, epsilon float64) bool {
+    if len(s) != len(t) {
+        return false
+    } // if
+    
+    for i := range(s) {
+        e := s[i] - t[i]
+        if imag(e) > epsilon || imag(e) < -epsilon || real(e) > epsilon || real(e) < -epsilon {
+            return false
+        } // if
+    } // for i
+    
+    return true
+}
+

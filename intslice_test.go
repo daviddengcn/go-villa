@@ -47,6 +47,18 @@ func TestIntSliceRemove(t *testing.T) {
     AssertStringEquals(t, "s", s, "[1 2 7]")
 }
 
+func TestIntSliceEquals(t *testing.T) {
+    s := IntSlice([]int{1, 2, 3, 4})
+    
+    AssertEquals(t, "s.Equals(nil)", s.Equals(nil), false)
+    AssertEquals(t, "s.Equals([1, 2, 3, 4])", s.Equals([]int{1, 2, 3, 4}), true)
+    AssertEquals(t, "s.Equals([1, 2, 5, 4])", s.Equals([]int{1, 2, 5, 4}), false)
+    AssertEquals(t, "s.Equals([1, 2, 3, 4, 5])", s.Equals([]int{1, 2, 3, 4, 5}), false)
+    
+    AssertEquals(t, "nil.Equals([]int{})", IntSlice(nil).Equals(s[:0]), true)
+    AssertEquals(t, "nil.Equals([]int{1, 2})", IntSlice(nil).Equals([]int{1, 2}), false)
+}
+
 func ExampleIntSlice_direct() {
     var s IntSlice
     s.Add(10, 20, 30)

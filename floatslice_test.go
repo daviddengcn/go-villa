@@ -48,6 +48,19 @@ func TestFloatSliceRemove(t *testing.T) {
     AssertStringEquals(t, "s", s, "[1 2 7]")
 }
 
+func TestFloatSliceEquals(t *testing.T) {
+    s := FloatSlice([]float64{1, 2, 3, 4})
+    
+    AssertEquals(t, "s.Equals(nil)", s.Equals(nil, 100), false)
+    AssertEquals(t, "s.Equals([1, 2, 3, 4])", s.Equals([]float64{1, 2, 3, 4}, 1e-5), true)
+    AssertEquals(t, "s.Equals([1, 2, 5, 4])", s.Equals([]float64{1, 2, 5, 4}, 1e-5), false)
+    AssertEquals(t, "s.Equals([1, 2, 5, 4])", s.Equals([]float64{1, 2, 5, 4}, 10), true)
+    AssertEquals(t, "s.Equals([1, 2, 3, 4, 5])", s.Equals([]float64{1, 2, 3, 4, 5}, 1e-5), false)
+    
+    AssertEquals(t, "nil.Equals([]float64{})", FloatSlice(nil).Equals(s[:0], 100), true)
+    AssertEquals(t, "nil.Equals([]float64{1, 2})", FloatSlice(nil).Equals([]float64{1, 2}, 1e-5), false)
+}
+
 func BenchmarkFloatSliceInsert(b *testing.B) {
     b.StopTimer()
     s := make(FloatSlice, 100000)
