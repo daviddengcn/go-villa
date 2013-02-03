@@ -41,8 +41,9 @@ Usage 2:
 type StringSlice []string
 
 // Add appends string presentation of the specified elements to the end of this slice.
-func (s *StringSlice) Add(e... interface{}) {
+func (s *StringSlice) Add(e... interface{}) *StringSlice {
     s.InsertSlice(len(*s), e)
+	return s
 }
 
 // Insert inserts string presentation of the specified elements at the specified position.
