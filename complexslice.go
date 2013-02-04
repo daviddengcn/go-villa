@@ -8,8 +8,9 @@ package villa
 type ComplexSlice []complex128
 
 // Add appends the specified element to the end of this slice.
-func (s *ComplexSlice) Add(e... complex128) {
+func (s *ComplexSlice) Add(e... complex128) *ComplexSlice {
     *s = append(*s, e...)
+	return s
 }
 
 // Insert inserts the specified element at the specified position.

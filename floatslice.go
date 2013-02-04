@@ -8,8 +8,9 @@ package villa
 type FloatSlice []float64
 
 // Add appends the specified element to the end of this slice.
-func (s *FloatSlice) Add(e... float64) {
+func (s *FloatSlice) Add(e... float64) *FloatSlice {
     *s = append(*s, e...)
+	return s
 }
 
 // Insert inserts the specified element at the specified position.

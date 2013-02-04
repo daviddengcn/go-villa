@@ -39,8 +39,9 @@ Usage 2:
 type Slice []interface{}
 
 // Add appends the specified element to the end of this slice.
-func (s *Slice) Add(e... interface{}) {
+func (s *Slice) Add(e... interface{}) *Slice {
     *s = append(*s, e...)
+	return s
 }
 
 // Insert inserts specified elements at the specified position.

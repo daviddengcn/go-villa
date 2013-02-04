@@ -28,8 +28,9 @@ Usage 2:
 type IntSlice []int
 
 // Add appends the specified element to the end of this slice.
-func (s *IntSlice) Add(e... int) {
+func (s *IntSlice) Add(e... int) *IntSlice {
     *s = append(*s, e...)
+	return s	
 }
 
 // Insert inserts the specified element at the specified position.
