@@ -13,6 +13,7 @@ type Path string
 /*
 	filepath package
 */
+
 func (p Path) Abs() (pth Path, err error) {
 	pt, err := filepath.Abs(string(p))
 	return Path(pt), err
@@ -31,6 +32,7 @@ func (p Path) Ext() string {
 /*
 	os
 */
+
 func (p Path) Mkdir(perm os.FileMode) error {
 	return os.Mkdir(string(p), perm)
 }
@@ -75,6 +77,17 @@ func (p Path) TempDir(prefix string) (name Path, err error) {
 /*
 	exec package
 */
+
 func (p Path) Command(arg ...string) *exec.Cmd {
 	return exec.Command(string(p), arg...)
+}
+
+/*
+	Composite
+*/
+
+// Exists checks whether the file exists
+func (p Path) Exists() bool {
+	_, err := p.Stat()
+	return err == nil
 }
