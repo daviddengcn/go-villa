@@ -59,6 +59,21 @@ func (p Path) MkdirAll(perm os.FileMode) error {
 	return os.MkdirAll(string(p), perm)
 }
 
+// Remove is a wrappter to os.Remove
+func (p Path) Remove() error {
+	return os.Remove(string(p))
+}
+
+// RemoveAll is a wrappter to os.RemoveAll
+func (p Path) RemoveAll() error {
+	return os.RemoveAll(string(p))
+}
+
+// Rename is a wrappter to os.Rename
+func (p Path) Rename(newname Path) error {
+	return os.Rename(string(p), string(newname))
+}
+
 // Stat is a wrappter to os.Stat
 func (p Path) Stat() (fi os.FileInfo, err error) {
 	return os.Stat(string(p))
