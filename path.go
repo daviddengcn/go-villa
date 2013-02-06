@@ -10,27 +10,42 @@ import (
 // Path is a wrapper for a path in the OS
 type Path string
 
-/*
-	filepath package
-*/
-
-func (p Path) Abs() (pth Path, err error) {
-	pt, err := filepath.Abs(string(p))
-	return Path(pt), err
-}
-
+// Join connect elems to the tail of path
 func (p Path) Join(elem ...interface{}) Path {
 	els := make(StringSlice, 0, len(elem) + 1)
 	els.Add(p).Add(elem...)
 	return Path(filepath.Join(els...))
 }
 
+// Exists checks whether the file exists
+func (p Path) Exists() bool {
+	_, err := p.Stat()
+	return err == nil
+}
+
+// S converts Path back to string
+func (p Path) S() string {
+	return string(p)
+}
+
+
+/*
+	wrappers of filepath package
+*/
+
+// Abs is a wrapper to Abs.Ext
+func (p Path) Abs() (pth Path, err error) {
+	pt, err := filepath.Abs(string(p))
+	return Path(pt), err
+}
+
+// Ext is a wrapper to filepath.Ext
 func (p Path) Ext() string {
 	return filepath.Ext(string(p))
 }
 
 /*
-	os
+	wrappers of os package
 */
 
 // Create is a wrapper to os.Create
@@ -85,7 +100,7 @@ func (p Path) Symlink(dst Path) error {
 }
 
 /*
-	ioutil package
+	wrappers of ioutil package
 */
 
 func (p Path) ReadDir() (fi []os.FileInfo, err error) {
@@ -106,25 +121,10 @@ func (p Path) TempDir(prefix string) (name Path, err error) {
 }
 
 /*
-	exec package
+	wrapppers of exec package
 */
 
 // Command is a wrappter to exec.Command
 func (p Path) Command(arg ...string) *exec.Cmd {
 	return exec.Command(string(p), arg...)
-}
-
-/*
-	Composite
-*/
-
-// Exists checks whether the file exists
-func (p Path) Exists() bool {
-	_, err := p.Stat()
-	return err == nil
-}
-
-// S converts Path back to string
-func (p Path) S() string {
-	return string(p)
 }
