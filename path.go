@@ -33,22 +33,38 @@ func (p Path) Ext() string {
 	os
 */
 
+// Create is a wrapper to os.Create
+func (p Path) Create() (file *os.File, err error) {
+	return os.Create(string(p))
+}
+
+// Open is a wrapper to os.Open
+func (p Path) Open() (file *os.File, err error) {
+	return os.Open(string(p))
+
+}
+// Open is a wrapper to os.OpenFile
+func (p Path) OpenFile(flag int, perm os.FileMode) (file *os.File, err error) {
+	return os.OpenFile(string(p), flag, perm)
+}
+
+
+// Mkdir is a wrappter to os.Mkdir
 func (p Path) Mkdir(perm os.FileMode) error {
 	return os.Mkdir(string(p), perm)
 }
 
+// MkdirAll is a wrappter to os.MkdirAll
 func (p Path) MkdirAll(perm os.FileMode) error {
 	return os.MkdirAll(string(p), perm)
 }
 
-func (p Path) S() string {
-	return string(p)
-}
-
+// Stat is a wrappter to os.Stat
 func (p Path) Stat() (fi os.FileInfo, err error) {
 	return os.Stat(string(p))
 }
 
+// Symlink is a wrappter to os.Symlink
 func (p Path) Symlink(dst Path) error {
 	return os.Symlink(string(p), string(dst))
 }
@@ -78,6 +94,7 @@ func (p Path) TempDir(prefix string) (name Path, err error) {
 	exec package
 */
 
+// Command is a wrappter to exec.Command
 func (p Path) Command(arg ...string) *exec.Cmd {
 	return exec.Command(string(p), arg...)
 }
@@ -90,4 +107,9 @@ func (p Path) Command(arg ...string) *exec.Cmd {
 func (p Path) Exists() bool {
 	_, err := p.Stat()
 	return err == nil
+}
+
+// S converts Path back to string
+func (p Path) S() string {
+	return string(p)
 }
