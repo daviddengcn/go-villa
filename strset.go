@@ -5,21 +5,30 @@ import "fmt"
 // StrSet is a set of strings
 type StrSet map[string] bool
 
-// Put add elements to the set. The set can be nil value
-func (s *StrSet) Put(els ...string) {
+// NewStrSet create a string set with specified elements
+func NewStrSet(els ...string) (s StrSet) {
+	return s.Put(els...)
+}
+
+// Put add elements to the set. The set can be nil
+func (s *StrSet) Put(els ...string) StrSet {
 	if *s == nil {
 		*s = make(map[string]bool)
 	}
 	for _, el := range els {
 		(*s)[el] = true
 	}
+	
+	return *s
 }
 
 // Delete removes elements from the set
-func (s StrSet) Delete(els ...string) {
+func (s StrSet) Delete(els ...string) StrSet {
 	for _, el := range els {
 		delete(s, el)
 	}
+	
+	return s
 }
 
 // In returns true if the specified element is in the set, false otherwise
