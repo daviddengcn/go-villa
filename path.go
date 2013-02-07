@@ -7,7 +7,9 @@ import (
 	"io/ioutil"
 )
 
-// Path is a wrapper for a path in the OS
+// Path is a wrapper for a path in the OS.
+// Some commonly used functions are wrapped as methods of Path, 
+// and results, if any, are converted back to Path
 type Path string
 
 // Join connect elems to the tail of path
@@ -103,18 +105,22 @@ func (p Path) Symlink(dst Path) error {
 	wrappers of ioutil package
 */
 
+// ReadDir is a wrappter to ioutil.ReadDir
 func (p Path) ReadDir() (fi []os.FileInfo, err error) {
 	return ioutil.ReadDir(string(p))
 }
 
+// ReadFile is a wrappter to ioutil.ReadFile
 func (p Path) ReadFile() ([]byte, error) {
 	return ioutil.ReadFile(string(p))
 }
 
+// WriteFile is a wrappter to ioutil.WriteFile
 func (p Path) WriteFile(data []byte, perm os.FileMode) error {
 	return ioutil.WriteFile(string(p), data, perm)
 }
 
+// TempDir is a wrappter to ioutil.TempDir
 func (p Path) TempDir(prefix string) (name Path, err error) {
 	nm, err := ioutil.TempDir(string(p), prefix)
 	return Path(nm), err
