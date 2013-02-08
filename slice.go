@@ -110,6 +110,11 @@ func (s *Slice) RemoveRange(from, to int) {
     *s = (*s)[:l]
 }
 
+// Pop removes and returns the last element in the slice
+func (s *Slice) Pop() interface{} {
+	return s.Remove(len(*s) - 1)
+}
+
 // Fill sets the elements between from, inclusive, and to, exclusive, to a speicified value.
 func (s Slice) Fill(from, to int, vl interface{}) {
     for i := from; i < to; i ++ {

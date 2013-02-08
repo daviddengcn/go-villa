@@ -42,6 +42,11 @@ func (s *FloatSlice) RemoveRange(from, to int) {
     *s = append((*s)[0:from], (*s)[to:]...)
 }
 
+// Pop removes and returns the last element in the slice
+func (s *FloatSlice) Pop() float64 {
+	return s.Remove(len(*s) - 1)
+}
+
 // Fill sets the elements between from, inclusive, and to, exclusive, to a speicified value.
 func (s FloatSlice) Fill(from, to int, vl float64) {
     for i := from; i < to; i ++ {

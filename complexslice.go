@@ -49,6 +49,11 @@ func (s ComplexSlice) Fill(from, to int, vl complex128) {
     } // for i
 }
 
+// Pop removes and returns the last element in the slice
+func (s *ComplexSlice) Pop() complex128 {
+	return s.Remove(len(*s) - 1)
+}
+
 // Clear removes all of the elements from this slice.
 func (s *ComplexSlice) Clear() {
     *s = (*s)[:0]
