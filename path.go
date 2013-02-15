@@ -1,10 +1,10 @@
 package villa
 
 import (
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"io/ioutil"
 )
 
 // Path is a wrapper for a path in the OS.
@@ -14,7 +14,7 @@ type Path string
 
 // Join connect elems to the tail of path
 func (p Path) Join(elem ...interface{}) Path {
-	els := make(StringSlice, 0, len(elem) + 1)
+	els := make(StringSlice, 0, len(elem)+1)
 	els.Add(p).Add(elem...)
 	return Path(filepath.Join(els...))
 }
@@ -29,7 +29,6 @@ func (p Path) Exists() bool {
 func (p Path) S() string {
 	return string(p)
 }
-
 
 /*
 	wrappers of filepath package
@@ -60,11 +59,11 @@ func (p Path) Open() (file *os.File, err error) {
 	return os.Open(string(p))
 
 }
+
 // Open is a wrapper to os.OpenFile
 func (p Path) OpenFile(flag int, perm os.FileMode) (file *os.File, err error) {
 	return os.OpenFile(string(p), flag, perm)
 }
-
 
 // Mkdir is a wrappter to os.Mkdir
 func (p Path) Mkdir(perm os.FileMode) error {

@@ -1,11 +1,11 @@
 package villa
 
-import(
+import (
 	"sort"
 )
 
 type sortI struct {
-	l int
+	l    int
 	less func(int, int) bool
 	swap func(int, int)
 }

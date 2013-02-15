@@ -3,7 +3,7 @@ package villa
 import "fmt"
 
 // StrSet is a set of strings
-type StrSet map[string] bool
+type StrSet map[string]bool
 
 // NewStrSet creates a string set with specified elements
 func NewStrSet(els ...string) (s StrSet) {
@@ -18,7 +18,7 @@ func (s *StrSet) Put(els ...string) StrSet {
 	for _, el := range els {
 		(*s)[el] = true
 	}
-	
+
 	return *s
 }
 
@@ -27,7 +27,7 @@ func (s StrSet) Delete(els ...string) StrSet {
 	for _, el := range els {
 		delete(s, el)
 	}
-	
+
 	return s
 }
 
@@ -43,7 +43,7 @@ func (s StrSet) Elements() (els []string) {
 	for el := range s {
 		els = append(els, el)
 	}
-	
+
 	return els
 }
 
@@ -52,13 +52,13 @@ func (s StrSet) Equals(t StrSet) bool {
 	if len(s) != len(t) {
 		return false
 	}
-	
+
 	for el := range s {
 		if !t.In(el) {
 			return false
 		}
 	}
-	
+
 	return true
 }
 

@@ -12,7 +12,7 @@ Usage 1:
     type A struct {
         B, C int
     }
-    
+
     var s Slice
     s.Add(10, "20", 30)
     s.InsertSlice(len(s), []A{A{50, 60}, A{70, 80}})
@@ -21,12 +21,12 @@ Usage 1:
     s.RemoveRange(1, 3)
     s.Fill(0, len(s), 55)
     s.Clear()
-    
+
 Usage 2:
     type A struct {
         B, C int
     }
-    
+
     var s []interface{}
     s = append(s, 10, "20", 30)
     (*Slice)(&s).InsertSlice(len(s), []A{A{50, 60}, A{70, 80}})
@@ -39,75 +39,76 @@ Usage 2:
 type Slice []interface{}
 
 // Add appends the specified element to the end of this slice.
-func (s *Slice) Add(e... interface{}) *Slice {
-    *s = append(*s, e...)
+func (s *Slice) Add(e ...interface{}) *Slice {
+	*s = append(*s, e...)
 	return s
 }
 
 // Insert inserts specified elements at the specified position.
 // NOTE: the insertion algorithm is much better than the slice-trick in go community wiki
-func (s *Slice) Insert(index int, e... interface{}) {
-    if cap(*s) >= len(*s) + len(e) {
-        *s = (*s)[:len(*s) + len(e)]
-    } else {
-        *s = append(*s, e...)
-    } // else
-    copy((*s)[index + len(e):], (*s)[index:])
-    copy((*s)[index:], e)
+func (s *Slice) Insert(index int, e ...interface{}) {
+	if cap(*s) >= len(*s)+len(e) {
+		*s = (*s)[:len(*s)+len(e)]
+	} else {
+		*s = append(*s, e...)
+	} // else
+	copy((*s)[index+len(e):], (*s)[index:])
+	copy((*s)[index:], e)
 }
 
 // InsertSlice inserts the elements of a slice at the specified position.
 // This method is useful when some elements in a slice *NOT* of type []interface{} are to be inserted.
 func (s *Slice) InsertSlice(index int, src interface{}) {
-    v := reflect.ValueOf(src)
-    if v.Kind() != reflect.Slice {
-        panic(fmt.Sprintf("%v is not a slice!", src))
-    } // if
-    
-    n := v.Len()
-    if cap(*s) >= len(*s) + n {
-        *s = (*s)[:len(*s) + n]
-        copy((*s)[index+n:], (*s)[index:])
-    } else {
-        ss := make([]interface{}, len(*s) + n)
-        copy(ss[:index], *s)
-        copy(ss[index + n:], (*s)[index:])
-        *s = ss
-    } // else
-    
-    for i := 0; i < n; i ++ {
-        (*s)[i + index] = v.Index(i).Interface()
-    } // for i
+	v := reflect.ValueOf(src)
+	if v.Kind() != reflect.Slice {
+		panic(fmt.Sprintf("%v is not a slice!", src))
+	} // if
+
+	n := v.Len()
+	if cap(*s) >= len(*s)+n {
+		*s = (*s)[:len(*s)+n]
+		copy((*s)[index+n:], (*s)[index:])
+	} else {
+		ss := make([]interface{}, len(*s)+n)
+		copy(ss[:index], *s)
+		copy(ss[index+n:], (*s)[index:])
+		*s = ss
+	} // else
+
+	for i := 0; i < n; i++ {
+		(*s)[i+index] = v.Index(i).Interface()
+	} // for i
 }
 
 // The Swap method in sort.Interface.
 func (s Slice) Swap(i, j int) {
-    s[i], s[j] = s[j], s[i]
+	s[i], s[j] = s[j], s[i]
 }
 
 // Remove removes the element at the specified position in this slice.
 // The hole in the original slice is filled with a nil value.
 func (s *Slice) Remove(index int) interface{} {
-    e := (*s)[index]
-    copy((*s)[index:], (*s)[index + 1:])
-    (*s)[len(*s) - 1] = nil
-    *s = (*s)[:len(*s) - 1]
-    return e
+	e := (*s)[index]
+	copy((*s)[index:], (*s)[index+1:])
+	(*s)[len(*s)-1] = nil
+	*s = (*s)[:len(*s)-1]
+	return e
 }
 
 // RemoveRange removes all of the elements whose index is between from, inclusive, and to, exclusive, from this slice.
 // The holes in the original slice are filled with nil values.
 func (s *Slice) RemoveRange(from, to int) {
-    if to <= from {
-        return
-    } // if
-    
-    copy((*s)[from:], (*s)[to:])
-    n := len(*s);  l := n - to + from
-    for i := l; i < n; i ++ {
-        (*s)[i] = nil
-    } // for i
-    *s = (*s)[:l]
+	if to <= from {
+		return
+	} // if
+
+	copy((*s)[from:], (*s)[to:])
+	n := len(*s)
+	l := n - to + from
+	for i := l; i < n; i++ {
+		(*s)[i] = nil
+	} // for i
+	*s = (*s)[:l]
 }
 
 // Pop removes and returns the last element in the slice
@@ -117,13 +118,13 @@ func (s *Slice) Pop() interface{} {
 
 // Fill sets the elements between from, inclusive, and to, exclusive, to a speicified value.
 func (s Slice) Fill(from, to int, vl interface{}) {
-    for i := from; i < to; i ++ {
-        s[i] = vl
-    } // for i
+	for i := from; i < to; i++ {
+		s[i] = vl
+	} // for i
 }
 
 // Clear sets the slice to an zero-length slice.
 func (s *Slice) Clear() {
-    s.Fill(0, len(*s), nil)
-    *s = (*s)[:0]
+	s.Fill(0, len(*s), nil)
+	*s = (*s)[:0]
 }
