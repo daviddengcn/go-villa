@@ -38,7 +38,7 @@ func (s StrSet) In(el string) bool {
 }
 
 // Elements returns all elements in the set as a string slice
-func (s StrSet) Elements() (els []string) {
+func (s StrSet) Elements() (els StringSlice) {
 	els = make([]string, 0, len(s))
 	for el := range s {
 		els = append(els, el)

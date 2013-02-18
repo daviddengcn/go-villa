@@ -21,5 +21,7 @@ func TestStrSet(t *testing.T) {
 
 	set.Delete("david")
 	AssertEquals(t, "set.In(david)", set.In("david"), false)
-	AssertEquals(t, "set.Equals(david, hello)", set.Equals(NewStrSet("hello")), true)
+	AssertEquals(t, "set.Equals(hello)", set.Equals(NewStrSet("hello")), true)
+	
+	AssertEquals(t, "set.Elements().Equals(hello)", set.Elements().Equals(StringSlice{"hello"}), true)
 }
