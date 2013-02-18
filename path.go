@@ -34,7 +34,7 @@ func (p Path) S() string {
 	wrappers of filepath package
 */
 
-// Abs is a wrapper to Abs.Ext
+// Abs is a wrapper to filepath.Abs
 func (p Path) Abs() (pth Path, err error) {
 	pt, err := filepath.Abs(string(p))
 	return Path(pt), err

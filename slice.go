@@ -6,7 +6,7 @@ import "reflect"
 /*
 Slice is a wrapper to a slice of interface{}.
 
-You can either create an Slice instance directly, or converting the type when necessary.
+You can either create a Slice instance directly, or converting the type when necessary.
 
 Usage 1:
     type A struct {
