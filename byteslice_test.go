@@ -2,6 +2,10 @@ package villa
 
 import (
 	"testing"
+	"fmt"
+	"io"
+	"bytes"
+	"crypto/rand"
 )
 
 func TestByteSlice(t *testing.T) {
@@ -9,19 +13,87 @@ func TestByteSlice(t *testing.T) {
 	AssertEquals(t, "len(bs)", len(bs), 0)
 	AssertStringEquals(t, "bs", bs, "[]")
 
-	bs.Write(1, 2, 3)
+	bs.Write([]byte{1, 2, 3})
 	AssertEquals(t, "len(bs)", len(bs), 3)
 	AssertStringEquals(t, "bs", bs, "[1 2 3]")
 
-	bs.Read(make([]byte, 2))
+	p := make([]byte, 2);
+	bs.Read(p)
 	AssertEquals(t, "len(bs)", len(bs), 1)
 	AssertStringEquals(t, "bs", bs, "[3]")
+	AssertStringEquals(t, "p", p, "[1 2]")
 
 	bs.Read(make([]byte, 1))
 	AssertEquals(t, "len(bs)", len(bs), 0)
 	AssertStringEquals(t, "bs", bs, "[]")
 
-	bs.Write(4, 5)
+	bs.Write([]byte{4, 5})
 	AssertEquals(t, "len(bs)", len(bs), 2)
 	AssertStringEquals(t, "bs", bs, "[4 5]")
+	
+	c, err := bs.ReadByte()
+	AssertEquals(t, "c", c, byte(4))
+	AssertEquals(t, "err", err, nil)
+	AssertStringEquals(t, "bs", bs, "[5]")
+	
+	bs.Close()
+	
+	bs = nil
+	fmt.Fprint(&bs, "ABC")
+	AssertStringEquals(t, "bs", bs, "[65 66 67]")
+
+	data := make([]byte, 35*1024)
+	io.ReadFull(rand.Reader, data)
+	bs = nil
+	n, err := bs.ReadFrom(bytes.NewReader(data))
+	AssertEquals(t, "err", err, nil)
+	AssertEquals(t, "n", n, int64(len(data)))
+	AssertEquals(t, "bs == data", bytes.Equal(bs, data), true)
+	
+	bs = nil
+	n, err = ByteSlice(data).WriteTo(&bs)
+	AssertEquals(t, "err", err, nil)
+	AssertEquals(t, "n", n, int64(len(data)))
+	AssertEquals(t, "bs == data", bytes.Equal(bs, data), true)
+	
+	bs = []byte("A中文")
+	r, size, err := bs.ReadRune()
+	AssertEquals(t, "err", err, nil)
+	AssertEquals(t, "size", size, 1)
+	AssertEquals(t, "r", r, 'A')
+	r, size, err = bs.ReadRune()
+	AssertEquals(t, "err", err, nil)
+	AssertEquals(t, "size", size, len([]byte("中")))
+	AssertEquals(t, "r", r, '中')
+	r, size, err = bs.ReadRune()
+	AssertEquals(t, "err", err, nil)
+	AssertEquals(t, "size", size, len([]byte("文")))
+	AssertEquals(t, "r", r, '文')
+}
+
+func TestByteSlice_impl(t *testing.T) {
+	var bs ByteSlice
+	
+	var rd io.Reader = &bs
+	_ = rd
+	
+	var wt io.Writer = &bs
+	_ = wt
+	
+	var br io.ByteReader = &bs
+	_ = br
+	
+	var cls io.Closer = &bs
+	cls = bs
+	_ = cls
+	
+	var rf io.ReaderFrom = &bs
+	_ = rf
+	
+	var wf io.WriterTo = &bs
+	wf = bs
+	_ = wf
+	
+	var rr io.RuneReader = &bs
+	_ = rr
 }

@@ -2,14 +2,16 @@ package villa
 
 import (
 	"io"
+	"unicode/utf8"
 )
 
 // ByteSlice is a wrapper type for []byte.
-// It satisfies io.Reader and io.Writer interfaces.
+// Its pointer form, *ByteSlice, satisfies io.Reader, io.Writer, io.ByteReader,
+// io.Closer, io.ReaderFrom, io.WriterTo and io.RuneReader interfaces.
 type ByteSlice []byte
 
-// Read is the read function of io.Reader.
-// After some bytes are read, the slice shrinks
+// Read implements io.Reader interface.
+// After some bytes are read, the slice shrinks.
 func (s *ByteSlice) Read(p []byte) (n int, err error) {
 	if len(p) == 0 {
 		return 0, nil
@@ -29,9 +31,71 @@ func (s *ByteSlice) Read(p []byte) (n int, err error) {
 	return n, nil
 }
 
-// Write is the write function of io.Writer.
+// Write implements  io.Writer interface
 // Bytes are appended to the tail of the slice.
-func (s *ByteSlice) Write(p ...byte) (n int, err error) {
+func (s *ByteSlice) Write(p []byte) (n int, err error) {
 	*s = append(*s, p...)
 	return len(p), nil
+}
+
+// ReadByte implements io.ByteReader interface
+func (s *ByteSlice) ReadByte() (c byte, err error) {
+	if len(*s) < 1 {
+		return 0, io.EOF
+	}
+	
+	c = (*s)[0]
+	*s = (*s)[1:]
+	return c, nil
+}
+
+// Close implements io.Closer interface.
+// It does nothing.
+func (s ByteSlice) Close() error {
+	return nil
+}
+
+// ReadFrom implements io.ReaderFrom interface.
+func (s *ByteSlice) ReadFrom(r io.Reader) (n int64, err error) {
+	const buf_SIZE = 32*1024
+	buf := make([]byte, buf_SIZE)
+	for {
+		nRead, err := r.Read(buf)
+		if nRead == 0 {
+			if err == io.EOF {
+				return n,  nil
+			}
+			break
+		}
+		n += int64(nRead)
+		*s = append(*s, buf[:nRead]...)
+		if err == io.EOF {
+			return n, nil
+		}
+		
+		if err != nil {
+			break
+		}
+	}
+	
+	return n, err
+}
+
+// WriteTo implements io.WriterTo interface.
+func (s ByteSlice) WriteTo(w io.Writer) (n int64, err error) {
+	nWrite, err := w.Write(s)
+	return int64(nWrite), err
+}
+
+// ReadRune implements io.RuneReader interface.
+func (s *ByteSlice) ReadRune() (r rune, size int, err error) {
+	if !utf8.FullRune(*s) {
+		return utf8.RuneError, 0, io.ErrUnexpectedEOF
+	}
+	r, size = utf8.DecodeRune(*s)
+	if r != utf8.RuneError {
+		*s = (*s)[size:]
+	}
+	
+	return r, size, err
 }
