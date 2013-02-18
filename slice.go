@@ -128,3 +128,18 @@ func (s *Slice) Clear() {
 	s.Fill(0, len(*s), nil)
 	*s = (*s)[:0]
 }
+
+// Equals returns true if a given slice has the same contents with the slice
+func (s Slice) Equals(t []interface{}) bool {
+	if len(s) != len(t) {
+		return false
+	} // if
+
+	for i := range s {
+		if s[i] != t[i] {
+			return false
+		} // if
+	} // for i
+
+	return true
+}
