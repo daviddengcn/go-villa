@@ -3,9 +3,11 @@ package villa
 import "fmt"
 
 // StrSet is a set of strings
-type StrSet map[string]bool
+type StrSet map[string]struct{}
 
-// NewStrSet creates a string set with specified elements
+// NewStrSet creates a string set with specified elements.
+// You need to use this function only when you want to create a StrSet with intial
+// elements. Different from map, a nil value of StrSet is ok to put elemnents.
 func NewStrSet(els ...string) (s StrSet) {
 	return s.Put(els...)
 }
@@ -13,10 +15,10 @@ func NewStrSet(els ...string) (s StrSet) {
 // Put adds elements to the set. The set can be nil
 func (s *StrSet) Put(els ...string) StrSet {
 	if *s == nil {
-		*s = make(map[string]bool)
+		*s = make(StrSet)
 	}
 	for _, el := range els {
-		(*s)[el] = true
+		(*s)[el] = Empty{}
 	}
 
 	return *s
@@ -24,6 +26,10 @@ func (s *StrSet) Put(els ...string) StrSet {
 
 // Delete removes elements from the set
 func (s StrSet) Delete(els ...string) StrSet {
+	if s == nil {
+		return s
+	}
+	
 	for _, el := range els {
 		delete(s, el)
 	}
