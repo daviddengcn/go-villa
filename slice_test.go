@@ -181,3 +181,12 @@ func BenchmarkSliceInsertByCopy(b *testing.B) {
 		s[1] = i
 	}
 }
+
+func TestN(t *testing.T) {
+	var s Slice
+	for i := range N[:10] {
+		s.Add(i)
+	}
+	fmt.Println(s)
+	AssertEquals(t, "Equals", s.Equals([]interface{}{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}), true)
+}
