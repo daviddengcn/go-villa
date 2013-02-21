@@ -45,6 +45,22 @@ func (p Path) Ext() string {
 	return filepath.Ext(string(p))
 }
 
+// Rel is a wrapper to filepath.Rel
+func (p Path) Rel(targetpath Path) (Path, error) {
+	rel, err := filepath.Rel(string(p), string(targetpath))
+	return Path(rel), err
+}
+
+// WalkFunc is a wrapper to filepath.WalkFunc
+type WalkFunc func(path Path, info os.FileInfo, err error) error
+
+// Ext is a wrapper to filepath.Walk
+func (p Path) Walk(walkFn WalkFunc) error {
+	return filepath.Walk(string(p), func(path string, info os.FileInfo, err error) error {
+		return walkFn(Path(path), info, err)
+	})
+}
+
 /*
 	wrappers of os package
 */
