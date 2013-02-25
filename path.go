@@ -25,7 +25,7 @@ func (p Path) Exists() bool {
 	return err == nil
 }
 
-// S converts Path back to string
+// S converts Path back to string. This is sometimes more concise than string(p)
 func (p Path) S() string {
 	return string(p)
 }
@@ -40,15 +40,61 @@ func (p Path) Abs() (pth Path, err error) {
 	return Path(pt), err
 }
 
+// Base is a wrapper to filepath.Base
+func (p Path) Base() Path {
+	return Path(filepath.Base(string(p)))
+}
+
+// Clean is a wrapper to filepath.Clean
+func (p Path) Clean() string {
+	return Path(filepath.Clean(string(p)))
+}
+
+// Dir is a wrapper to filepath.Dir
+func (p Path) Dir() string {
+	return Path(filepath.Dir(string(p)))
+}
+
+// EvalSymlinks is a wrapper to filepath.EvalSymlinks
+func (p Path) EvalSymlinks() (string, error) {
+	pt, err := filepath.EvalSymlinks(string(p))
+	return Path(pt), err
+}
+
 // Ext is a wrapper to filepath.Ext
 func (p Path) Ext() string {
 	return filepath.Ext(string(p))
+}
+
+// FromSlash is a wrapper to filepath.FromSlash
+func (p Path) FromSlash() string {
+	return Path(filepath.FromSlash(string(p)))
+}
+
+// IsAbs is a wrapper to filepath.IsAbs
+func (p Path) IsAbs() bool {
+	return filepath.IsAbs(string(p))
 }
 
 // Rel is a wrapper to filepath.Rel
 func (p Path) Rel(targetpath Path) (Path, error) {
 	rel, err := filepath.Rel(string(p), string(targetpath))
 	return Path(rel), err
+}
+
+// Split is a wrapper to filepath.Split
+func (p Path) Split() (dir, file string) {
+	d, f := filepath.Split(string(p))
+	return Path(d), Path(f)
+}
+
+func (p Path) SplitList() (lst []Path) {
+	l := filepath.SplitList(string(p))
+	lst = make([]Path, len(l))
+	for i, el := range l {
+		lst[i] = Path(l[i])
+	}
+	return 
 }
 
 // WalkFunc is a wrapper to filepath.WalkFunc
