@@ -46,17 +46,17 @@ func (p Path) Base() Path {
 }
 
 // Clean is a wrapper to filepath.Clean
-func (p Path) Clean() string {
+func (p Path) Clean() Path {
 	return Path(filepath.Clean(string(p)))
 }
 
 // Dir is a wrapper to filepath.Dir
-func (p Path) Dir() string {
+func (p Path) Dir() Path {
 	return Path(filepath.Dir(string(p)))
 }
 
 // EvalSymlinks is a wrapper to filepath.EvalSymlinks
-func (p Path) EvalSymlinks() (string, error) {
+func (p Path) EvalSymlinks() (Path, error) {
 	pt, err := filepath.EvalSymlinks(string(p))
 	return Path(pt), err
 }
@@ -67,7 +67,7 @@ func (p Path) Ext() string {
 }
 
 // FromSlash is a wrapper to filepath.FromSlash
-func (p Path) FromSlash() string {
+func (p Path) FromSlash() Path {
 	return Path(filepath.FromSlash(string(p)))
 }
 
@@ -83,7 +83,7 @@ func (p Path) Rel(targetpath Path) (Path, error) {
 }
 
 // Split is a wrapper to filepath.Split
-func (p Path) Split() (dir, file string) {
+func (p Path) Split() (dir, file Path) {
 	d, f := filepath.Split(string(p))
 	return Path(d), Path(f)
 }
@@ -92,7 +92,7 @@ func (p Path) SplitList() (lst []Path) {
 	l := filepath.SplitList(string(p))
 	lst = make([]Path, len(l))
 	for i, el := range l {
-		lst[i] = Path(l[i])
+		lst[i] = Path(el)
 	}
 	return 
 }
