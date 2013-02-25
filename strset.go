@@ -29,7 +29,7 @@ func (s StrSet) Delete(els ...string) StrSet {
 	if s == nil {
 		return s
 	}
-	
+
 	for _, el := range els {
 		delete(s, el)
 	}

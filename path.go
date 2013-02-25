@@ -95,7 +95,7 @@ func (p Path) SplitList() (lst []Path) {
 	for i, el := range l {
 		lst[i] = Path(el)
 	}
-	return 
+	return
 }
 
 // ToSlash is a wrapper to filepath.ToSlash
@@ -110,7 +110,6 @@ func (p Path) VolumeName() string {
 
 // WalkFunc is a wrapper to filepath.WalkFunc
 type WalkFunc func(path Path, info os.FileInfo, err error) error
-
 
 // Ext is a wrapper to filepath.Walk
 func (p Path) Walk(walkFn WalkFunc) error {

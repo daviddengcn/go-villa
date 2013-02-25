@@ -22,12 +22,12 @@ func TestStrSet(t *testing.T) {
 	set.Delete("david")
 	AssertEquals(t, "set.In(david)", set.In("david"), false)
 	AssertEquals(t, "set.Equals(hello)", set.Equals(NewStrSet("hello")), true)
-	
+
 	AssertEquals(t, "set.Elements().Equals(hello)", set.Elements().Equals(StringSlice{"hello"}), true)
 }
 
 func TestStrSet_nil(t *testing.T) {
-	var s,ss StrSet
+	var s, ss StrSet
 	AssertEquals(t, "nil.In(david)", s.In("david"), false)
 	AssertEquals(t, "nil.Equals(nil)", s.Equals(ss), true)
 	AssertStringEquals(t, "nil.Elements()", s.Elements(), StringSlice{})

@@ -43,7 +43,7 @@ func (s *ByteSlice) ReadByte() (c byte, err error) {
 	if len(*s) < 1 {
 		return 0, io.EOF
 	}
-	
+
 	c = (*s)[0]
 	*s = (*s)[1:]
 	return c, nil
@@ -57,13 +57,13 @@ func (s ByteSlice) Close() error {
 
 // ReadFrom implements io.ReaderFrom interface.
 func (s *ByteSlice) ReadFrom(r io.Reader) (n int64, err error) {
-	const buf_SIZE = 32*1024
+	const buf_SIZE = 32 * 1024
 	buf := make([]byte, buf_SIZE)
 	for {
 		nRead, err := r.Read(buf)
 		if nRead == 0 {
 			if err == io.EOF {
-				return n,  nil
+				return n, nil
 			}
 			break
 		}
@@ -72,12 +72,12 @@ func (s *ByteSlice) ReadFrom(r io.Reader) (n int64, err error) {
 		if err == io.EOF {
 			return n, nil
 		}
-		
+
 		if err != nil {
 			break
 		}
 	}
-	
+
 	return n, err
 }
 
@@ -96,6 +96,6 @@ func (s *ByteSlice) ReadRune() (r rune, size int, err error) {
 	if r != utf8.RuneError {
 		*s = (*s)[size:]
 	}
-	
+
 	return r, size, err
 }
