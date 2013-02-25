@@ -88,6 +88,7 @@ func (p Path) Split() (dir, file Path) {
 	return Path(d), Path(f)
 }
 
+// SplitList is a wrapper to filepath.SplitList
 func (p Path) SplitList() (lst []Path) {
 	l := filepath.SplitList(string(p))
 	lst = make([]Path, len(l))
@@ -97,8 +98,19 @@ func (p Path) SplitList() (lst []Path) {
 	return 
 }
 
+// ToSlash is a wrapper to filepath.ToSlash
+func (p Path) ToSlash() string {
+	return filepath.ToSlash(string(p))
+}
+
+// VolumeName is a wrapper to filepath.VolumeName
+func (p Path) VolumeName() string {
+	return filepath.VolumeName(string(p))
+}
+
 // WalkFunc is a wrapper to filepath.WalkFunc
 type WalkFunc func(path Path, info os.FileInfo, err error) error
+
 
 // Ext is a wrapper to filepath.Walk
 func (p Path) Walk(walkFn WalkFunc) error {
