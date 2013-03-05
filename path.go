@@ -45,7 +45,9 @@ func (p Path) Base() Path {
 	return Path(filepath.Base(string(p)))
 }
 
-// Clean is a wrapper to filepath.Clean
+// Clean is a wrapper to filepath.Clean.
+// It returns the shortest path name equivalent to path
+// by purely lexical processing.
 func (p Path) Clean() Path {
 	return Path(filepath.Clean(string(p)))
 }
