@@ -48,9 +48,7 @@ func (p Path) Base() Path {
 	return Path(filepath.Base(string(p)))
 }
 
-// Clean is a wrapper to filepath.Clean.
-// It returns the shortest path name equivalent to path
-// by purely lexical processing.
+// Clean is a wrapper to filepath.Clean
 func (p Path) Clean() Path {
 	return Path(filepath.Clean(string(p)))
 }
@@ -132,13 +130,20 @@ func (p Path) Create() (file *os.File, err error) {
 	return os.Create(string(p))
 }
 
-// Open is a wrapper to os.Open
+// Open is a wrapper to os.Open.
+// It opens the named file for reading. If successful, methods on the returned 
+// file can be used for reading; the associated file descriptor has mode O_RDONLY. 
+// If there is an error, it will be of type *PathError.
 func (p Path) Open() (file *os.File, err error) {
 	return os.Open(string(p))
 
 }
 
-// Open is a wrapper to os.OpenFile
+// OpenFile is a wrapper to os.OpenFile.
+// It is the generalized open call; most users will use Open or Create instead. 
+// It opens the named file with specified flag (O_RDONLY etc.) and perm, 
+// (0666 etc.) if applicable. If successful, methods on the returned File can be 
+// used for I/O. If there is an error, it will be of type *PathError.
 func (p Path) OpenFile(flag int, perm os.FileMode) (file *os.File, err error) {
 	return os.OpenFile(string(p), flag, perm)
 }
