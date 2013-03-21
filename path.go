@@ -40,7 +40,10 @@ func (p Path) Abs() (pth Path, err error) {
 	return Path(pt), err
 }
 
-// Base is a wrapper to filepath.Base
+// Base returns the last element of path.
+// Trailing path separators are removed before extracting the last element.
+// If the path is empty, Base returns ".".
+// If the path consists entirely of separators, Base returns a single separator.
 func (p Path) Base() Path {
 	return Path(filepath.Base(string(p)))
 }
