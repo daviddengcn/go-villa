@@ -30,11 +30,24 @@ func (p Path) S() string {
 	return string(p)
 }
 
+// AbsPath returns the absolute path returned by Path.Abs() if no error found,
+// panic otherwise.
+func (p Path) AbsPath() (ap Path) {
+	ap, err := p.Abs()
+	if err != nil {
+		panic(err)
+	}
+	return ap	
+}
+
 /*
-	wrappers of filepath package
+	wrappers of path/filepath package
 */
 
 // Abs is a wrapper to filepath.Abs
+// It returns an absolute representation of path. If the path is not absolute it
+// will be joined with the current working directory to turn it into an absolute
+// path. The absolute path name for a given file is not guaranteed to be unique.
 func (p Path) Abs() (pth Path, err error) {
 	pt, err := filepath.Abs(string(p))
 	return Path(pt), err
@@ -53,7 +66,12 @@ func (p Path) Clean() Path {
 	return Path(filepath.Clean(string(p)))
 }
 
-// Dir is a wrapper to filepath.Dir
+// Dir is a wrapper to filepath.Dir.
+// It returns all but the last element of path, typically the path's directory.
+// Trailing path separators are removed before processing. If the path is empty,
+// Dir returns ".". If the path consists entirely of separators, Dir returns a
+// single separator. The returned path does not end in a separator unless it is
+// the root directory.
 func (p Path) Dir() Path {
 	return Path(filepath.Dir(string(p)))
 }
@@ -79,7 +97,14 @@ func (p Path) IsAbs() bool {
 	return filepath.IsAbs(string(p))
 }
 
-// Rel is a wrapper to filepath.Rel
+// Rel is a wrapper to filepath.Rel.
+// It returns a relative path that is lexically equivalent to targpath when
+// joined to basepath with an intervening separator. That is, Join(basepath,
+// Rel(basepath, targpath)) is equivalent to targpath itself. On success, the
+// returned path will always be relative to basepath, even if basepath and
+// targpath share no elements. An error is returned if targpath can't be made
+// relative to basepath or if knowing the current working directory would be
+// necessary to compute it.
 func (p Path) Rel(targetpath Path) (Path, error) {
 	rel, err := filepath.Rel(string(p), string(targetpath))
 	return Path(rel), err
@@ -202,7 +227,13 @@ func (p Path) WriteFile(data []byte, perm os.FileMode) error {
 	return ioutil.WriteFile(string(p), data, perm)
 }
 
-// TempDir is a wrappter to ioutil.TempDir
+// TempDir is a wrappter to ioutil.TempDir.
+// It creates a new temporary directory in the directory dir with a name
+// beginning with prefix and returns the path of the new directory. If dir is
+// the empty string, TempDir uses the default directory for temporary files
+// (see os.TempDir). Multiple programs calling TempDir simultaneously will not
+// choose the same directory. It is the caller's responsibility to remove the
+// directory when no longer needed.
 func (p Path) TempDir(prefix string) (name Path, err error) {
 	nm, err := ioutil.TempDir(string(p), prefix)
 	return Path(nm), err
