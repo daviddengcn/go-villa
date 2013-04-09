@@ -10,7 +10,7 @@ import "sort"
 //    cmp := CmpFunc(func (a, b interface{}) int {
 //            if a.(int) < b.(int) {
 //                return -1
-//            } else if a.(int) < b.(int) {
+//            } else if a.(int) > b.(int) {
 //                return 1
 //            } // else if
 //            return 0
@@ -90,7 +90,7 @@ func (cmp CmpFunc) Sort(s []interface{}) {
 //    cmp := CmpFunc(func (a, b int) int {
 //        if a < b {
 //            return -1
-//        } else if a < b {
+//        } else if a > b {
 //            return 1
 //        } // else if
 //        return 0
@@ -170,7 +170,7 @@ func (cmp IntCmpFunc) Sort(s []int) {
 //    cmp := CmpFunc(func (a, b float64) int {
 //        if a < b {
 //            return -1
-//        } else if a < b {
+//        } else if a > b {
 //            return 1
 //        } // else if
 //        return 0

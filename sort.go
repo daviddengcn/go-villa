@@ -22,7 +22,7 @@ func (s *sortI) Swap(i, j int) {
 	s.swap(i, j)
 }
 
-// SortF sorts the data defined by lenght, Less/Swap functions.
+// SortF sorts the data defined by the length, Less and Swap functions.
 func SortF(Len int, Less func(int, int) bool, Swap func(int, int)) {
 	sort.Sort(&sortI{l: Len, less: Less, swap: Swap})
 }
