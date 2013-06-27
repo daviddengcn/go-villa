@@ -21,18 +21,6 @@ func __(name string) {
 	fmt.Println("== END", name, "===")
 }
 
-func AssertEquals(t *testing.T, name string, act, exp interface{}) {
-	if act != exp {
-		t.Errorf("%s is expected to be %v, but got %v", name, exp, act)
-	}
-}
-
-func AssertStringEquals(t *testing.T, name string, act, exp interface{}) {
-	if fmt.Sprintf("%v", act) != fmt.Sprintf("%v", exp) {
-		t.Errorf("%s is expected to be %v, but got %v", name, exp, act)
-	} // if
-}
-
 var intInterfaceCmpFunc = CmpFunc(func(e1, e2 interface{}) int {
 	if e1.(int) < e2.(int) {
 		return -1

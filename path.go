@@ -8,7 +8,7 @@ import (
 )
 
 // Path is a wrapper for a path in the OS.
-// Some commonly used functions are wrapped as methods of Path, 
+// Some commonly used functions are wrapped as methods of Path,
 // and results, if any, are converted back to Path
 type Path string
 
@@ -47,7 +47,7 @@ func (p Path) AbsPath() (ap Path) {
 	if err != nil {
 		panic(err)
 	}
-	return ap	
+	return ap
 }
 
 /*
@@ -103,6 +103,8 @@ func (p Path) FromSlash() Path {
 }
 
 // IsAbs is a wrapper to filepath.IsAbs
+//
+// IsAbs returns true if the path is absolute.
 func (p Path) IsAbs() bool {
 	return filepath.IsAbs(string(p))
 }
@@ -148,25 +150,25 @@ func (p Path) VolumeName() string {
 
 // WalkFunc is a wrapper to filepath.WalkFunc
 // WalkFunc is the type of the function called for each file or directory
-// visited by Walk. The path argument contains the argument to Walk as a prefix; 
-// that is, if Walk is called with "dir", which is a directory containing the 
-// file "a", the walk function will be called with argument "dir/a". The info 
+// visited by Walk. The path argument contains the argument to Walk as a prefix;
+// that is, if Walk is called with "dir", which is a directory containing the
+// file "a", the walk function will be called with argument "dir/a". The info
 // argument is the os.FileInfo for the named path.
 //
-// If there was a problem walking to the file or directory named by path, the 
-// incoming error will describe the problem and the function can decide how to 
-// handle that error (and Walk will not descend into that directory). If an 
-// error is returned, processing stops. The sole exception is that if path is a 
-// directory and the function returns the special value filepath.SkipDir, the 
-// contents of the directory are skipped and processing continues as usual on 
+// If there was a problem walking to the file or directory named by path, the
+// incoming error will describe the problem and the function can decide how to
+// handle that error (and Walk will not descend into that directory). If an
+// error is returned, processing stops. The sole exception is that if path is a
+// directory and the function returns the special value filepath.SkipDir, the
+// contents of the directory are skipped and processing continues as usual on
 // the next file.
 type WalkFunc func(path Path, info os.FileInfo, err error) error
 
 // Walk is a wrapper to filepath.Walk
 // Walk walks the file tree rooted at root, calling walkFn for each file or
 // directory in the tree, including root. All errors that arise visiting files
-// and directories are filtered by walkFn. The files are walked in lexical 
-// order, which makes the output deterministic but means that for very large 
+// and directories are filtered by walkFn. The files are walked in lexical
+// order, which makes the output deterministic but means that for very large
 // directories Walk can be inefficient. Walk does not follow symbolic links.
 func (p Path) Walk(walkFn WalkFunc) error {
 	return filepath.Walk(string(p), func(path string, info os.FileInfo, err error) error {
@@ -184,8 +186,8 @@ func (p Path) Create() (file *os.File, err error) {
 }
 
 // Open is a wrapper to os.Open.
-// It opens the named file for reading. If successful, methods on the returned 
-// file can be used for reading; the associated file descriptor has mode O_RDONLY. 
+// It opens the named file for reading. If successful, methods on the returned
+// file can be used for reading; the associated file descriptor has mode O_RDONLY.
 // If there is an error, it will be of type *PathError.
 func (p Path) Open() (file *os.File, err error) {
 	return os.Open(string(p))
@@ -193,9 +195,9 @@ func (p Path) Open() (file *os.File, err error) {
 }
 
 // OpenFile is a wrapper to os.OpenFile.
-// It is the generalized open call; most users will use Open or Create instead. 
-// It opens the named file with specified flag (O_RDONLY etc.) and perm, 
-// (0666 etc.) if applicable. If successful, methods on the returned File can be 
+// It is the generalized open call; most users will use Open or Create instead.
+// It opens the named file with specified flag (O_RDONLY etc.) and perm,
+// (0666 etc.) if applicable. If successful, methods on the returned File can be
 // used for I/O. If there is an error, it will be of type *PathError.
 func (p Path) OpenFile(flag int, perm os.FileMode) (file *os.File, err error) {
 	return os.OpenFile(string(p), flag, perm)
@@ -212,11 +214,17 @@ func (p Path) MkdirAll(perm os.FileMode) error {
 }
 
 // Remove is a wrappter to os.Remove
+//
+// Remove removes the named file or directory. If there is an error, it will be
+// of type *PathError.
 func (p Path) Remove() error {
 	return os.Remove(string(p))
 }
 
 // RemoveAll is a wrappter to os.RemoveAll
+// RemoveAll removes path and any children it contains. It removes everything it
+// can but returns the first error it encounters. If the path does not exist,
+// RemoveAll returns nil (no error).
 func (p Path) RemoveAll() error {
 	return os.RemoveAll(string(p))
 }

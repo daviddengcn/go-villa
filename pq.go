@@ -21,7 +21,7 @@ import (
 //        })
 //     pq.Push(10)
 //     pq.Push(20)
-//     
+//
 //     vl := pq.Pop()
 type PriorityQueue struct {
 	list *pqList
