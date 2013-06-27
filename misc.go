@@ -50,6 +50,19 @@ func (err *NestedError) Deepest() error {
 	}
 }
 
+/*
+	DeepestNested returns the deepest nested error. If err is not *NestedError,
+	it is directly returned.
+*/
+func DeepestNested(err error) error {
+	ne, ok := err.(*NestedError)
+	if ok {
+		err = ne.Deepest()
+	}
+	
+	return err
+}
+
 /* NestErrorf returns a *NestedError error with a message */
 func NestErrorf(err error, fmtstr string, args ...interface{}) *NestedError {
 	return &NestedError{
