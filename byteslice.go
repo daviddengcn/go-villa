@@ -1,6 +1,7 @@
 package villa
 
 import (
+	"errors"
 	"io"
 	"unicode/utf8"
 )
@@ -98,4 +99,31 @@ func (s *ByteSlice) ReadRune() (r rune, size int, err error) {
 	}
 
 	return r, size, err
+}
+
+var ErrInvalidRune = errors.New("villa.ByteSlice: invalid rune")
+
+// WriteRune writes a single Unicode code point, returning the number of bytes
+// written and any error.
+func (s *ByteSlice) WriteRune(r rune) (size int, err error) {
+	if r < utf8.RuneSelf {
+		*s = append(*s, byte(r))
+		return 1, nil
+	}
+
+	l := utf8.RuneLen(r)
+	if l < 0 {
+		return 0, ErrInvalidRune
+	}
+
+	*s = append(*s, make([]byte, l)...)
+	utf8.EncodeRune((*s)[len(*s)-l:], r)
+	return l, nil
+}
+
+// WriteString appends the contents of str to the slice, growing the slice as
+// needed. The return value n is the length of str; err is always nil.
+func (s *ByteSlice) WriteString(str string) (size int, err error) {
+	*s = append(*s, str...)
+	return len(str), nil
 }

@@ -36,6 +36,17 @@ func TestByteSlice(t *testing.T) {
 	AssertEquals(t, "err", err, nil)
 	AssertStringEquals(t, "bs", bs, "[5]")
 
+	bs.WriteRune('A')
+	AssertEquals(t, "len(bs)", len(bs), 2)
+	AssertStringEquals(t, "bs", bs, "[5 65]")
+	bs.WriteRune('中')
+	AssertEquals(t, "len(bs)", len(bs), 5)
+	AssertStringEquals(t, "bs", bs, "[5 65 228 184 173]")
+
+	bs.WriteString("世界")
+	AssertEquals(t, "len(bs)", len(bs), 11)
+	AssertStringEquals(t, "bs", bs, "[5 65 228 184 173 228 184 150 231 149 140]")
+
 	bs.Close()
 
 	bs = nil

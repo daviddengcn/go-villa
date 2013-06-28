@@ -5,7 +5,7 @@ import (
 	"sync/atomic"
 )
 
-// Once is an object that will perform exactly one action. Different from build-int
+// Once is an object that will perform exactly one action. Different from build-in
 // sync.Once, the function is defined in the Once struct.
 type Once struct {
 	m    sync.Mutex

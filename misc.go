@@ -59,7 +59,7 @@ func DeepestNested(err error) error {
 	if ok {
 		err = ne.Deepest()
 	}
-	
+
 	return err
 }
 
