@@ -341,3 +341,15 @@ func TestComplexSortBinarySearch(t *testing.T) {
 		} // else
 	} // for i
 }
+
+
+func TestStrDiff(t *testing.T) {
+	defer __(o_())
+
+	s1 := StringSlice{"a", "b", "d", "f"}
+	s2 := StringSlice{"b", "c", "d", "g"}
+	
+	d1, d2 := StrValueCompare.DiffSlicePair(s1, s2)
+	AssertStringEquals(t, "d1", d1, "[a f]")
+	AssertStringEquals(t, "d2", d2, "[c g]")
+}

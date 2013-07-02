@@ -135,10 +135,9 @@ func (cmp StrCmpFunc) Merge(a, b []string) []string {
 // undefined.
 //
 // If the element is found in the list, found equals true and pos is the index 
-// of the found element in the list.
-// 
-// Otherwise found returns false and pos is the position where e is going to be 
-// inserted(and the resulting list is still in order)
+// of the found element in the list. Otherwise found returns false and pos is 
+// the position where e is going to be inserted(and the resulting list is still
+// in order)
 func (cmp StrCmpFunc) BinarySearch(s []string, e string) (pos int, found bool) {
 	l, r := 0, len(s)-1
 	for l <= r {
@@ -155,6 +154,33 @@ func (cmp StrCmpFunc) BinarySearch(s []string, e string) (pos int, found bool) {
 		} // else
 	} // for
 	return l, false
+}
+
+// DiffSlicePair compares two sorted slices, returns the difference of each
+// relative to the other.
+func (cmp StrCmpFunc) DiffSlicePair(s1, s2 []string) (d1, d2 []string) {
+	i, j := 0, 0
+	for i < len(s1) && j < len(s2) {
+		switch cmp(s1[i], s2[j]) {
+		case -1:
+			d1 = append(d1, s1[i])
+			i ++
+		case 1:
+			d2 = append(d2, s2[j])
+			j ++
+		default:
+			i ++
+			j ++
+		}
+	}
+	
+	if i < len(s1) {
+		d1 = append(d1, s1[i:]...)
+	} else {
+		d2 = append(d2, s2[j:]...)
+	}
+	
+	return d1, d2
 }
 
 type strSortList struct {
