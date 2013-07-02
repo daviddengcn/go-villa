@@ -1,7 +1,11 @@
 /*
-This heap package implements a very similar function to the build-in heap package except the elements are not necessarily interface{}, but can be any type.
+Package heap implements a very similar function to the builtin 
+heap(priority queue) package except the elements are not necessarily
+interface{}, but can be any type.
 
-The trick is using the last element as the in/out place. Push/Pop/Remove are replaced with PushLast/PopToLast/RemoveToLast, respectively. An heap with int value can be easily implemented as follow:
+The trick is using the last element as the in/out place. Push/Pop/Remove are 
+replaced with PushLast/PopToLast/RemoveToLast, respectively. An heap with int 
+value can be easily implemented as follow:
 
     type IntHeap []int
     func (h *IntHeap) Pop() int {
@@ -21,7 +25,7 @@ package heap
 
 import "sort"
 
-// A none-empty heap must be initialized before any of the heap operations
+// A non-empty heap must be initialized before any of the heap operations
 // can be used. Init is idempotent with respect to the heap invariants
 // and may be called whenever the heap invariants may have been invalidated.
 // Its complexity is O(n) where n = h.Len().
@@ -34,16 +38,20 @@ func Init(h sort.Interface) {
     } // for i
 }
 
-// Push pushes the last element of the heap, which is considered not as the part of the heap, onto the heap. The complexity is
-// O(log(n)) where n = h.Len().
+// Push pushes the last element of the heap, which is considered not as the part 
+// of the heap, onto the heap. The complexity is
+//     O(log(n)) where n = h.Len().
 //
-// NOTE You need to append the element to be pushed as the last element before calling to this method.
+// NOTE You need to append the element to be pushed as the last element before
+// calling to this method.
 func PushLast(h sort.Interface) {
     up(h, h.Len()-1)
 }
 
 // Pop removes the minimum element (according to Less) from the heap
-// and place it at the last element of the heap. The complexity is O(log(n)) where n = h.Len().
+// and place it at the last element of the heap. The complexity is O(log(n))
+// where n = h.Len().
+//
 // Same as Remove(h, 0).
 //
 // NOTE You need to remove the last element after calling to this method.
@@ -53,7 +61,9 @@ func PopToLast(h sort.Interface) {
     down(h, 0, n)
 }
 
-// Remove removes the element at index i from the heap and place it at the last element of the heap.
+// Remove removes the element at index i from the heap and place it at the last
+// element of the heap.
+// 
 // The complexity is O(log(n)) where n = h.Len().
 //
 // NOTE You need to remove the last element after calling to this method.

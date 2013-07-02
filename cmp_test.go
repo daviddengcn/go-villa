@@ -54,6 +54,30 @@ func TestMergeInt(t *testing.T) {
 	AssertStringEquals(t, "c", c, cc)
 }
 
+func TestMergeString(t *testing.T) {
+	defer __(o_())
+
+	var a, b StringSlice
+	for i := 0; i < 100; i++ {
+		a.Add(fmt.Sprint(rand.Int()))
+	} // for i
+	for i := 0; i < 200; i++ {
+		b.Add(fmt.Sprint(rand.Int()))
+	} // for i
+
+	var cc StringSlice
+	cc.InsertSlice(0, a)
+	cc.InsertSlice(0, b)
+	StrValueCompare.Sort(cc)
+
+	StrValueCompare.Sort(a)
+	StrValueCompare.Sort(b)
+
+	c := StrValueCompare.Merge(a, b)
+	AssertEquals(t, "len(c)", len(c), len(cc))
+	AssertStringEquals(t, "c", c, cc)
+}
+
 func TestMergeFloat(t *testing.T) {
 	defer __(o_())
 
@@ -144,6 +168,50 @@ func TestSortBinarySearch(t *testing.T) {
 		} // else
 	} // for i
 }
+
+func TestStrSortBinarySearch(t *testing.T) {
+	defer __(o_())
+
+	var s StringSlice
+	for i := 0; i < 100; i++ {
+		s.Add(fmt.Sprint(rand.Int()))
+	} // for i
+
+	//fmt.Println(s)
+
+	StrValueCompare.Sort(s)
+
+	//fmt.Println(s)
+	for i := 1; i < len(s); i++ {
+		if s[i-1] > s[i] {
+			t.Errorf("s[%d](%v) is supposed to be less or equal than s[%d](%v)", i-1, s[i-1], i, s[i])
+		} //  if
+	} //  if
+
+	for i := range s {
+		p, found := StrValueCompare.BinarySearch(s, s[i])
+		AssertEquals(t, fmt.Sprintf("%d found", i), found, true)
+		if found {
+			AssertEquals(t, fmt.Sprintf("%d found element", i), s[p], s[i])
+		} // if
+	} // for i
+
+	for i := range s {
+		e := fmt.Sprint(rand.Int())
+		p, found := StrValueCompare.BinarySearch(s, e)
+		if found {
+			AssertEquals(t, fmt.Sprintf("found element", i), s[p], e)
+		} else {
+			beforeOk := p == 0 || s[p-1] <= e
+			afterOk := p == len(s) || s[p] >= e
+
+			if !beforeOk || !afterOk {
+				t.Errorf("Wrong position %d for %v", p, e)
+			} // if
+		} // else
+	} // for i
+}
+
 
 func TestIntSortBinarySearch(t *testing.T) {
 	defer __(o_())

@@ -71,7 +71,10 @@ func (p Path) Base() Path {
 	return Path(filepath.Base(string(p)))
 }
 
-// Clean is a wrapper to filepath.Clean
+// Clean is a wrapper to filepath.Clean.
+//
+// It returns the shortest path name equivalent to path by purely lexically
+// processing.
 func (p Path) Clean() Path {
 	return Path(filepath.Clean(string(p)))
 }
@@ -180,12 +183,18 @@ func (p Path) Walk(walkFn WalkFunc) error {
 	wrappers of os package
 */
 
-// Create is a wrapper to os.Create
+// Create is a wrapper to os.Create.
+//
+// It creates the named file mode 0666 (before umask), truncating it if it 
+// already exists. If successful, methods on the returned File can be used for 
+// I/O; the associated file descriptor has mode O_RDWR. If there is an error, 
+// it will be of type *PathError.
 func (p Path) Create() (file *os.File, err error) {
 	return os.Create(string(p))
 }
 
 // Open is a wrapper to os.Open.
+//
 // It opens the named file for reading. If successful, methods on the returned
 // file can be used for reading; the associated file descriptor has mode O_RDONLY.
 // If there is an error, it will be of type *PathError.
@@ -195,6 +204,7 @@ func (p Path) Open() (file *os.File, err error) {
 }
 
 // OpenFile is a wrapper to os.OpenFile.
+//
 // It is the generalized open call; most users will use Open or Create instead.
 // It opens the named file with specified flag (O_RDONLY etc.) and perm,
 // (0666 etc.) if applicable. If successful, methods on the returned File can be
@@ -203,12 +213,20 @@ func (p Path) OpenFile(flag int, perm os.FileMode) (file *os.File, err error) {
 	return os.OpenFile(string(p), flag, perm)
 }
 
-// Mkdir is a wrappter to os.Mkdir
+// Mkdir is a wrappter to os.Mkdir.
+//
+// It creates a new directory with the specified name and permission bits. If 
+// there is an error, it will be of type *PathError.
 func (p Path) Mkdir(perm os.FileMode) error {
 	return os.Mkdir(string(p), perm)
 }
 
-// MkdirAll is a wrappter to os.MkdirAll
+// MkdirAll is a wrappter to os.MkdirAll.
+//
+// It creates a directory named path, along with any necessary parents, and 
+// returns nil, or else returns an error. The permission bits perm are used for 
+// all directories that MkdirAll creates. If path is already a directory, 
+// MkdirAll does nothing and returns nil.
 func (p Path) MkdirAll(perm os.FileMode) error {
 	return os.MkdirAll(string(p), perm)
 }

@@ -2,7 +2,8 @@ package villa
 
 import "sort"
 
-// CmpFunc is a function comparing two elements. The function returns a positive value if a > b, a negative value if a < b, and 0 otherwise.
+// CmpFunc is a function comparing two elements. The function returns a positive 
+// value if a > b, a negative value if a < b, and 0 otherwise.
 //
 // Sort, BinarySearch and Merge methods are defined.
 // Usage:
@@ -23,8 +24,8 @@ import "sort"
 //    t := cmp.Merge(s, l)
 type CmpFunc func(a, b interface{}) int
 
-// Merge merges the current *sorted* elements with another *sorted* slice of elements.
-// All elements should be sorted by the same comparator.
+// Merge merges the current *sorted* elements with another *sorted* slice of
+// elements. All elements should be sorted by the same comparator.
 func (cmp CmpFunc) Merge(a, b []interface{}) []interface{} {
 	na, nb := len(a), len(b)
 	res := make([]interface{}, na+nb)
@@ -41,9 +42,14 @@ func (cmp CmpFunc) Merge(a, b []interface{}) []interface{} {
 	return res
 }
 
-// BinarySearch searchs a specified element e in a *sorted* list with binary search algorithm. If the list values are not sorted, the return values are undefined.
-// If the element is found in the list, found equals true and pos is the index of the found element in the list.
-// Otherwise found returns false and pos is the position where e is going to be inserted(and the resulting list is still in order)
+// BinarySearch searchs a specified element e in a *sorted* list with binary 
+// search algorithm. If the list values are not sorted, the return values are
+// undefined.
+//
+// If the element is found in the list, found equals true and pos is the index 
+// of the found element in the list. Otherwise found returns false and pos is 
+// the position where e is going to be inserted(and the resulting list is still 
+// in order)
 func (cmp CmpFunc) BinarySearch(s []interface{}, e interface{}) (pos int, found bool) {
 	l, r := 0, len(s)-1
 	for l <= r {
@@ -81,6 +87,96 @@ func (s *sortList) Less(i, j int) bool {
 func (cmp CmpFunc) Sort(s []interface{}) {
 	sort.Sort(&sortList{Slice(s), cmp})
 }
+
+// StrCmpFunc is a function comparing two string elements. The function returns
+// a positive value if a > b, a negative value if a < b, and 0 otherwise.
+//
+// Sort, BinarySearch and Merge methods are defined.
+// Usage:
+//    s := []string{}{...}
+//    cmp := CmpFunc(func (a, b string) int {
+//        if a < b {
+//            return -1
+//        } else if a > b {
+//            return 1
+//        } // else if
+//        return 0
+//    })
+//    cmp.Sort(s)
+//    p, found := cmp.BinarySearch(s, e)
+//
+//    l := []string{}{...}
+//    cmp.Sort(l)
+//    t := cmp.Merge(s, l)
+type StrCmpFunc func(a, b string) int
+
+// Merge merges the current *sorted* elements with another *sorted* slice of
+// elements.
+//
+// All elements should be sorted by the same comparator.
+func (cmp StrCmpFunc) Merge(a, b []string) []string {
+	na, nb := len(a), len(b)
+	res := make([]string, na+nb)
+	for k, l, m := 0, 0, 0; l < na || m < nb; k++ {
+		if m >= nb || l < na && cmp(a[l], b[m]) <= 0 {
+			res[k] = a[l]
+			l++
+		} else {
+			res[k] = b[m]
+			m++
+		}
+	}
+
+	return res
+}
+
+// BinarySearch searchs a specified element e in a *sorted* list with binary 
+// search algorithm. If the list values are not sorted, the return values are 
+// undefined.
+//
+// If the element is found in the list, found equals true and pos is the index 
+// of the found element in the list.
+// 
+// Otherwise found returns false and pos is the position where e is going to be 
+// inserted(and the resulting list is still in order)
+func (cmp StrCmpFunc) BinarySearch(s []string, e string) (pos int, found bool) {
+	l, r := 0, len(s)-1
+	for l <= r {
+		m := l + (r-l)/2
+		c := cmp(e, s[m])
+		if c == 0 {
+			return m, true
+		} // if
+
+		if c < 0 {
+			r = m - 1
+		} else {
+			l = m + 1
+		} // else
+	} // for
+	return l, false
+}
+
+type strSortList struct {
+	StringSlice
+	cmp StrCmpFunc
+}
+
+// The Len method in sort.Interface.
+func (s *strSortList) Len() int {
+	return len(s.StringSlice)
+}
+
+// The Less method in sort.Interface
+func (s *strSortList) Less(i, j int) bool {
+	return s.cmp(s.StringSlice[i], s.StringSlice[j]) < 0
+}
+
+// Sort calls the build-in sort.Sort to sort data in the slice.
+func (cmp StrCmpFunc) Sort(s []string) {
+	sort.Sort(&strSortList{StringSlice(s), cmp})
+}
+
 
 // IntCmpFunc is a function comparing two int elements. The function returns a positive value if a > b, a negative value if a < b, and 0 otherwise.
 //
@@ -321,6 +417,20 @@ func (cmp ComplexCmpFunc) Sort(s []complex128) {
 }
 
 var (
+	// StrValueCompare compares the input strings a and b, returns -1 if a < b, 
+	// 1 if a > b, and 0 otherwise.
+	//
+	// This is a natural StrCmpFunc.
+	StrValueCompare = StrCmpFunc(func(a, b string) int {
+		if a < b {
+			return -1
+		} else if a > b {
+			return 1
+		} // else if
+
+		return 0
+	})
+
 	// IntValueCompare compares the input int values a and b, returns -1 if a < b, 1 if a > b, and 0 otherwise.
 	// This is a natural IntCmpFunc.
 	IntValueCompare = IntCmpFunc(func(a, b int) int {
