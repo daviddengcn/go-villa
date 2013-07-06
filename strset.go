@@ -43,7 +43,8 @@ func (s StrSet) In(el string) bool {
 	return in
 }
 
-// Elements returns all elements in the set as a string slice
+// Elements returns all elements in the set as a string slice.
+// NOTE the order of elements may change even if the set doesnot change.
 func (s StrSet) Elements() (els StringSlice) {
 	els = make([]string, 0, len(s))
 	for el := range s {

@@ -89,3 +89,13 @@ func AssertStringEquals(t *testing.T, name string, act, exp interface{}) {
 		t.Errorf("%s is expected to be %v, but got %v", name, exp, act)
 	} // if
 }
+
+/*
+	AssertStrSetEquals shows error message when act and exp are equal string
+	sets.
+*/
+func AssertStrSetEquals(t *testing.T, name string, act, exp StrSet) {
+	if !act.Equals(exp) {
+		t.Errorf("%s is expected to be %v, but got %v", name, exp, act)
+	}
+}
