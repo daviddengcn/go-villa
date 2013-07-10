@@ -8,7 +8,7 @@ import (
 )
 
 func TestStringSlice(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	var s StringSlice
 	for i := 0; i < 1000; i++ {
@@ -89,7 +89,7 @@ func ExampleStringSlice_typecnv() {
 }
 
 func TestStringSliceRemove(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	var s StringSlice
 	s.Add("A", "B", "C", "D", "E", "F", "G")

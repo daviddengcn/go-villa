@@ -7,18 +7,18 @@ import (
 	"testing"
 )
 
-func o_() string {
+func o_(t *testing.T) (string, *testing.T) {
 	pc, _, _, _ := runtime.Caller(1)
 	name := runtime.FuncForPC(pc).Name()
 	if p := strings.LastIndexAny(name, `./\`); p >= 0 {
 		name = name[p+1:]
 	} // if
-	fmt.Println("== BEGIN", name, "===")
-	return name
+	t.Logf("== BEGIN %s ==", name)
+	return name, t
 }
 
-func __(name string) {
-	fmt.Println("== END", name, "===")
+func __(name string, t *testing.T) {
+	t.Logf("== END %s ==", name)
 }
 
 var intInterfaceCmpFunc = CmpFunc(func(e1, e2 interface{}) int {
@@ -31,7 +31,7 @@ var intInterfaceCmpFunc = CmpFunc(func(e1, e2 interface{}) int {
 })
 
 func TestSlice(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	var s Slice
 	for i := 0; i < 1000; i++ {
@@ -110,7 +110,7 @@ func ExampleSlice_typecnv() {
 }
 
 func TestSliceRemove(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	var s Slice
 	s.Add(1, 2, 3, 4, 5, 6, 7)
@@ -175,6 +175,6 @@ func TestN(t *testing.T) {
 	for i := range N[:10] {
 		s.Add(i)
 	}
-	fmt.Println(s)
+	t.Logf("%v", s)
 	AssertEquals(t, "Equals", s.Equals([]interface{}{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}), true)
 }

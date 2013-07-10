@@ -5,7 +5,7 @@ import (
 )
 
 func TestSort(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	ints := []int{3, 4, 1, 7, 0}
 	SortF(len(ints), func(i, j int) bool {

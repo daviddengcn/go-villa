@@ -6,7 +6,7 @@ import (
 )
 
 func TestNestedError(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	orgErr := errors.New("Original Error")
 	ne := NestErrorf(NestErrorf(orgErr, "Level %d", 1), "Nested again")

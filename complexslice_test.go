@@ -1,7 +1,6 @@
 package villa
 
 import (
-	"fmt"
 	"math/cmplx"
 	"testing"
 )
@@ -33,8 +32,7 @@ var cmplexAbsCmpFunc = ComplexCmpFunc(func(a, b complex128) int {
 })
 
 func TestComplexSlice(t *testing.T) {
-	fmt.Println("== Begin TestComplexSlice...")
-	defer fmt.Println("== End TestComplexSlice.")
+	defer __(o_(t))
 
 	var s ComplexSlice
 	for i := 0; i < 1000; i++ {
@@ -49,14 +47,14 @@ func TestComplexSlice(t *testing.T) {
 	s = ComplexSlice{}
 	s.Add(-4, -1)
 	s.Insert(1, -2, -3)
-	fmt.Println(s)
+	t.Logf("%v", s)
 	AssertEquals(t, "len", len(s), 4)
 	AssertStringEquals(t, "s", s, "[(-4+0i) (-2+0i) (-3+0i) (-1+0i)]")
 }
 
 func TestComplexSliceRemove(t *testing.T) {
-	fmt.Println("== Begin TestComplexSliceRemove...")
-	defer fmt.Println("== End TestComplexSliceRemove.")
+	defer __(o_(t))
+	
 	var s ComplexSlice
 	s.Add(-1, -2, -3, -4, -5, -6, -7)
 	AssertEquals(t, "len", len(s), 7)

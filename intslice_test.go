@@ -6,7 +6,7 @@ import (
 )
 
 func TestIntSlice(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	var s IntSlice
 	for i := 0; i < 1000; i++ {
@@ -22,13 +22,13 @@ func TestIntSlice(t *testing.T) {
 	s.Add(1)
 	s.Insert(0, 2)
 	s.Insert(1, 3)
-	fmt.Println(s)
+	t.Logf("%v", s)
 	AssertEquals(t, "len", len(s), 3)
 	AssertStringEquals(t, "s", s, "[2 3 1]")
 }
 
 func TestIntSliceRemove(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	var s IntSlice
 	s.Add(1, 2, 3, 4, 5, 6, 7)

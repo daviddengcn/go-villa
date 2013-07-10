@@ -2,14 +2,11 @@ package villa
 
 import (
 	"testing"
-	//    "sort"
-	"fmt"
 	"math/rand"
 )
 
 func TestPriorityQueue(t *testing.T) {
-	fmt.Println("== Begin TestPriorityQueue...")
-	defer fmt.Println("== End TestPriorityQueue.")
+	defer __(o_(t))
 
 	pq := NewPriorityQueue(intInterfaceCmpFunc)
 	for i := 0; i < 1000; i++ {
@@ -28,7 +25,7 @@ func TestPriorityQueue(t *testing.T) {
 		} // if
 		last = cur
 	} // for i
-	fmt.Println(pq)
+	t.Logf("%v", pq)
 }
 
 func TestPriorityQueueCap(t *testing.T) {

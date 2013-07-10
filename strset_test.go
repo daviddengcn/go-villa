@@ -1,17 +1,16 @@
 package villa
 
 import (
-	"fmt"
 	"testing"
 )
 
 func TestStrSet(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	var set StrSet
 
 	set.Put("hello", "david")
-	fmt.Println(set)
+	t.Logf("%v", set)
 	AssertEquals(t, "set.In(hello)", set.In("hello"), true)
 	AssertEquals(t, "set.In(david)", set.In("david"), true)
 	AssertEquals(t, "set.In(villa)", set.In("villa"), false)

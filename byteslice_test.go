@@ -108,3 +108,11 @@ func TestByteSlice_impl(t *testing.T) {
 	var rr io.RuneReader = &bs
 	_ = rr
 }
+
+func TestByteSlice_Bug_Read(t *testing.T) {
+	var s ByteSlice
+	n, err := s.Read(make([]byte, 1))
+	t.Logf("n: %d, err: %v", n, err)
+	AssertEquals(t, "n", 0, 0)
+	AssertEquals(t, "err", err, io.EOF)
+}

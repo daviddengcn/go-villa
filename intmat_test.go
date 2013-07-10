@@ -1,12 +1,11 @@
 package villa
 
 import (
-	"fmt"
 	"testing"
 )
 
 func TestIntMatrix(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	mat := NewIntMatrix(5, 4)
 	AssertEquals(t, "mat.Rows()", mat.Rows(), 5)
@@ -19,7 +18,7 @@ func TestIntMatrix(t *testing.T) {
 	mat[1][1] = 0
 	mat[3][2] = 12345
 	mat[2][0] = -998
-	fmt.Println(mat.PrettyString())
+	t.Logf("%s", mat.PrettyString())
 
 	// Clone for null matrix, assure no panic
 	mat = IntMatrix(nil)

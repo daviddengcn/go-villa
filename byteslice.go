@@ -28,7 +28,7 @@ func (s *ByteSlice) Read(p []byte) (n int, err error) {
 		return 0, nil
 	}
 
-	if len(p) == 0 {
+	if len(*s) == 0 {
 		return 0, io.EOF
 	}
 	n = copy(p, *s)

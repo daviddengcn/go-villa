@@ -7,7 +7,7 @@ import (
 )
 
 func TestMerge(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	var a, b Slice
 	for i := 0; i < 100; i++ {
@@ -31,7 +31,7 @@ func TestMerge(t *testing.T) {
 }
 
 func TestMergeInt(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	var a, b IntSlice
 	for i := 0; i < 100; i++ {
@@ -55,7 +55,7 @@ func TestMergeInt(t *testing.T) {
 }
 
 func TestMergeString(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	var a, b StringSlice
 	for i := 0; i < 100; i++ {
@@ -79,7 +79,7 @@ func TestMergeString(t *testing.T) {
 }
 
 func TestMergeFloat(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	var a, b FloatSlice
 	for i := 0; i < 100; i++ {
@@ -103,7 +103,7 @@ func TestMergeFloat(t *testing.T) {
 }
 
 func TestMergeComplex(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	var a, b ComplexSlice
 	for i := 0; i < 100; i++ {
@@ -127,7 +127,7 @@ func TestMergeComplex(t *testing.T) {
 }
 
 func TestSortBinarySearch(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	s := make(Slice, 0, 100)
 	for i := 0; i < 100; i++ {
@@ -170,7 +170,7 @@ func TestSortBinarySearch(t *testing.T) {
 }
 
 func TestStrSortBinarySearch(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	var s StringSlice
 	for i := 0; i < 100; i++ {
@@ -214,7 +214,7 @@ func TestStrSortBinarySearch(t *testing.T) {
 
 
 func TestIntSortBinarySearch(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	var s IntSlice
 	for i := 0; i < 100; i++ {
@@ -257,7 +257,7 @@ func TestIntSortBinarySearch(t *testing.T) {
 }
 
 func TestFloatSortBinarySearch(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	var s FloatSlice
 	for i := 0; i < 100; i++ {
@@ -300,7 +300,7 @@ func TestFloatSortBinarySearch(t *testing.T) {
 }
 
 func TestComplexSortBinarySearch(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	var s ComplexSlice
 	for i := 0; i < 100; i++ {
@@ -344,7 +344,7 @@ func TestComplexSortBinarySearch(t *testing.T) {
 
 
 func TestStrDiff(t *testing.T) {
-	defer __(o_())
+	defer __(o_(t))
 
 	s1 := StringSlice{"a", "b", "d", "f"}
 	s2 := StringSlice{"b", "c", "d", "g"}

@@ -1,13 +1,11 @@
 package villa
 
 import (
-	"fmt"
 	"testing"
 )
 
 func TestFloatSlice(t *testing.T) {
-	fmt.Println("== Begin TestFloatSlice...")
-	defer fmt.Println("== End TestFloatSlice.")
+	defer __(o_(t))
 
 	var s FloatSlice
 	for i := 0; i < 1000; i++ {
@@ -23,14 +21,14 @@ func TestFloatSlice(t *testing.T) {
 	s.Add(1)
 	s.Insert(0, 2)
 	s.Insert(1, 3)
-	fmt.Println(s)
+	t.Logf("%v", s)
 	AssertEquals(t, "len", len(s), 3)
 	AssertStringEquals(t, "s", s, "[2 3 1]")
 }
 
 func TestFloatSliceRemove(t *testing.T) {
-	fmt.Println("== Begin TestFloatSliceRemove...")
-	defer fmt.Println("== End TestFloatSliceRemove.")
+	defer __(o_(t))
+	
 	var s FloatSlice
 	s.Add(1, 2, 3, 4, 5, 6, 7)
 	AssertEquals(t, "len", len(s), 7)
