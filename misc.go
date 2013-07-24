@@ -2,7 +2,6 @@ package villa
 
 import (
 	"fmt"
-	"testing"
 )
 
 // N is a very long slice of elements with size of zero-bytes.
@@ -68,34 +67,5 @@ func NestErrorf(err error, fmtstr string, args ...interface{}) *NestedError {
 	return &NestedError{
 		Message: fmt.Sprintf(fmtstr, args...),
 		Nested:  err,
-	}
-}
-
-/*
-	AssertEquals shows error message when act and exp don't equal
-*/
-func AssertEquals(t *testing.T, name string, act, exp interface{}) {
-	if act != exp {
-		t.Errorf("%s is expected to be %v, but got %v", name, exp, act)
-	}
-}
-
-/*
-	AssertEquals shows error message when strings forms of act and exp don't
-	equal
-*/
-func AssertStringEquals(t *testing.T, name string, act, exp interface{}) {
-	if fmt.Sprintf("%v", act) != fmt.Sprintf("%v", exp) {
-		t.Errorf("%s is expected to be %v, but got %v", name, exp, act)
-	} // if
-}
-
-/*
-	AssertStrSetEquals shows error message when act and exp are equal string
-	sets.
-*/
-func AssertStrSetEquals(t *testing.T, name string, act, exp StrSet) {
-	if !act.Equals(exp) {
-		t.Errorf("%s is expected to be %v, but got %v", name, exp, act)
 	}
 }
