@@ -1,8 +1,8 @@
 go-villa
 ========
-Some helper types for go-lang. Current supporint: priority queue, slice wrapper, binary-search, merge-sort.
+Some helper types for Go-lang. Current supporint: priority queue, slice wrapper, binary-search, merge-sort.
 
-godoc Link: http://godoc.org/github.com/daviddengcn/go-villa ([packages that import villa](http://godoc.org/github.com/daviddengcn/go-villa?importers))
+godoc Link: http://godoc.org/github.com/daviddengcn/go-villa ([packages that import villa](http://go-search.org/view?id=github.com%2fdaviddengcn%2fgo-villa))
 
 Priority Queues
 ---------------
