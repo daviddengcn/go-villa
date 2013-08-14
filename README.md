@@ -113,7 +113,7 @@ cmp.Sort(s)
 cmp.BinarySearch(s, e)
 
 cmp.Sort(l)
-cmp.Merge(s, l)
+sl := cmp.Merge(s, l)
 ```
 
 Two comparators are defined for natual orders of ints and floats.
