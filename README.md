@@ -1,18 +1,22 @@
 go-villa
 ========
-Some helper types for Go-lang. Current supporint: priority queue, slice wrapper, binary-search, merge-sort.
+Package villa contains some helper types for Go: priority queue, slice wrapper,
+binary-search, merge-sort.
 
-godoc Link: http://godoc.org/github.com/daviddengcn/go-villa ([packages that import villa](http://go-search.org/view?id=github.com%2fdaviddengcn%2fgo-villa#imported))
+GoDoc Link: http://godoc.org/github.com/daviddengcn/go-villa ([packages that
+import villa](http://go-search.org/view?id=github.com%2fdaviddengcn%2fgo-villa#imported))
 
 Priority Queues
 ---------------
-A generic struct, named PriorityQueue, whose element is an interface{} and some structs whose element is a specific number type.
+A generic struct, named PriorityQueue, whose element is an interface{} and some
+structs whose element is a specific number type.
 
-Using a priority queue requires a less function, with two elements to be compared as the arguments.
+Using a priority queue requires a less function, with two elements to be compared 
+as the arguments.
 
 ### PriorityQueue
 
-It encapsulates the heap package using the Slice struct.
+It encapsulates the `heap` package using the `Slice` struct.
 
 Usage:
 ```go
@@ -20,9 +24,9 @@ pq := villa.NewPriorityQueue(
     func (a, b interface{}) int {
         if a.(int) < b.(int) {
             return -1
-        } else if a.(int) < b.(int) {
+        } else if a.(int) > b.(int) {
             return 1
-        } // else if
+        }
         return 0
     })
 pq.Push(10)
@@ -33,10 +37,10 @@ vl := pq.Pop()
 
 ### IntPriorityQueue
 
-It rewrites the algorithm in heap package. Integers are internally stored in an int slice.
+It reimplements the algorithm in `heap` package. Integers are internally stored in an `int` slice.
 Usage:
 ```go
-pq := villa.NewIntPriorityQueue(IntValueCompare)
+pq := villa.NewIntPriorityQueue(villa.IntValueCompare)
 pq.Push(10)
 pq.Push(20)
 
@@ -45,7 +49,9 @@ vl := pq.Pop()
 
 Slice Wrappers
 --------------
-Slice is a wrapper for go slices. Implemented methods include: Add, AddSlice, Insert, Swap, Remove, RemoveRange, Fill, Clear
+`Slice` is a wrapper for go slices. It is useful when one needs some modification
+options on a slice. Implemented methods include: Add, AddSlice, Insert, Swap, 
+Remove, RemoveRange, Fill, Clear
 
 ### Slice
 Usage:
@@ -100,7 +106,8 @@ Comparator functions
 --------------------
 The common comparator function which compares elements and return the value <0, =0 or >0, if a < b, a==b, or a > b respectively.
 
-Some algorithms that needs a comparator are defined in their methods, including sort(using build-in sort package algorithm), binary-search, and merge.
+Some algorithms that needs a comparator are defined in their methods, including
+sort(using build-in sort package algorithm), binary-search, and merge.
 Cast your own comparator function to the corresponding comparator type to use them:
 ```go
 func MyCmp(a, b int) int {
@@ -123,7 +130,8 @@ var FloatValueCompare FloatCmpFunc
 ```
 
 ### IntMatrix
-IntMatrix is 2D array of integers. Elements are store in a single int slice and slices of each row are created.
+`IntMatrix` is 2D array of integers. Elements are stored in a single `int` slice
+and slices of each row are created.
 
 
 LICENSE
