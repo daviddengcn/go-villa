@@ -8,7 +8,8 @@ import (
 
 // ByteSlice is a wrapper type for []byte.
 // Its pointer form, *ByteSlice, satisfies io.Reader, io.Writer, io.ByteReader,
-// io.Closer, io.ReaderFrom, io.WriterTo and io.RuneReader interfaces.
+// io.ByteWriter, io.Closer, io.ReaderFrom, io.WriterTo and io.RuneReader
+// interfaces.
 //
 // When reading from a constant bytes and no need for seeking, *ByteSlice is a
 // better choice then bytes.Buffer, since it needs less extra resource. You can
@@ -58,6 +59,12 @@ func (s *ByteSlice) ReadByte() (c byte, err error) {
 	c = (*s)[0]
 	*s = (*s)[1:]
 	return c, nil
+}
+
+// WriteByte implements io.ByteWriter interface
+func (s *ByteSlice) WriteByte(c byte) error {
+	*s = append(*s, c)
+	return nil
 }
 
 // Close implements io.Closer interface.
