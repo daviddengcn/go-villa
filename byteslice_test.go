@@ -48,6 +48,9 @@ func TestByteSlice(t *testing.T) {
 	bs.WriteString("世界")
 	AssertEquals(t, "len(bs)", len(bs), 12)
 	AssertStringEquals(t, "bs", bs, "[5 6 65 228 184 173 228 184 150 231 149 140]")
+	
+	bs.Skip(1)
+	AssertStringEquals(t, "bs", bs, "[6 65 228 184 173 228 184 150 231 149 140]")
 
 	bs.Close()
 

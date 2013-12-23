@@ -43,6 +43,24 @@ func (s *ByteSlice) Read(p []byte) (n int, err error) {
 	return n, nil
 }
 
+
+func (s *ByteSlice) Skip(n int64) (int64, error) {
+	if n == 0 {
+		return 0, nil
+	}
+	
+	if len(*s) == 0 {
+		return 0, io.EOF
+	}
+	if n >= int64(len(*s)) {
+		n = int64(len(*s))
+		*s = nil
+	} else {
+		*s = (*s)[int(n):]
+	}
+	return n, nil
+}
+
 // Write implements  io.Writer interface
 // Bytes are appended to the tail of the slice.
 func (s *ByteSlice) Write(p []byte) (n int, err error) {
