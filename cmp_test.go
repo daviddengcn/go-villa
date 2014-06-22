@@ -212,7 +212,6 @@ func TestStrSortBinarySearch(t *testing.T) {
 	} // for i
 }
 
-
 func TestIntSortBinarySearch(t *testing.T) {
 	defer __(o_(t))
 
@@ -342,13 +341,12 @@ func TestComplexSortBinarySearch(t *testing.T) {
 	} // for i
 }
 
-
 func TestStrDiff(t *testing.T) {
 	defer __(o_(t))
 
 	s1 := StringSlice{"a", "b", "d", "f"}
 	s2 := StringSlice{"b", "c", "d", "g"}
-	
+
 	d1, d2 := StrValueCompare.DiffSlicePair(s1, s2)
 	AssertStringEquals(t, "d1", d1, "[a f]")
 	AssertStringEquals(t, "d2", d2, "[c g]")

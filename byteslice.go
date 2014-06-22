@@ -43,12 +43,11 @@ func (s *ByteSlice) Read(p []byte) (n int, err error) {
 	return n, nil
 }
 
-
 func (s *ByteSlice) Skip(n int64) (int64, error) {
 	if n == 0 {
 		return 0, nil
 	}
-	
+
 	if len(*s) == 0 {
 		return 0, io.EOF
 	}
@@ -129,9 +128,7 @@ func (s *ByteSlice) ReadRune() (r rune, size int, err error) {
 		return utf8.RuneError, 0, io.ErrUnexpectedEOF
 	}
 	r, size = utf8.DecodeRune(*s)
-	if r != utf8.RuneError {
-		*s = (*s)[size:]
-	}
+	*s = (*s)[size:]
 
 	return r, size, err
 }

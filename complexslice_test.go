@@ -54,7 +54,7 @@ func TestComplexSlice(t *testing.T) {
 
 func TestComplexSliceRemove(t *testing.T) {
 	defer __(o_(t))
-	
+
 	var s ComplexSlice
 	s.Add(-1, -2, -3, -4, -5, -6, -7)
 	AssertEquals(t, "len", len(s), 7)

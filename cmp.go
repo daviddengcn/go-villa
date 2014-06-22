@@ -2,7 +2,7 @@ package villa
 
 import "sort"
 
-// CmpFunc is a function comparing two elements. The function returns a positive 
+// CmpFunc is a function comparing two elements. The function returns a positive
 // value if a > b, a negative value if a < b, and 0 otherwise.
 //
 // Sort, BinarySearch and Merge methods are defined.
@@ -42,13 +42,13 @@ func (cmp CmpFunc) Merge(a, b []interface{}) []interface{} {
 	return res
 }
 
-// BinarySearch searchs a specified element e in a *sorted* list with binary 
+// BinarySearch searchs a specified element e in a *sorted* list with binary
 // search algorithm. If the list values are not sorted, the return values are
 // undefined.
 //
-// If the element is found in the list, found equals true and pos is the index 
-// of the found element in the list. Otherwise found returns false and pos is 
-// the position where e is going to be inserted(and the resulting list is still 
+// If the element is found in the list, found equals true and pos is the index
+// of the found element in the list. Otherwise found returns false and pos is
+// the position where e is going to be inserted(and the resulting list is still
 // in order)
 func (cmp CmpFunc) BinarySearch(s []interface{}, e interface{}) (pos int, found bool) {
 	l, r := 0, len(s)-1
@@ -130,12 +130,12 @@ func (cmp StrCmpFunc) Merge(a, b []string) []string {
 	return res
 }
 
-// BinarySearch searchs a specified element e in a *sorted* list with binary 
-// search algorithm. If the list values are not sorted, the return values are 
+// BinarySearch searchs a specified element e in a *sorted* list with binary
+// search algorithm. If the list values are not sorted, the return values are
 // undefined.
 //
-// If the element is found in the list, found equals true and pos is the index 
-// of the found element in the list. Otherwise found returns false and pos is 
+// If the element is found in the list, found equals true and pos is the index
+// of the found element in the list. Otherwise found returns false and pos is
 // the position where e is going to be inserted(and the resulting list is still
 // in order)
 func (cmp StrCmpFunc) BinarySearch(s []string, e string) (pos int, found bool) {
@@ -164,22 +164,22 @@ func (cmp StrCmpFunc) DiffSlicePair(s1, s2 []string) (d1, d2 []string) {
 		switch cmp(s1[i], s2[j]) {
 		case -1:
 			d1 = append(d1, s1[i])
-			i ++
+			i++
 		case 1:
 			d2 = append(d2, s2[j])
-			j ++
+			j++
 		default:
-			i ++
-			j ++
+			i++
+			j++
 		}
 	}
-	
+
 	if i < len(s1) {
 		d1 = append(d1, s1[i:]...)
 	} else {
 		d2 = append(d2, s2[j:]...)
 	}
-	
+
 	return d1, d2
 }
 
@@ -202,7 +202,6 @@ func (s *strSortList) Less(i, j int) bool {
 func (cmp StrCmpFunc) Sort(s []string) {
 	sort.Sort(&strSortList{StringSlice(s), cmp})
 }
-
 
 // IntCmpFunc is a function comparing two int elements. The function returns a positive value if a > b, a negative value if a < b, and 0 otherwise.
 //
@@ -443,7 +442,7 @@ func (cmp ComplexCmpFunc) Sort(s []complex128) {
 }
 
 var (
-	// StrValueCompare compares the input strings a and b, returns -1 if a < b, 
+	// StrValueCompare compares the input strings a and b, returns -1 if a < b,
 	// 1 if a > b, and 0 otherwise.
 	//
 	// This is a natural StrCmpFunc.

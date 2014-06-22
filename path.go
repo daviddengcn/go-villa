@@ -185,9 +185,9 @@ func (p Path) Walk(walkFn WalkFunc) error {
 
 // Create is a wrapper to os.Create.
 //
-// It creates the named file mode 0666 (before umask), truncating it if it 
-// already exists. If successful, methods on the returned File can be used for 
-// I/O; the associated file descriptor has mode O_RDWR. If there is an error, 
+// It creates the named file mode 0666 (before umask), truncating it if it
+// already exists. If successful, methods on the returned File can be used for
+// I/O; the associated file descriptor has mode O_RDWR. If there is an error,
 // it will be of type *PathError.
 func (p Path) Create() (file *os.File, err error) {
 	return os.Create(string(p))
@@ -215,7 +215,7 @@ func (p Path) OpenFile(flag int, perm os.FileMode) (file *os.File, err error) {
 
 // Mkdir is a wrappter to os.Mkdir.
 //
-// It creates a new directory with the specified name and permission bits. If 
+// It creates a new directory with the specified name and permission bits. If
 // there is an error, it will be of type *PathError.
 func (p Path) Mkdir(perm os.FileMode) error {
 	return os.Mkdir(string(p), perm)
@@ -223,9 +223,9 @@ func (p Path) Mkdir(perm os.FileMode) error {
 
 // MkdirAll is a wrappter to os.MkdirAll.
 //
-// It creates a directory named path, along with any necessary parents, and 
-// returns nil, or else returns an error. The permission bits perm are used for 
-// all directories that MkdirAll creates. If path is already a directory, 
+// It creates a directory named path, along with any necessary parents, and
+// returns nil, or else returns an error. The permission bits perm are used for
+// all directories that MkdirAll creates. If path is already a directory,
 // MkdirAll does nothing and returns nil.
 func (p Path) MkdirAll(perm os.FileMode) error {
 	return os.MkdirAll(string(p), perm)

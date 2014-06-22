@@ -1,8 +1,8 @@
 package villa
 
 import (
-	"testing"
 	"math/rand"
+	"testing"
 )
 
 func TestIntPriorityQueue(t *testing.T) {

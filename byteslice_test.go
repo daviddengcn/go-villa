@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"testing"
+	"unicode/utf8"
 )
 
 func TestByteSlice(t *testing.T) {
@@ -30,7 +31,7 @@ func TestByteSlice(t *testing.T) {
 	bs.Write([]byte{4, 5})
 	AssertEquals(t, "len(bs)", len(bs), 2)
 	AssertStringEquals(t, "bs", bs, "[4 5]")
-	
+
 	bs.WriteByte(6)
 
 	c, err := bs.ReadByte()
@@ -48,7 +49,7 @@ func TestByteSlice(t *testing.T) {
 	bs.WriteString("世界")
 	AssertEquals(t, "len(bs)", len(bs), 12)
 	AssertStringEquals(t, "bs", bs, "[5 6 65 228 184 173 228 184 150 231 149 140]")
-	
+
 	bs.Skip(1)
 	AssertStringEquals(t, "bs", bs, "[6 65 228 184 173 228 184 150 231 149 140]")
 
@@ -120,4 +121,21 @@ func TestByteSlice_Bug_Read(t *testing.T) {
 	t.Logf("n: %d, err: %v", n, err)
 	AssertEquals(t, "n", 0, 0)
 	AssertEquals(t, "err", err, io.EOF)
+}
+
+func TestByteSlice_Bug_ReadRune(t *testing.T) {
+	s := ByteSlice{65, 0xff, 66}
+	r, sz, err := s.ReadRune()
+	AssertEquals(t, "r", r, 'A')
+	AssertEquals(t, "sz", sz, 1)
+	AssertEquals(t, "err", err, nil)
+	r, sz, err = s.ReadRune()
+	AssertEquals(t, "r", r, utf8.RuneError)
+	AssertEquals(t, "sz", sz, 1)
+	AssertEquals(t, "err", err, nil)
+
+	r, sz, err = s.ReadRune()
+	AssertEquals(t, "r", r, 'B')
+	AssertEquals(t, "sz", sz, 1)
+	AssertEquals(t, "err", err, nil)
 }

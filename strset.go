@@ -6,8 +6,9 @@ import "fmt"
 type StrSet map[string]struct{}
 
 // NewStrSet creates a string set with specified elements.
-// You need to use this function only when you want to create a StrSet with intial
-// elements. Different from map, a nil value of StrSet is ok to put elemnents.
+// You need to use this function only when you want to create a StrSet with
+// intial elements. Different from map, a nil value of StrSet is ok to put
+// elemnents.
 func NewStrSet(els ...string) (s StrSet) {
 	return s.Put(els...)
 }
