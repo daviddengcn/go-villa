@@ -1,4 +1,4 @@
-go-villa
+go-villa [![GoSearch](http://go-search.org/badge?id=github.com%2Fdaviddengcn%2Fgo-villa)](http://go-search.org/view?id=github.com%2Fdaviddengcn%2Fgo-villa)
 ========
 Package villa contains some helper types for Go: priority queue, slice wrapper,
 binary-search, merge-sort.
