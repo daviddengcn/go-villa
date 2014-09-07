@@ -13,40 +13,60 @@ var N [int(^uint32(0) >> 1)]struct{}
 // An variable of zero-size bytes
 type Empty struct{}
 
-/* NestedError is an error with current message and nested error */
-type NestedError struct {
-	// The messsage of this error
-	Message string
-	// The nested error
-	Nested error
+/*
+NestedError is an error with current message and nested error.
+
+Use NestErrorf to generate a NestedError. It returns a nil for a nil nested
+error.
+
+Use NestedError.Deepest() to fetch the cause error.
+*/
+type NestedError interface {
+	error
+	// Message returns the messsage of this error
+	Message() string
+	// Nested returns the nested error
+	Nested() error
+	/*
+		Deepest returns the deepest non-NestedError error, which is the
+		original cause error.
+	*/
+	Deepest() error
+}
+
+type nestedError struct {
+	message string
+	nested error
 }
 
 // Error implements error interface
-func (err *NestedError) Error() string {
-	if err.Nested == nil {
-		return err.Message
+func (err *nestedError) Error() string {
+	if err.nested == nil {
+		return err.message
 	}
-	return err.Message + ": " + err.Nested.Error()
+	return err.message + ": " + err.nested.Error()
 }
 
-/*
-	Deepest returns the deepest non-*NestedError error, which is the original
-  	error.
-*/
-func (err *NestedError) Deepest() error {
-	for {
-		if err.Nested == nil {
-			return nil
-		}
+func (err *nestedError) Message() string {
+	return err.message
+}
 
-		ne, ok := err.Nested.(*NestedError)
+func (err *nestedError) Nested() error {
+	return err.nested
+}
 
-		if !ok {
-			return err.Nested
-		}
-
-		err = ne
+func (err *nestedError) Deepest() error {
+	if err.nested == nil {
+		return nil
 	}
+	
+	ne, ok := err.nested.(NestedError)
+
+	if !ok {
+		return err.nested
+	}
+
+	return ne.Deepest()
 }
 
 /*
@@ -54,7 +74,7 @@ func (err *NestedError) Deepest() error {
 	it is directly returned.
 */
 func DeepestNested(err error) error {
-	ne, ok := err.(*NestedError)
+	ne, ok := err.(NestedError)
 	if ok {
 		err = ne.Deepest()
 	}
@@ -62,10 +82,16 @@ func DeepestNested(err error) error {
 	return err
 }
 
-/* NestErrorf returns a *NestedError error with a message */
-func NestErrorf(err error, fmtstr string, args ...interface{}) *NestedError {
-	return &NestedError{
-		Message: fmt.Sprintf(fmtstr, args...),
-		Nested:  err,
+/*
+  NestErrorf returns nil if err == nil, otherwise it returns a *NestedError
+  error with a formatted message
+*/
+func NestErrorf(err error, fmtstr string, args ...interface{}) NestedError {
+	if err == nil {
+		return nil
+	}
+	return &nestedError{
+		message: fmt.Sprintf(fmtstr, args...),
+		nested:  err,
 	}
 }
