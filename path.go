@@ -12,6 +12,15 @@ import (
 // and results, if any, are converted back to Path
 type Path string
 
+// Paths returns an array of Path's given a list of strings.
+func Paths(strs ...string) (paths []Path) {
+	paths = make([]Path, len(strs))
+	for i, str := range strs {
+		paths[i] = Path(str)
+	}
+	return
+}
+
 // Join connect elems to the tail of path
 func (p Path) Join(elem ...interface{}) Path {
 	els := make(StringSlice, 0, len(elem)+1)
