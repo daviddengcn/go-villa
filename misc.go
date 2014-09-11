@@ -13,6 +13,19 @@ var N [int(^uint32(0) >> 1)]struct{}
 // An variable of zero-size bytes
 type Empty struct{}
 
+// A channel for signaling stop
+type Stop chan Empty
+
+// Signal to stop
+func (stop Stop) Stop() {
+	stop <- Empty{}
+}
+
+// Create a Stop with buffer size 1
+func NewStop() Stop {
+	return make(Stop, 1)
+}
+
 /*
 NestedError is an error with current message and nested error.
 
