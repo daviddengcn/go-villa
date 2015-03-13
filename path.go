@@ -49,6 +49,17 @@ func (p Path) S() string {
 	return string(p)
 }
 
+// Readdir opens and reads the directory at the path.
+func (p Path) Readdir(n int) (fi []os.FileInfo, err error) {
+	f, err := p.Open()
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	
+	return f.Readdir(n)
+}
+
 // AbsPath returns the absolute path returned by Path.Abs() if no error found,
 // panic otherwise.
 func (p Path) AbsPath() (ap Path) {
@@ -313,3 +324,5 @@ func (p Path) TempDir(prefix string) (name Path, err error) {
 func (p Path) Command(arg ...string) *exec.Cmd {
 	return exec.Command(string(p), arg...)
 }
+
+
