@@ -49,7 +49,7 @@ type NestedError interface {
 
 type nestedError struct {
 	message string
-	nested error
+	nested  error
 }
 
 // Error implements error interface
@@ -72,7 +72,7 @@ func (err *nestedError) Deepest() error {
 	if err.nested == nil {
 		return nil
 	}
-	
+
 	ne, ok := err.nested.(NestedError)
 
 	if !ok {

@@ -56,7 +56,7 @@ func (p Path) Readdir(n int) (fi []os.FileInfo, err error) {
 		return nil, err
 	}
 	defer f.Close()
-	
+
 	return f.Readdir(n)
 }
 
@@ -324,5 +324,3 @@ func (p Path) TempDir(prefix string) (name Path, err error) {
 func (p Path) Command(arg ...string) *exec.Cmd {
 	return exec.Command(string(p), arg...)
 }
-
-
