@@ -3,6 +3,7 @@ package villa
 import (
 	"errors"
 	"io"
+	"strconv"
 	"unicode/utf8"
 )
 
@@ -158,4 +159,11 @@ func (s *ByteSlice) WriteRune(r rune) (size int, err error) {
 func (s *ByteSlice) WriteString(str string) (size int, err error) {
 	*s = append(*s, str...)
 	return len(str), nil
+}
+
+// WriteItoa converts i into text of the specified base and write to s.
+func (s *ByteSlice) WriteItoa(i int64, base int) (size int, err error) {
+	l := len(*s)
+	*s = strconv.AppendInt([]byte(*s), i, base)
+	return len(*s) - l, nil
 }

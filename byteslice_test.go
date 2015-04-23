@@ -139,3 +139,11 @@ func TestByteSlice_Bug_ReadRune(t *testing.T) {
 	AssertEquals(t, "sz", sz, 1)
 	AssertEquals(t, "err", err, nil)
 }
+
+func TestByteSlice_WriteItoa(t *testing.T) {
+	var s ByteSlice
+	s.WriteItoa(1234, 10)
+	s.WriteItoa(255, 16)
+	
+	AssertEquals(t, "s", string(s), "1234ff")
+}
