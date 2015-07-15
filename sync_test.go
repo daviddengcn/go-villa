@@ -4,6 +4,8 @@ import (
 	"sync"
 	"sync/atomic"
 	"testing"
+
+	"github.com/golangplus/testing/assert"
 )
 
 func TestOnce(t *testing.T) {
@@ -23,12 +25,12 @@ func TestOnce(t *testing.T) {
 	}
 
 	wg.Wait()
-	AssertEquals(t, "counter", counter, int32(1))
+	assert.Equal(t, "counter", counter, int32(1))
 }
 
 func TestAtomicBox(t *testing.T) {
 	var b AtomicBox
 
 	b.Set("hello")
-	AssertEquals(t, "b.Get", b.Get().(string), "hello")
+	assert.Equal(t, "b.Get", b.Get().(string), "hello")
 }

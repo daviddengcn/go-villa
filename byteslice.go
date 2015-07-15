@@ -7,6 +7,8 @@ import (
 	"unicode/utf8"
 )
 
+// Deprecated. Use "github.com/golangplus/bytes".ByteSlice instead.
+//
 // ByteSlice is a wrapper type for []byte.
 // Its pointer form, *ByteSlice, satisfies io.Reader, io.Writer, io.ByteReader,
 // io.ByteWriter, io.Closer, io.ReaderFrom, io.WriterTo and io.RuneReader

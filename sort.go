@@ -1,28 +1,10 @@
 package villa
 
 import (
-	"sort"
+	"github.com/golangplus/sort"
 )
-
-type sortI struct {
-	l    int
-	less func(int, int) bool
-	swap func(int, int)
-}
-
-func (s *sortI) Len() int {
-	return s.l
-}
-
-func (s *sortI) Less(i, j int) bool {
-	return s.less(i, j)
-}
-
-func (s *sortI) Swap(i, j int) {
-	s.swap(i, j)
-}
 
 // Deprecated. Use sortp.SortF in "github.com/golangplus/sort" instead.
 func SortF(Len int, Less func(int, int) bool, Swap func(int, int)) {
-	sort.Sort(&sortI{l: Len, less: Less, swap: Swap})
+	sortp.SortF(Len, Less, Swap)
 }

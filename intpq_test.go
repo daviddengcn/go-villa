@@ -3,6 +3,8 @@ package villa
 import (
 	"math/rand"
 	"testing"
+
+	"github.com/golangplus/testing/assert"
 )
 
 func TestIntPriorityQueue(t *testing.T) {
@@ -13,11 +15,11 @@ func TestIntPriorityQueue(t *testing.T) {
 		pq.Push(rand.Int())
 	} // for i
 
-	AssertEquals(t, "pq.Len()", pq.Len(), 1000)
+	assert.Equal(t, "pq.Len()", pq.Len(), 1000)
 
 	peek := pq.Peek()
 	last := pq.Pop()
-	AssertEquals(t, "pg.Peek()", peek, last)
+	assert.Equal(t, "pg.Peek()", peek, last)
 	for i := 1; i < 1000; i++ {
 		cur := pq.Pop()
 		if cur < last {
@@ -30,5 +32,5 @@ func TestIntPriorityQueue(t *testing.T) {
 
 func TestIntPriorityQueueCap(t *testing.T) {
 	pq := NewIntPriorityQueueCap(IntValueCompare, 10)
-	AssertEquals(t, "pq.Len()", pq.Len(), 0)
+	assert.Equal(t, "pq.Len()", pq.Len(), 0)
 }

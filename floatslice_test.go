@@ -2,6 +2,8 @@ package villa
 
 import (
 	"testing"
+
+	"github.com/golangplus/testing/assert"
 )
 
 func TestFloatSlice(t *testing.T) {
@@ -12,18 +14,18 @@ func TestFloatSlice(t *testing.T) {
 		s.Add(float64(i))
 	} // for i
 
-	AssertEquals(t, "len", len(s), 1000)
+	assert.Equal(t, "len", len(s), 1000)
 	//fmt.Println(s)
 	s.Clear()
-	AssertEquals(t, "len", len(s), 0)
+	assert.Equal(t, "len", len(s), 0)
 
 	s = FloatSlice{}
 	s.Add(1)
 	s.Insert(0, 2)
 	s.Insert(1, 3)
 	t.Logf("%v", s)
-	AssertEquals(t, "len", len(s), 3)
-	AssertStringEquals(t, "s", s, "[2 3 1]")
+	assert.Equal(t, "len", len(s), 3)
+	assert.StringEqual(t, "s", s, "[2 3 1]")
 }
 
 func TestFloatSliceRemove(t *testing.T) {
@@ -31,32 +33,32 @@ func TestFloatSliceRemove(t *testing.T) {
 
 	var s FloatSlice
 	s.Add(1, 2, 3, 4, 5, 6, 7)
-	AssertEquals(t, "len", len(s), 7)
-	AssertStringEquals(t, "s", s, "[1 2 3 4 5 6 7]")
+	assert.Equal(t, "len", len(s), 7)
+	assert.StringEqual(t, "s", s, "[1 2 3 4 5 6 7]")
 
 	s.Fill(2, 5, 9)
-	AssertStringEquals(t, "s", s, "[1 2 9 9 9 6 7]")
+	assert.StringEqual(t, "s", s, "[1 2 9 9 9 6 7]")
 
 	s.RemoveRange(2, 5)
-	AssertEquals(t, "len", len(s), 4)
-	AssertStringEquals(t, "s", s, "[1 2 6 7]")
+	assert.Equal(t, "len", len(s), 4)
+	assert.StringEqual(t, "s", s, "[1 2 6 7]")
 
 	s.Remove(2)
-	AssertEquals(t, "len", len(s), 3)
-	AssertStringEquals(t, "s", s, "[1 2 7]")
+	assert.Equal(t, "len", len(s), 3)
+	assert.StringEqual(t, "s", s, "[1 2 7]")
 }
 
 func TestFloatSliceEquals(t *testing.T) {
 	s := FloatSlice([]float64{1, 2, 3, 4})
 
-	AssertEquals(t, "s.Equals(nil)", s.Equals(nil, 100), false)
-	AssertEquals(t, "s.Equals([1, 2, 3, 4])", s.Equals([]float64{1, 2, 3, 4}, 1e-5), true)
-	AssertEquals(t, "s.Equals([1, 2, 5, 4])", s.Equals([]float64{1, 2, 5, 4}, 1e-5), false)
-	AssertEquals(t, "s.Equals([1, 2, 5, 4])", s.Equals([]float64{1, 2, 5, 4}, 10), true)
-	AssertEquals(t, "s.Equals([1, 2, 3, 4, 5])", s.Equals([]float64{1, 2, 3, 4, 5}, 1e-5), false)
+	assert.Equal(t, "s.Equals(nil)", s.Equals(nil, 100), false)
+	assert.Equal(t, "s.Equals([1, 2, 3, 4])", s.Equals([]float64{1, 2, 3, 4}, 1e-5), true)
+	assert.Equal(t, "s.Equals([1, 2, 5, 4])", s.Equals([]float64{1, 2, 5, 4}, 1e-5), false)
+	assert.Equal(t, "s.Equals([1, 2, 5, 4])", s.Equals([]float64{1, 2, 5, 4}, 10), true)
+	assert.Equal(t, "s.Equals([1, 2, 3, 4, 5])", s.Equals([]float64{1, 2, 3, 4, 5}, 1e-5), false)
 
-	AssertEquals(t, "nil.Equals([]float64{})", FloatSlice(nil).Equals(s[:0], 100), true)
-	AssertEquals(t, "nil.Equals([]float64{1, 2})", FloatSlice(nil).Equals([]float64{1, 2}, 1e-5), false)
+	assert.Equal(t, "nil.Equals([]float64{})", FloatSlice(nil).Equals(s[:0], 100), true)
+	assert.Equal(t, "nil.Equals([]float64{1, 2})", FloatSlice(nil).Equals([]float64{1, 2}, 1e-5), false)
 }
 
 func BenchmarkFloatSliceInsert(b *testing.B) {

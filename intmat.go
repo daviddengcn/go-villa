@@ -1,8 +1,9 @@
 package villa
 
 import (
-	"bytes"
 	"fmt"
+
+	"github.com/golangplus/bytes"
 )
 
 /*
@@ -19,7 +20,7 @@ func NewIntMatrix(nRow, nCol int) IntMatrix {
 	for i, p := 0, 0; i < nRow; i++ {
 		mat[i] = s[p : p+nCol]
 		p += nCol
-	} // for i
+	}
 
 	return mat
 }
@@ -31,7 +32,7 @@ func (m IntMatrix) Clone() IntMatrix {
 	n := m.Rows() * m.Cols()
 	if n > 0 {
 		copy(mat[0][:n], m[0][:n])
-	} // if
+	}
 
 	return mat
 }
@@ -40,7 +41,7 @@ func (m IntMatrix) Clone() IntMatrix {
 func (m IntMatrix) Cols() int {
 	if len(m) == 0 {
 		return 0
-	} // if
+	}
 
 	return len(m[0])
 }
@@ -58,48 +59,48 @@ func (m IntMatrix) PrettyString() string {
 		sr := make([]string, 0, len(row))
 		for _, cell := range row {
 			sr = append(sr, fmt.Sprint(cell))
-		} // for cell
+		}
 		sa = append(sa, sr)
-	} // for row
+	}
 
 	wds := make([]int, m.Cols())
 	for i := 0; i < m.Rows(); i++ {
 		for j := 0; j < m.Cols(); j++ {
 			if len(sa[i][j]) > wds[j] {
 				wds[j] = len(sa[i][j])
-			} //  if
-		} // for j
-	} // for i
+			}
+		}
+	}
 
-	var res bytes.Buffer
+	var res bytesp.ByteSlice
 	for i, row := range sa {
 		if i == 0 {
 			res.WriteString("[")
 		} else {
 			res.WriteString(" ")
-		} // else
+		}
 		res.WriteString("[")
 		for j, cell := range row {
 			if j > 0 {
 				res.WriteString(" ")
-			} // if
+			}
 			fmt.Fprintf(&res, "%*s", wds[j], cell)
-		} // for j, cell
+		}
 		res.WriteString("]")
 		if i == len(sa)-1 {
 			fmt.Fprintf(&res, "](%dx%d)", m.Rows(), m.Cols())
-		} // else
+		}
 		res.WriteString("\n")
-	} // for row
+	}
 
-	return res.String()
+	return string(res)
 }
 
 // Fill sets all elements of the matrix to a specified value
 func (m IntMatrix) Fill(vl int) {
 	if len(m) == 0 {
 		return
-	} // if
+	}
 
 	n := m.Rows() * m.Cols()
 	IntSlice(m[0][:n]).Fill(0, n, vl)

@@ -3,6 +3,8 @@ package villa
 import (
 	"math/cmplx"
 	"testing"
+
+	"github.com/golangplus/testing/assert"
 )
 
 var cmplexAbsCmpFunc = ComplexCmpFunc(func(a, b complex128) int {
@@ -39,17 +41,17 @@ func TestComplexSlice(t *testing.T) {
 		s.Add(complex(float64(i), float64(-i)))
 	} // for i
 
-	AssertEquals(t, "len", len(s), 1000)
+	assert.Equal(t, "len", len(s), 1000)
 	//fmt.Println(s)
 	s.Clear()
-	AssertEquals(t, "len", len(s), 0)
+	assert.Equal(t, "len", len(s), 0)
 
 	s = ComplexSlice{}
 	s.Add(-4, -1)
 	s.Insert(1, -2, -3)
 	t.Logf("%v", s)
-	AssertEquals(t, "len", len(s), 4)
-	AssertStringEquals(t, "s", s, "[(-4+0i) (-2+0i) (-3+0i) (-1+0i)]")
+	assert.Equal(t, "len", len(s), 4)
+	assert.StringEqual(t, "s", s, "[(-4+0i) (-2+0i) (-3+0i) (-1+0i)]")
 }
 
 func TestComplexSliceRemove(t *testing.T) {
@@ -57,32 +59,32 @@ func TestComplexSliceRemove(t *testing.T) {
 
 	var s ComplexSlice
 	s.Add(-1, -2, -3, -4, -5, -6, -7)
-	AssertEquals(t, "len", len(s), 7)
-	AssertStringEquals(t, "s", s, "[(-1+0i) (-2+0i) (-3+0i) (-4+0i) (-5+0i) (-6+0i) (-7+0i)]")
+	assert.Equal(t, "len", len(s), 7)
+	assert.StringEqual(t, "s", s, "[(-1+0i) (-2+0i) (-3+0i) (-4+0i) (-5+0i) (-6+0i) (-7+0i)]")
 
 	s.Fill(2, 5, -9-8i)
-	AssertStringEquals(t, "s", s, "[(-1+0i) (-2+0i) (-9-8i) (-9-8i) (-9-8i) (-6+0i) (-7+0i)]")
+	assert.StringEqual(t, "s", s, "[(-1+0i) (-2+0i) (-9-8i) (-9-8i) (-9-8i) (-6+0i) (-7+0i)]")
 
 	s.RemoveRange(2, 5)
-	AssertEquals(t, "len", len(s), 4)
-	AssertStringEquals(t, "s", s, "[(-1+0i) (-2+0i) (-6+0i) (-7+0i)]")
+	assert.Equal(t, "len", len(s), 4)
+	assert.StringEqual(t, "s", s, "[(-1+0i) (-2+0i) (-6+0i) (-7+0i)]")
 
 	s.Remove(2)
-	AssertEquals(t, "len", len(s), 3)
-	AssertStringEquals(t, "s", s, "[(-1+0i) (-2+0i) (-7+0i)]")
+	assert.Equal(t, "len", len(s), 3)
+	assert.StringEqual(t, "s", s, "[(-1+0i) (-2+0i) (-7+0i)]")
 }
 
 func TestComplexSliceEquals(t *testing.T) {
 	s := ComplexSlice([]complex128{1, 2, 3, 4})
 
-	AssertEquals(t, "s.Equals(nil)", s.Equals(nil, 100), false)
-	AssertEquals(t, "s.Equals([1, 2, 3, 4])", s.Equals([]complex128{1, 2, 3, 4}, 1e-5), true)
-	AssertEquals(t, "s.Equals([1, 2, 5, 4])", s.Equals([]complex128{1, 2, 5, 4}, 1e-5), false)
-	AssertEquals(t, "s.Equals([1, 2, 5, 4])", s.Equals([]complex128{1, 2, 5, 4}, 10), true)
-	AssertEquals(t, "s.Equals([1, 2, 3, 4, 5])", s.Equals([]complex128{1, 2, 3, 4, 5}, 1e-5), false)
+	assert.Equal(t, "s.Equals(nil)", s.Equals(nil, 100), false)
+	assert.Equal(t, "s.Equals([1, 2, 3, 4])", s.Equals([]complex128{1, 2, 3, 4}, 1e-5), true)
+	assert.Equal(t, "s.Equals([1, 2, 5, 4])", s.Equals([]complex128{1, 2, 5, 4}, 1e-5), false)
+	assert.Equal(t, "s.Equals([1, 2, 5, 4])", s.Equals([]complex128{1, 2, 5, 4}, 10), true)
+	assert.Equal(t, "s.Equals([1, 2, 3, 4, 5])", s.Equals([]complex128{1, 2, 3, 4, 5}, 1e-5), false)
 
-	AssertEquals(t, "nil.Equals([]float64{})", ComplexSlice(nil).Equals(s[:0], 100), true)
-	AssertEquals(t, "nil.Equals([]float64{1, 2})", ComplexSlice(nil).Equals([]complex128{1, 2}, 1e-5), false)
+	assert.Equal(t, "nil.Equals([]float64{})", ComplexSlice(nil).Equals(s[:0], 100), true)
+	assert.Equal(t, "nil.Equals([]float64{1, 2})", ComplexSlice(nil).Equals([]complex128{1, 2}, 1e-5), false)
 }
 
 func BenchmarkComplexSliceInsert(b *testing.B) {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	//    "strings"
+	"github.com/golangplus/testing/assert"
 )
 
 func TestStringSlice(t *testing.T) {
@@ -15,15 +15,15 @@ func TestStringSlice(t *testing.T) {
 		s.Add(string('A' + i))
 	}
 
-	AssertEquals(t, "len(s)", len(s), 1000)
+	assert.Equal(t, "len(s)", len(s), 1000)
 	s.Clear()
-	AssertEquals(t, "len(s)", len(s), 0)
+	assert.Equal(t, "len(s)", len(s), 0)
 
 	s = StringSlice{}
 	s.Add("E", "B")
 	s.Insert(1, "C", "D")
-	AssertEquals(t, "len(s)", len(s), 4)
-	AssertStringEquals(t, "s", s, "[E C D B]")
+	assert.Equal(t, "len(s)", len(s), 4)
+	assert.StringEqual(t, "s", s, "[E C D B]")
 }
 
 func ExampleStringSlice_direct() {
@@ -93,26 +93,26 @@ func TestStringSliceRemove(t *testing.T) {
 
 	var s StringSlice
 	s.Add("A", "B", "C", "D", "E", "F", "G")
-	AssertEquals(t, "len(s)", len(s), 7)
-	AssertStringEquals(t, "s", s, "[A B C D E F G]")
+	assert.Equal(t, "len(s)", len(s), 7)
+	assert.StringEqual(t, "s", s, "[A B C D E F G]")
 
 	s.RemoveRange(2, 5)
-	AssertEquals(t, "len(s)", len(s), 4)
-	AssertStringEquals(t, "s", s, "[A B F G]")
+	assert.Equal(t, "len(s)", len(s), 4)
+	assert.StringEqual(t, "s", s, "[A B F G]")
 
 	s.Remove(2)
-	AssertEquals(t, "len(s)", len(s), 3)
-	AssertStringEquals(t, "s", s, "[A B G]")
+	assert.Equal(t, "len(s)", len(s), 3)
+	assert.StringEqual(t, "s", s, "[A B G]")
 }
 
 func TestStringSliceEquals(t *testing.T) {
 	s := StringSlice([]string{"1", "2", "3", "4"})
 
-	AssertEquals(t, "s.Equals(nil)", s.Equals(nil), false)
-	AssertEquals(t, "s.Equals([1, 2, 3, 4])", s.Equals([]string{"1", "2", "3", "4"}), true)
-	AssertEquals(t, "s.Equals([1, 2, 5, 4])", s.Equals([]string{"1", "2", "5", "4"}), false)
-	AssertEquals(t, "s.Equals([1, 2, 3, 4, 5])", s.Equals([]string{"1", "2", "3", "4", "5"}), false)
+	assert.Equal(t, "s.Equals(nil)", s.Equals(nil), false)
+	assert.Equal(t, "s.Equals([1, 2, 3, 4])", s.Equals([]string{"1", "2", "3", "4"}), true)
+	assert.Equal(t, "s.Equals([1, 2, 5, 4])", s.Equals([]string{"1", "2", "5", "4"}), false)
+	assert.Equal(t, "s.Equals([1, 2, 3, 4, 5])", s.Equals([]string{"1", "2", "3", "4", "5"}), false)
 
-	AssertEquals(t, "nil.Equals([]int{})", StringSlice(nil).Equals(s[:0]), true)
-	AssertEquals(t, "nil.Equals([]int{1, 2})", StringSlice(nil).Equals([]string{"1", "2"}), false)
+	assert.Equal(t, "nil.Equals([]int{})", StringSlice(nil).Equals(s[:0]), true)
+	assert.Equal(t, "nil.Equals([]int{1, 2})", StringSlice(nil).Equals([]string{"1", "2"}), false)
 }

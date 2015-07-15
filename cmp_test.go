@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"math/rand"
 	"testing"
+
+	"github.com/golangplus/testing/assert"
 )
 
 func TestMerge(t *testing.T) {
@@ -26,8 +28,8 @@ func TestMerge(t *testing.T) {
 	intInterfaceCmpFunc.Sort(b)
 
 	c := intInterfaceCmpFunc.Merge(a, b)
-	AssertEquals(t, "len(c)", len(c), len(cc))
-	AssertStringEquals(t, "c", c, cc)
+	assert.Equal(t, "len(c)", len(c), len(cc))
+	assert.StringEqual(t, "c", c, cc)
 }
 
 func TestMergeInt(t *testing.T) {
@@ -50,8 +52,8 @@ func TestMergeInt(t *testing.T) {
 	IntValueCompare.Sort(b)
 
 	c := IntValueCompare.Merge(a, b)
-	AssertEquals(t, "len(c)", len(c), len(cc))
-	AssertStringEquals(t, "c", c, cc)
+	assert.Equal(t, "len(c)", len(c), len(cc))
+	assert.StringEqual(t, "c", c, cc)
 }
 
 func TestMergeString(t *testing.T) {
@@ -74,8 +76,8 @@ func TestMergeString(t *testing.T) {
 	StrValueCompare.Sort(b)
 
 	c := StrValueCompare.Merge(a, b)
-	AssertEquals(t, "len(c)", len(c), len(cc))
-	AssertStringEquals(t, "c", c, cc)
+	assert.Equal(t, "len(c)", len(c), len(cc))
+	assert.StringEqual(t, "c", c, cc)
 }
 
 func TestMergeFloat(t *testing.T) {
@@ -98,8 +100,8 @@ func TestMergeFloat(t *testing.T) {
 	FloatValueCompare.Sort(b)
 
 	c := FloatValueCompare.Merge(a, b)
-	AssertEquals(t, "len(c)", len(c), len(cc))
-	AssertStringEquals(t, "c", c, cc)
+	assert.Equal(t, "len(c)", len(c), len(cc))
+	assert.StringEqual(t, "c", c, cc)
 }
 
 func TestMergeComplex(t *testing.T) {
@@ -122,8 +124,8 @@ func TestMergeComplex(t *testing.T) {
 	cmplexAbsCmpFunc.Sort(b)
 
 	c := cmplexAbsCmpFunc.Merge(a, b)
-	AssertEquals(t, "len(c)", len(c), len(cc))
-	AssertStringEquals(t, "c", c, cc)
+	assert.Equal(t, "len(c)", len(c), len(cc))
+	assert.StringEqual(t, "c", c, cc)
 }
 
 func TestSortBinarySearch(t *testing.T) {
@@ -147,9 +149,9 @@ func TestSortBinarySearch(t *testing.T) {
 
 	for i := range s {
 		p, found := intInterfaceCmpFunc.BinarySearch(s, s[i])
-		AssertEquals(t, fmt.Sprintf("%d found", i), found, true)
+		assert.Equal(t, fmt.Sprintf("%d found", i), found, true)
 		if found {
-			AssertEquals(t, fmt.Sprintf("%d found element", i), s[p], s[i])
+			assert.Equal(t, fmt.Sprintf("%d found element", i), s[p], s[i])
 		} // if
 	} // for i
 
@@ -157,16 +159,16 @@ func TestSortBinarySearch(t *testing.T) {
 		e := rand.Int()
 		p, found := intInterfaceCmpFunc.BinarySearch(s, e)
 		if found {
-			AssertEquals(t, fmt.Sprintf("found element", i), s[p], e)
+			assert.Equal(t, fmt.Sprintf("%d found element", i), s[p], e)
 		} else {
 			beforeOk := p == 0 || s[p-1].(int) <= e
 			afterOk := p == len(s) || s[p].(int) >= e
 
 			if !beforeOk || !afterOk {
 				t.Errorf("Wrong position %d for %v", p, e)
-			} // if
-		} // else
-	} // for i
+			}
+		}
+	}
 }
 
 func TestStrSortBinarySearch(t *testing.T) {
@@ -190,26 +192,26 @@ func TestStrSortBinarySearch(t *testing.T) {
 
 	for i := range s {
 		p, found := StrValueCompare.BinarySearch(s, s[i])
-		AssertEquals(t, fmt.Sprintf("%d found", i), found, true)
+		assert.Equal(t, fmt.Sprintf("%d found", i), found, true)
 		if found {
-			AssertEquals(t, fmt.Sprintf("%d found element", i), s[p], s[i])
-		} // if
-	} // for i
+			assert.Equal(t, fmt.Sprintf("%d found element", i), s[p], s[i])
+		}
+	}
 
 	for i := range s {
 		e := fmt.Sprint(rand.Int())
 		p, found := StrValueCompare.BinarySearch(s, e)
 		if found {
-			AssertEquals(t, fmt.Sprintf("found element", i), s[p], e)
+			assert.Equal(t, fmt.Sprintf("%d found element", i), s[p], e)
 		} else {
 			beforeOk := p == 0 || s[p-1] <= e
 			afterOk := p == len(s) || s[p] >= e
 
 			if !beforeOk || !afterOk {
 				t.Errorf("Wrong position %d for %v", p, e)
-			} // if
-		} // else
-	} // for i
+			}
+		}
+	}
 }
 
 func TestIntSortBinarySearch(t *testing.T) {
@@ -233,26 +235,26 @@ func TestIntSortBinarySearch(t *testing.T) {
 
 	for i := range s {
 		p, found := IntValueCompare.BinarySearch(s, s[i])
-		AssertEquals(t, fmt.Sprintf("%d found", i), found, true)
+		assert.Equal(t, fmt.Sprintf("%d found", i), found, true)
 		if found {
-			AssertEquals(t, fmt.Sprintf("%d found element", i), s[p], s[i])
-		} // if
-	} // for i
+			assert.Equal(t, fmt.Sprintf("%d found element", i), s[p], s[i])
+		}
+	}
 
 	for i := range s {
 		e := rand.Int()
 		p, found := IntValueCompare.BinarySearch(s, e)
 		if found {
-			AssertEquals(t, fmt.Sprintf("found element", i), s[p], e)
+			assert.Equal(t, fmt.Sprintf("%d found element", i), s[p], e)
 		} else {
 			beforeOk := p == 0 || s[p-1] <= e
 			afterOk := p == len(s) || s[p] >= e
 
 			if !beforeOk || !afterOk {
 				t.Errorf("Wrong position %d for %v", p, e)
-			} // if
-		} // else
-	} // for i
+			}
+		}
+	}
 }
 
 func TestFloatSortBinarySearch(t *testing.T) {
@@ -276,26 +278,26 @@ func TestFloatSortBinarySearch(t *testing.T) {
 
 	for i := range s {
 		p, found := FloatValueCompare.BinarySearch(s, s[i])
-		AssertEquals(t, fmt.Sprintf("%d found", i), found, true)
+		assert.Equal(t, fmt.Sprintf("%d found", i), found, true)
 		if found {
-			AssertEquals(t, fmt.Sprintf("%d found element", i), s[p], s[i])
-		} // if
-	} // for i
+			assert.Equal(t, fmt.Sprintf("%d found element", i), s[p], s[i])
+		}
+	}
 
 	for i := range s {
 		e := rand.Float64()
 		p, found := FloatValueCompare.BinarySearch(s, e)
 		if found {
-			AssertEquals(t, fmt.Sprintf("found element", i), s[p], e)
+			assert.Equal(t, fmt.Sprintf("%d found element", i), s[p], e)
 		} else {
 			beforeOk := p == 0 || s[p-1] <= e
 			afterOk := p == len(s) || s[p] >= e
 
 			if !beforeOk || !afterOk {
 				t.Errorf("Wrong position %d for %v", p, e)
-			} // if
-		} // else
-	} // for i
+			}
+		}
+	}
 }
 
 func TestComplexSortBinarySearch(t *testing.T) {
@@ -319,26 +321,26 @@ func TestComplexSortBinarySearch(t *testing.T) {
 
 	for i := range s {
 		p, found := cmplexAbsCmpFunc.BinarySearch(s, s[i])
-		AssertEquals(t, fmt.Sprintf("%d found", i), found, true)
+		assert.Equal(t, fmt.Sprintf("%d found", i), found, true)
 		if found {
-			AssertEquals(t, fmt.Sprintf("%d found element", i), s[p], s[i])
-		} // if
-	} // for i
+			assert.Equal(t, fmt.Sprintf("%d found element", i), s[p], s[i])
+		}
+	}
 
 	for i := range s {
 		e := complex(rand.Float64(), rand.Float64())
 		p, found := cmplexAbsCmpFunc.BinarySearch(s, e)
 		if found {
-			AssertEquals(t, fmt.Sprintf("found element", i), s[p], e)
+			assert.Equal(t, fmt.Sprintf("%d found element", i), s[p], e)
 		} else {
 			beforeOk := p == 0 || cmplexAbsCmpFunc(s[p-1], e) <= 0
 			afterOk := p == len(s) || cmplexAbsCmpFunc(s[p], e) >= 0
 
 			if !beforeOk || !afterOk {
 				t.Errorf("Wrong position %d for %v", p, e)
-			} // if
-		} // else
-	} // for i
+			}
+		}
+	}
 }
 
 func TestStrDiff(t *testing.T) {
@@ -348,6 +350,6 @@ func TestStrDiff(t *testing.T) {
 	s2 := StringSlice{"b", "c", "d", "g"}
 
 	d1, d2 := StrValueCompare.DiffSlicePair(s1, s2)
-	AssertStringEquals(t, "d1", d1, "[a f]")
-	AssertStringEquals(t, "d2", d2, "[c g]")
+	assert.StringEqual(t, "d1", d1, "[a f]")
+	assert.StringEqual(t, "d2", d2, "[c g]")
 }

@@ -5,6 +5,8 @@ import (
 	"runtime"
 	"strings"
 	"testing"
+
+	"github.com/golangplus/testing/assert"
 )
 
 func o_(t *testing.T) (string, *testing.T) {
@@ -38,15 +40,15 @@ func TestSlice(t *testing.T) {
 		s.Add(i)
 	}
 
-	AssertEquals(t, "len(s)", len(s), 1000)
+	assert.Equal(t, "len(s)", len(s), 1000)
 	s.Clear()
-	AssertEquals(t, "len(s)", len(s), 0)
+	assert.Equal(t, "len(s)", len(s), 0)
 
 	s = Slice{}
 	s.Add(4, 1)
 	s.Insert(1, 2, 3)
-	AssertEquals(t, "len(s)", len(s), 4)
-	AssertStringEquals(t, "s", s, "[4 2 3 1]")
+	assert.Equal(t, "len(s)", len(s), 4)
+	assert.StringEqual(t, "s", s, "[4 2 3 1]")
 }
 
 func ExampleSlice_direct() {
@@ -114,28 +116,28 @@ func TestSliceRemove(t *testing.T) {
 
 	var s Slice
 	s.Add(1, 2, 3, 4, 5, 6, 7)
-	AssertEquals(t, "len(s)", len(s), 7)
-	AssertStringEquals(t, "s", s, "[1 2 3 4 5 6 7]")
+	assert.Equal(t, "len(s)", len(s), 7)
+	assert.StringEqual(t, "s", s, "[1 2 3 4 5 6 7]")
 
 	s.RemoveRange(2, 5)
-	AssertEquals(t, "len(s)", len(s), 4)
-	AssertStringEquals(t, "s", s, "[1 2 6 7]")
+	assert.Equal(t, "len(s)", len(s), 4)
+	assert.StringEqual(t, "s", s, "[1 2 6 7]")
 
 	s.Remove(2)
-	AssertEquals(t, "len(s)", len(s), 3)
-	AssertStringEquals(t, "s", s, "[1 2 7]")
+	assert.Equal(t, "len(s)", len(s), 3)
+	assert.StringEqual(t, "s", s, "[1 2 7]")
 }
 
 func TestSliceEquals(t *testing.T) {
 	s := Slice{1, 2, 3, 4}
 
-	AssertEquals(t, "s.Equals(nil)", s.Equals(nil), false)
-	AssertEquals(t, "s.Equals([1, 2, 3, 4])", s.Equals([]interface{}{1, 2, 3, 4}), true)
-	AssertEquals(t, "s.Equals([1, 2, 5, 4])", s.Equals([]interface{}{1, 2, 5, 4}), false)
-	AssertEquals(t, "s.Equals([1, 2, 3, 4, 5])", s.Equals([]interface{}{1, 2, 3, 4, 5}), false)
+	assert.Equal(t, "s.Equals(nil)", s.Equals(nil), false)
+	assert.Equal(t, "s.Equals([1, 2, 3, 4])", s.Equals([]interface{}{1, 2, 3, 4}), true)
+	assert.Equal(t, "s.Equals([1, 2, 5, 4])", s.Equals([]interface{}{1, 2, 5, 4}), false)
+	assert.Equal(t, "s.Equals([1, 2, 3, 4, 5])", s.Equals([]interface{}{1, 2, 3, 4, 5}), false)
 
-	AssertEquals(t, "nil.Equals([]int{})", Slice(nil).Equals(s[:0]), true)
-	AssertEquals(t, "nil.Equals([]int{1, 2})", Slice(nil).Equals([]interface{}{1, 2}), false)
+	assert.Equal(t, "nil.Equals([]int{})", Slice(nil).Equals(s[:0]), true)
+	assert.Equal(t, "nil.Equals([]int{1, 2})", Slice(nil).Equals([]interface{}{1, 2}), false)
 }
 
 func BenchmarkSliceInsert(b *testing.B) {
@@ -176,5 +178,5 @@ func TestN(t *testing.T) {
 		s.Add(i)
 	}
 	t.Logf("%v", s)
-	AssertEquals(t, "Equals", s.Equals([]interface{}{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}), true)
+	assert.Equal(t, "Equals", s.Equals([]interface{}{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}), true)
 }
