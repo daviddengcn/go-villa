@@ -72,7 +72,7 @@ func (m IntMatrix) PrettyString() string {
 		}
 	}
 
-	var res bytesp.ByteSlice
+	var res bytesp.Slice
 	for i, row := range sa {
 		if i == 0 {
 			res.WriteString("[")
