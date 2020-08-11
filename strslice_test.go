@@ -12,7 +12,7 @@ func TestStringSlice(t *testing.T) {
 
 	var s StringSlice
 	for i := 0; i < 1000; i++ {
-		s.Add(string('A' + i))
+		s.Add(string(rune('A' + i)))
 	}
 
 	assert.Equal(t, "len(s)", len(s), 1000)
